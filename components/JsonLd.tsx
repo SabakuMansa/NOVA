@@ -17,10 +17,13 @@ export default function JsonLd() {
     email: seo.email,
     telephone: seo.phone,
     image: `${seo.siteUrl}/opengraph-image`,
-    areaServed: {
-      "@type": "AdministrativeArea",
-      name: seo.areaServed,
-    },
+    areaServed: [
+      { "@type": "AdministrativeArea", name: "Île-de-France" },
+      { "@type": "AdministrativeArea", name: "Val-de-Marne" },
+      { "@type": "AdministrativeArea", name: "Hauts-de-Seine" },
+      { "@type": "City", name: "Saint-Maur-des-Fossés" },
+      { "@type": "City", name: "Suresnes" },
+    ],
     knowsLanguage: seo.languages,
     serviceType: [
       "Création de site internet",

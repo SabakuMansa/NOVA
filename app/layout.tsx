@@ -29,19 +29,25 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(seo.siteUrl),
   title: {
-    default: "NOVA Studio — Studio digital local, Île-de-France",
+    default:
+      "NOVA Studio — Création de sites internet pour commerçants, Île-de-France",
     template: "%s · NOVA Studio",
   },
   description:
-    "Studio digital fondé par un restaurateur. NOVA Studio conçoit des sites et outils numériques pensés pour les commerces locaux d'Île-de-France : visibilité, autonomie, automatisation.",
+    "Studio digital fondé par un restaurateur en Île-de-France. Création de sites internet et d'outils numériques pour les commerces locaux — restaurants, boutiques, artisans — de Saint-Maur-des-Fossés à Suresnes (Val-de-Marne, Hauts-de-Seine). Visibilité, autonomie, automatisation.",
   keywords: [
-    "création site internet commerce",
-    "site restaurant Île-de-France",
+    "création site internet commerçants",
+    "création site internet Île-de-France",
+    "site internet restaurant",
+    "site internet boutique",
+    "site internet artisan",
     "studio digital local",
     "SEO local",
     "site vitrine commerçant",
     "Saint-Maur-des-Fossés",
     "Suresnes",
+    "Val-de-Marne",
+    "Hauts-de-Seine",
   ],
   alternates: { canonical: "/" },
   authors: [{ name: seo.name }],

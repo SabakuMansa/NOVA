@@ -34,3 +34,35 @@ invisible.
 - Console : plus aucune erreur ni warning Framer (restent seulement les logs debug de
   Vercel Analytics, normaux en développement).
 - `npx tsc --noEmit` : aucune erreur de type.
+
+---
+
+## [Chantier 1] Référencement (SEO technique)
+
+**Ce qui a été fait**
+- `<title>` enrichi et local : « NOVA Studio — Création de sites internet pour
+  commerçants, Île-de-France ».
+- `<meta description>` réécrite avec les cibles locales (restaurants, boutiques,
+  artisans ; Saint-Maur-des-Fossés, Suresnes, Val-de-Marne, Hauts-de-Seine).
+- `keywords` étendus aux deux départements et aux types de commerce.
+- JSON-LD `ProfessionalService` : `areaServed` détaillé (Île-de-France + Val-de-Marne
+  + Hauts-de-Seine + Saint-Maur-des-Fossés + Suresnes).
+- Vérifié : Open Graph + Twitter Card, `sitemap.xml`, `robots.txt`, `opengraph-image`
+  (image de partage générée), `favicon` (icon.svg) — tous en HTTP 200.
+- Hiérarchie des titres : **un seul `<h1>`** (hero), 8 `<h2>` (un par section), 15 `<h3>`.
+- Illustrations : 24 SVG, toutes décoratives et correctement marquées `aria-hidden`
+  (aucune balise `<img>`, donc pas d'`alt` manquant — approche a11y correcte pour du
+  décoratif ; le sens est porté par le texte).
+
+**Pourquoi**
+Cibler les requêtes locales « création site internet commerçants + villes/départements »,
+et donner aux moteurs/réseaux sociaux des métadonnées propres et structurées.
+
+**Vérification effectuée**
+- `<head>` inspecté via fetch : title, description, canonical, JSON-LD (5 zones) corrects.
+- Routes SEO testées : sitemap/robots/OG/favicon → 200.
+- `npx tsc --noEmit` OK.
+
+> ⚠️ **À faire au matin** : `seo.siteUrl` (`content/site.ts`) pointe encore sur le
+> domaine placeholder `https://nova-studio.fr`. Il alimente canonical, OG, sitemap et
+> JSON-LD → à remplacer par le vrai domaine (ou l'URL Vercel actuelle) avant indexation.
