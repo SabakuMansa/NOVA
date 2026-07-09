@@ -3,9 +3,13 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
+// Easing "premium" partagé (easeOutExpo-like, sans rebond).
+export const EASE = [0.22, 1, 0.36, 1] as const;
+
 /**
- * Animation d'entrée au scroll : fade + léger slide.
- * Respecte prefers-reduced-motion (aucun déplacement si l'utilisateur le demande).
+ * Animation d'entrée au scroll : fade + translateY(20 → 0).
+ * whileInView, déclenchée une seule fois, trigger court (margin -100px).
+ * Respecte prefers-reduced-motion : contenu affiché directement, sans transition.
  */
 export default function Reveal({
   children,
@@ -16,18 +20,23 @@ export default function Reveal({
   children: ReactNode;
   delay?: number;
   className?: string;
-  as?: "div" | "li" | "section";
+  as?: "div" | "li" | "section" | "ul";
 }) {
   const reduce = useReducedMotion();
   const MotionTag = motion[as];
 
+  if (reduce) {
+    const Tag = as;
+    return <Tag className={className}>{children}</Tag>;
+  }
+
   return (
     <MotionTag
       className={className}
-      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.55, delay, ease: EASE }}
     >
       {children}
     </MotionTag>

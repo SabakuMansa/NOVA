@@ -96,12 +96,17 @@ export default function Approche() {
           </p>
           <ul className="mt-8 space-y-4">
             {approche.proofs.map((p, i) => (
-              <li key={i} className="flex items-start gap-4">
+              <Reveal
+                as="li"
+                key={i}
+                delay={i * 0.15}
+                className="flex items-start gap-4"
+              >
                 <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-lie" aria-hidden />
                 <span className="font-sans text-lg leading-snug text-cafe/85">
                   {p}
                 </span>
-              </li>
+              </Reveal>
             ))}
           </ul>
           <div className="mt-10 rounded-2xl border-l-4 border-moutarde bg-craie/60 px-6 py-5">

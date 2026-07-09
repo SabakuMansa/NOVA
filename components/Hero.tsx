@@ -6,11 +6,20 @@ import { hero } from "@/content/site";
 export default function Hero() {
   const reduce = useReducedMotion();
 
-  const rise = (delay: number) => ({
-    initial: reduce ? { opacity: 0 } : { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
-  });
+  // Stagger au chargement (pas au scroll) : titre → sous-titre → boutons.
+  // Sous prefers-reduced-motion : tout s'affiche immédiatement, sans transition.
+  const rise = (delay: number) =>
+    reduce
+      ? { initial: false as const }
+      : {
+          initial: { opacity: 0, y: 20 },
+          animate: { opacity: 1, y: 0 },
+          transition: {
+            duration: 0.6,
+            delay,
+            ease: [0.22, 1, 0.36, 1] as const,
+          },
+        };
 
   return (
     <section
@@ -38,7 +47,7 @@ export default function Hero() {
           </motion.p>
 
           <motion.h1
-            {...rise(0.08)}
+            {...rise(0.1)}
             className="mt-6 font-display text-[2.6rem] leading-[1.12] tracking-[-0.005em] text-cafe sm:text-5xl md:text-[3.6rem]"
           >
             {hero.titleLead}{" "}
@@ -63,14 +72,14 @@ export default function Hero() {
           </motion.h1>
 
           <motion.p
-            {...rise(0.16)}
+            {...rise(0.2)}
             className="mt-8 max-w-xl font-sans text-lg leading-relaxed text-cafe/80"
           >
             {hero.subtitle}
           </motion.p>
 
           <motion.div
-            {...rise(0.24)}
+            {...rise(0.3)}
             className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
             <a

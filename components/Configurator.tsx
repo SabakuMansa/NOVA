@@ -9,6 +9,7 @@ import {
   type PreviewCombo,
 } from "@/content/site";
 import { Motif } from "./Motifs";
+import Reveal from "./Reveal";
 
 const brandLabel: Record<CommerceType, string> = {
   Restaurant: "La Table",
@@ -268,7 +269,7 @@ export default function Configurator() {
 
   return (
     <section id={apercu.id} className="mx-auto max-w-content px-5 py-24 md:px-8 md:py-32">
-      <div className="mx-auto max-w-2xl text-center">
+      <Reveal className="mx-auto max-w-2xl text-center">
         <p className="font-mono text-[0.68rem] uppercase tracking-eyebrow text-lie">
           {apercu.eyebrow}
         </p>
@@ -277,9 +278,12 @@ export default function Configurator() {
           décrive.
         </h2>
         <p className="mt-4 font-sans text-lg text-cafe/70">{apercu.subtitle}</p>
-      </div>
+      </Reveal>
 
-      <div className="mt-14 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-12">
+      <Reveal
+        delay={0.1}
+        className="mt-14 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-12"
+      >
         {/* Contrôles */}
         <div className="space-y-8">
           <fieldset>
@@ -366,7 +370,7 @@ export default function Configurator() {
             </div>
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

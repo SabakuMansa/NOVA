@@ -20,7 +20,7 @@ export default function Problemes() {
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2">
           {problemes.cards.map((card, i) => (
-            <Reveal key={card.tag} delay={i * 0.08}>
+            <Reveal key={card.tag} delay={i * 0.12}>
               <div className="group h-full rounded-2xl border border-nappe/12 bg-nappe/[0.03] p-7 transition-colors hover:border-moutarde/50 hover:bg-nappe/[0.06]">
                 <div className="flex items-center gap-3">
                   <span className="font-mono text-sm text-moutarde">

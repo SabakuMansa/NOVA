@@ -1,5 +1,6 @@
 import { carte } from "@/content/site";
 import Reveal from "./Reveal";
+import ScaleReveal from "./ScaleReveal";
 
 export default function Carte() {
   return (
@@ -19,8 +20,8 @@ export default function Carte() {
           </div>
         </Reveal>
 
-        {/* Le carton de menu */}
-        <Reveal delay={0.1}>
+        {/* Le carton de menu — entrée en un seul bloc (fade + scale), jamais fragmenté */}
+        <ScaleReveal>
           <div className="mx-auto mt-14 max-w-4xl">
             <div
               className="relative rounded-[0.4rem] border-2 border-cafe/25 bg-[#FBF6EA] p-6 shadow-[0_24px_60px_-30px_rgba(46,37,33,0.5)] sm:p-10 md:p-14"
@@ -53,7 +54,7 @@ export default function Carte() {
                     key={o.name}
                     className={
                       o.featured
-                        ? "-mx-3 rounded-lg bg-moutarde/[0.09] px-3 py-4 ring-1 ring-moutarde/30 sm:-mx-5 sm:px-5"
+                        ? "featured-offer -mx-3 rounded-lg bg-moutarde/[0.09] px-3 py-4 ring-1 ring-moutarde/30 transition-all duration-300 hover:bg-moutarde/[0.14] hover:ring-moutarde/60 sm:-mx-5 sm:px-5"
                         : ""
                     }
                   >
@@ -114,7 +115,7 @@ export default function Carte() {
               Prix indicatifs · devis personnalisé après audit
             </p>
           </div>
-        </Reveal>
+        </ScaleReveal>
       </div>
     </section>
   );

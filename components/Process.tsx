@@ -1,9 +1,68 @@
+"use client";
+
+import { useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
 import { process } from "@/content/site";
 import Reveal from "./Reveal";
 
-export default function Process() {
+type Step = (typeof process.steps)[number];
+
+// Une étape : s'allume (opacité 40 % → 100 %) quand la ligne de progression
+// l'atteint. Pilotée par transform/opacity uniquement (pas de width/height).
+function TimelineStep({
+  step,
+  index,
+  total,
+  progress,
+  reduce,
+}: {
+  step: Step;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+  reduce: boolean;
+}) {
+  const point = (index + 0.5) / total;
+  const opacity = useTransform(progress, [point - 0.12, point], [0.4, 1]);
+
   return (
-    <section id={process.id} className="bg-cafe text-nappe">
+    <motion.li
+      style={reduce ? undefined : { opacity }}
+      className="relative grid grid-cols-[3rem_1fr] items-start gap-5"
+    >
+      <span className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border border-moutarde/50 bg-cafe font-mono text-sm text-moutarde">
+        {step.n}
+      </span>
+      <div className="pt-1.5">
+        <h3 className="font-display text-2xl">{step.name}</h3>
+        <p className="mt-1.5 max-w-md font-sans leading-relaxed text-nappe/70">
+          {step.text}
+        </p>
+      </div>
+    </motion.li>
+  );
+}
+
+export default function Process() {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Progression du scroll À L'INTÉRIEUR de cette section précise.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.85", "end 0.6"],
+  });
+
+  const total = process.steps.length;
+
+  return (
+    <section id={process.id} className="relative bg-cafe text-nappe">
       <div className="mx-auto max-w-content px-5 py-24 md:px-8 md:py-32">
         <Reveal>
           <p className="font-mono text-[0.68rem] uppercase tracking-eyebrow text-moutarde">
@@ -15,25 +74,33 @@ export default function Process() {
           </h2>
         </Reveal>
 
-        {/* Timeline : verticale mobile / grille desktop */}
-        <ol className="mt-16 grid gap-x-6 gap-y-10 md:grid-cols-3">
-          {process.steps.map((step, i) => (
-            <Reveal as="li" key={step.n} delay={i * 0.06}>
-              <div className="relative h-full">
-                <div className="flex items-center gap-4">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-moutarde/40 font-mono text-sm text-moutarde">
-                    {step.n}
-                  </span>
-                  <span className="h-px flex-1 bg-nappe/15" />
-                </div>
-                <h3 className="mt-5 font-display text-2xl">{step.name}</h3>
-                <p className="mt-2 font-sans leading-relaxed text-nappe/70">
-                  {step.text}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </ol>
+        {/* Timeline verticale à progression liée au scroll */}
+        <div ref={ref} className="relative mt-16 max-w-2xl">
+          {/* Rail de fond */}
+          <span
+            aria-hidden
+            className="absolute bottom-6 left-6 top-6 w-px bg-nappe/15"
+          />
+          {/* Rail rempli (scaleY = progression) — transform only */}
+          <motion.span
+            aria-hidden
+            className="absolute bottom-6 left-6 top-6 w-px origin-top bg-moutarde"
+            style={{ scaleY: reduce ? 1 : scrollYProgress }}
+          />
+
+          <ol className="space-y-10">
+            {process.steps.map((step, i) => (
+              <TimelineStep
+                key={step.n}
+                step={step}
+                index={i}
+                total={total}
+                progress={scrollYProgress}
+                reduce={!!reduce}
+              />
+            ))}
+          </ol>
+        </div>
       </div>
     </section>
   );
