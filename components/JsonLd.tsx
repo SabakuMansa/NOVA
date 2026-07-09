@@ -1,0 +1,40 @@
+import { seo } from "@/content/site";
+
+/**
+ * Données structurées Schema.org (JSON-LD).
+ * Type ProfessionalService : activité de service, zone desservie Île-de-France.
+ * Volontairement SANS adresse postale / SIRET tant que « NOVA Studio » est un
+ * nom de code — à compléter le moment venu (address, priceRange, openingHours…).
+ */
+export default function JsonLd() {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: seo.name,
+    legalName: seo.legalName,
+    description: seo.shortDescription,
+    url: seo.siteUrl,
+    email: seo.email,
+    telephone: seo.phone,
+    image: `${seo.siteUrl}/opengraph-image`,
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: seo.areaServed,
+    },
+    knowsLanguage: seo.languages,
+    serviceType: [
+      "Création de site internet",
+      "SEO local",
+      "Outils digitaux pour commerces",
+    ],
+    slogan: "Votre commerce mérite mieux qu'un site qui dort.",
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
