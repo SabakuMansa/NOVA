@@ -66,3 +66,34 @@ et donner aux moteurs/réseaux sociaux des métadonnées propres et structurées
 > ⚠️ **À faire au matin** : `seo.siteUrl` (`content/site.ts`) pointe encore sur le
 > domaine placeholder `https://nova-studio.fr`. Il alimente canonical, OG, sitemap et
 > JSON-LD → à remplacer par le vrai domaine (ou l'URL Vercel actuelle) avant indexation.
+
+---
+
+## [Chantier 2] Performance (en cours)
+
+**Mesure Lighthouse (build de production, `next start`)**
+Performance **91** · Accessibilité **95** · Bonnes pratiques **96** · SEO **100**.
+Métriques : FCP 1,0 s · **LCP 3,5 s** (point faible) · TBT 20 ms · CLS 0.
+
+**Ce qui a été fait**
+- **Hero converti d'animations JS (Framer) → animations CSS** (`.hero-rise` /
+  `.hero-slate` dans `globals.css`) et repassé en **composant serveur** (plus de
+  `"use client"`). Le contenu above-the-fold est désormais rendu côté serveur et animé
+  dès le parsing CSS.
+  - *Pourquoi* : le hero était en `opacity:0` jusqu'au chargement de Framer Motion →
+    LCP lent **et** cause racine du risque d'écran blanc. En CSS, il s'affiche
+    immédiatement, sans dépendre du JS. Bonus : un peu moins de JS client.
+- Audit des animations : **aucune** n'anime `width`/`height`/`top` — uniquement
+  `transform` et `opacity` (bon pour la perf).
+- Polices : `font-display: swap` sur les 3 (Instrument Serif, Work Sans, IBM Plex Mono),
+  auto-hébergées et préchargées par `next/font`.
+- Images : aucune balise `<img>` (tout en SVG inline) → rien à lazy-loader ni à
+  compresser.
+
+**Vérification effectuée**
+- `npx tsc --noEmit` OK · rendu hero vérifié dans Chrome réel (affichage instantané).
+
+**Reste à faire (Chantier 2)**
+- Ajouter `app/favicon.ico` (le navigateur requête `/favicon.ico` → 404 en console,
+  seul point qui plombe « bonnes pratiques »).
+- Re-mesurer Lighthouse après le passage CSS du hero (LCP attendu en forte baisse).

@@ -1,26 +1,9 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
 import { hero } from "@/content/site";
 
+// Composant serveur (aucun JS) : le contenu above-the-fold est rendu côté
+// serveur et animé en CSS (classes .hero-rise / .hero-slate). Cela garantit un
+// LCP rapide et un affichage même si le JS est lent/désactivé.
 export default function Hero() {
-  const reduce = useReducedMotion();
-
-  // Stagger au chargement (pas au scroll) : titre → sous-titre → boutons.
-  // Sous prefers-reduced-motion : tout s'affiche immédiatement, sans transition.
-  const rise = (delay: number) =>
-    reduce
-      ? { initial: false as const }
-      : {
-          initial: { opacity: 0, y: 20 },
-          animate: { opacity: 1, y: 0 },
-          transition: {
-            duration: 0.6,
-            delay,
-            ease: [0.22, 1, 0.36, 1] as const,
-          },
-        };
-
   return (
     <section
       id="top"
@@ -39,16 +22,13 @@ export default function Hero() {
       <div className="mx-auto grid max-w-content items-center gap-12 px-5 pb-20 md:px-8 md:pb-28 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
         {/* Colonne texte */}
         <div>
-          <motion.p
-            {...rise(0)}
-            className="font-mono text-[0.68rem] uppercase tracking-eyebrow text-lie"
-          >
+          <p className="hero-rise font-mono text-[0.68rem] uppercase tracking-eyebrow text-lie">
             {hero.eyebrow}
-          </motion.p>
+          </p>
 
-          <motion.h1
-            {...rise(0.1)}
-            className="mt-6 font-display text-[2.6rem] leading-[1.12] tracking-[-0.005em] text-cafe sm:text-5xl md:text-[3.6rem]"
+          <h1
+            className="hero-rise mt-6 font-display text-[2.6rem] leading-[1.12] tracking-[-0.005em] text-cafe sm:text-5xl md:text-[3.6rem]"
+            style={{ animationDelay: "0.1s" }}
           >
             {hero.titleLead}{" "}
             <span className="display-em relative whitespace-nowrap text-lie">
@@ -69,18 +49,18 @@ export default function Hero() {
               </svg>
             </span>
             .
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            {...rise(0.2)}
-            className="mt-8 max-w-xl font-sans text-lg leading-relaxed text-cafe/80"
+          <p
+            className="hero-rise mt-8 max-w-xl font-sans text-lg leading-relaxed text-cafe/80"
+            style={{ animationDelay: "0.2s" }}
           >
             {hero.subtitle}
-          </motion.p>
+          </p>
 
-          <motion.div
-            {...rise(0.3)}
-            className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
+          <div
+            className="hero-rise mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
+            style={{ animationDelay: "0.3s" }}
           >
             <a
               href={hero.ctaPrimary.href}
@@ -97,15 +77,13 @@ export default function Hero() {
             >
               {hero.ctaSecondary.label}
             </a>
-          </motion.div>
+          </div>
         </div>
 
         {/* Colonne visuelle — l'ardoise de bistrot */}
-        <motion.div
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 30, rotate: -1 }}
-          animate={{ opacity: 1, y: 0, rotate: -1.4 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto w-full max-w-sm lg:max-w-md"
+        <div
+          className="hero-slate relative mx-auto w-full max-w-sm lg:max-w-md"
+          style={{ transform: "rotate(-1.4deg)" }}
         >
           {/* Ficelle d'accroche */}
           <div
@@ -158,7 +136,7 @@ export default function Hero() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
