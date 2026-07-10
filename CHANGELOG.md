@@ -97,3 +97,45 @@ Métriques : FCP 1,0 s · **LCP 3,5 s** (point faible) · TBT 20 ms · CLS 0.
 - Ajouter `app/favicon.ico` (le navigateur requête `/favicon.ico` → 404 en console,
   seul point qui plombe « bonnes pratiques »).
 - Re-mesurer Lighthouse après le passage CSS du hero (LCP attendu en forte baisse).
+
+---
+
+## [Module] Commande & Livraison
+
+### A. Module technique (sandbox)
+Bloc **isolé et optionnel** — le cœur du site n'en dépend pas ; le site fonctionne
+normalement même si `DELIVERY_MODE` n'est pas configuré (fallback `demo`).
+
+- `lib/delivery/` : `types.ts` (interface `DeliveryProvider`), `mock-provider.ts`
+  (mode démo, statut qui évolue tout seul Préparation → Coursier → Livré en ~20 s,
+  **sans aucun appel réseau**, stateless via l'horodatage encodé dans l'id),
+  `uber-direct-client.ts` (mode live, OAuth2 + quote/create/status — credentials lues
+  UNIQUEMENT depuis l'environnement, jamais en dur), `index.ts` (sélection du
+  fournisseur selon `DELIVERY_MODE`).
+- Routes API : `POST /api/delivery/quote`, `POST /api/delivery/create`,
+  `GET /api/delivery/status`, `POST /api/webhooks/uber-direct` (inactif en démo).
+- Composants : `DeliveryOptionSelector` (retrait/livraison + devis),
+  `DeliveryTracker` (timeline + ETA, polling 2 s).
+- Page sandbox `/demo/livraison` (non reliée à la nav).
+- `README-delivery.md` (dont : le passage en `live` exige l'onboarding Uber Direct
+  fait par le commerçant lui-même) + `.env.example` (gabarit sans valeurs réelles).
+
+**Vérification** : build OK (4 routes API + page démo). Flux testé en mode démo via
+l'API : quote (4,64 € / 34 min) → create (preparing) → status auto-évolue en
+« courier_en_route » après 7 s → webhook démo renvoie `processed:false`. Aucune
+credential en dur.
+
+### B. Contenu marketing (site public)
+- **Section « Le problème »** : 5ᵉ carte « La commission » (pleine largeur car nombre
+  impair) — « Chaque commande livrée via une plateforme… c'est celui de la plateforme. »
+- **« La Carte »** : bloc add-on « Commande directe » **sous** le carton menu (jamais
+  dans le menu, pour ne pas le fragmenter), présenté comme add-on de Croissance
+  Digitale. Accroche + description + ligne de comparaison **prudente sans chiffre
+  inventé**.
+- **Configurateur** : 3ᵉ option facultative « Avec commande directe » (case à cocher
+  discrète) → ajoute un bandeau « Livraison sans commission » + bouton « Commander »
+  dans l'aperçu, aux couleurs de la maquette.
+
+**Contrainte respectée** : le mot **« Uber » n'apparaît NULLE PART** dans le texte
+visible (0 occurrence dans `content/`, `components/` et le HTML rendu). Réservé au
+code/README/API. Aucun chiffre de commission non vérifié affiché.

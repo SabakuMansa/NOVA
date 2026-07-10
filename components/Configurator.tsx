@@ -238,19 +238,53 @@ function Preview({
   style,
   combo,
   commerce,
+  delivery,
 }: {
   style: StyleType;
   combo: PreviewCombo;
   commerce: CommerceType;
+  delivery: { cta: string; badge: string } | null;
 }) {
-  if (style === "Épuré") return <PreviewEpure combo={combo} commerce={commerce} />;
-  if (style === "Premium") return <PreviewPremium combo={combo} commerce={commerce} />;
-  return <PreviewChaleureux combo={combo} commerce={commerce} />;
+  const inner =
+    style === "Épuré" ? (
+      <PreviewEpure combo={combo} commerce={commerce} />
+    ) : style === "Premium" ? (
+      <PreviewPremium combo={combo} commerce={commerce} />
+    ) : (
+      <PreviewChaleureux combo={combo} commerce={commerce} />
+    );
+
+  return (
+    <div>
+      {inner}
+      {/* Bandeau optionnel « commande directe » — même fond que la maquette */}
+      {delivery && (
+        <div
+          className="flex items-center justify-between gap-3 border-t px-6 py-3 sm:px-8"
+          style={{ backgroundColor: combo.bg, borderColor: `${combo.ink}1f` }}
+        >
+          <span
+            className="font-mono text-[0.54rem] uppercase tracking-wide"
+            style={{ color: combo.ink, opacity: 0.7 }}
+          >
+            {delivery.badge}
+          </span>
+          <span
+            className="rounded-full px-4 py-1.5 font-sans text-xs font-medium"
+            style={{ backgroundColor: combo.accent, color: combo.bg }}
+          >
+            {delivery.cta}
+          </span>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function Configurator() {
   const [commerce, setCommerce] = useState<CommerceType>("Restaurant");
   const [style, setStyle] = useState<StyleType>("Chaleureux");
+  const [withDelivery, setWithDelivery] = useState(false);
 
   // Aperçu partageable : ?activite=Boutique&style=Épuré présélectionne la combo.
   useEffect(() => {
@@ -336,6 +370,19 @@ export default function Configurator() {
             </p>
           </fieldset>
 
+          {/* Option facultative — commande directe (discrète) */}
+          <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-cafe/15 bg-craie/40 px-4 py-3">
+            <input
+              type="checkbox"
+              checked={withDelivery}
+              onChange={(e) => setWithDelivery(e.target.checked)}
+              className="h-4 w-4 shrink-0 accent-sauge"
+            />
+            <span className="font-sans text-sm text-cafe">
+              {apercu.deliveryOption.label}
+            </span>
+          </label>
+
           <p className="rounded-xl border border-cafe/10 bg-craie/40 px-5 py-4 font-sans text-sm leading-relaxed text-cafe/70">
             {apercu.disclaimer}
           </p>
@@ -365,8 +412,16 @@ export default function Configurator() {
 
           {/* Contenu de la maquette */}
           <div className="overflow-hidden rounded-xl">
-            <div key={`${commerce}-${style}`} className="preview-in">
-              <Preview style={style} combo={combo} commerce={commerce} />
+            <div
+              key={`${commerce}-${style}-${withDelivery}`}
+              className="preview-in"
+            >
+              <Preview
+                style={style}
+                combo={combo}
+                commerce={commerce}
+                delivery={withDelivery ? apercu.deliveryOption : null}
+              />
             </div>
           </div>
         </div>

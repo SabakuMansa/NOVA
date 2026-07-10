@@ -80,6 +80,10 @@ export const problemes = {
       tag: "Google",
       text: "Vos concurrents passent avant vous sur Google. Pas parce qu'ils sont meilleurs. Parce que leur fiche, elle, est à jour.",
     },
+    {
+      tag: "La commission",
+      text: "Chaque commande livrée via une plateforme, c'est une part de votre marge qui part avant même d'avoir couvert vos coûts. Et ce n'est même pas votre client — c'est celui de la plateforme.",
+    },
   ],
 };
 
@@ -164,6 +168,19 @@ export const carte = {
   ] as Offre[],
   footnote: "Une question sur la formule qu'il vous faut ? Quinze minutes suffisent pour le savoir.",
   footnoteCta: { label: "Réserver 15 minutes", href: "#contact" },
+  // Module optionnel présenté comme un add-on de « Croissance Digitale »
+  // (pas une offre à part entière). ⚠️ Ne jamais nommer la marque technique.
+  addon: {
+    badge: "Add-on · Croissance Digitale",
+    name: "Commande directe",
+    tagline:
+      "Vos clients commandent chez vous. La livraison suit, sans commission de plateforme.",
+    description:
+      "Vos clients commandent directement sur votre site. La livraison est prise en charge par un réseau de coursiers professionnels. Vous gardez votre client, ses données, et l'intégralité de votre marge — vous ne payez qu'une course, jamais un pourcentage sur la vente.",
+    // Formulation prudente, sans chiffre non vérifié (cf. consigne).
+    comparison:
+      "Les plateformes de livraison prélèvent une commission sur chaque vente. Ici, vous ne payez que le coût réel de la course — jamais un pourcentage.",
+  },
 };
 
 // --- Configurateur (section Aperçu) ---
@@ -197,6 +214,13 @@ export const apercu = {
   disclaimer:
     "Ceci reste un aperçu simplifié. Votre vrai site sera pensé pour votre commerce, pas pour une démo.",
   cta: { label: "Discuter du mien", href: "#contact" },
+  // Option facultative du configurateur : ajoute un bouton "Commander" + un
+  // badge dans l'aperçu. Aucune marque technique visible.
+  deliveryOption: {
+    label: "Avec commande directe",
+    cta: "Commander",
+    badge: "Livraison sans commission",
+  },
 };
 
 // 12 combinaisons pré-écrites (4 commerces × 3 styles), 100% en dur.
