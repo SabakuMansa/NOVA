@@ -168,18 +168,17 @@ export const carte = {
   ] as Offre[],
   footnote: "Une question sur la formule qu'il vous faut ? Quinze minutes suffisent pour le savoir.",
   footnoteCta: { label: "Réserver 15 minutes", href: "#contact" },
-  // Module optionnel présenté comme un add-on de « Croissance Digitale »
-  // (pas une offre à part entière). ⚠️ Ne jamais nommer la marque technique.
-  addon: {
-    badge: "Add-on · Croissance Digitale",
-    name: "Commande directe",
-    tagline:
-      "Vos clients commandent chez vous. La livraison suit, sans commission de plateforme.",
+  // Supplément « à la carte » (secondaire, dans le style menu, pas une 4e offre).
+  // ⚠️ Ne jamais nommer la marque technique dans ce texte visible.
+  supplement: {
+    title: "Suppléments à la carte",
+    name: "Commande & Livraison directe",
+    price: "450€ à l'activation + 25€/mois",
     description:
-      "Vos clients commandent directement sur votre site. La livraison est prise en charge par un réseau de coursiers professionnels. Vous gardez votre client, ses données, et l'intégralité de votre marge — vous ne payez qu'une course, jamais un pourcentage sur la vente.",
-    // Formulation prudente, sans chiffre non vérifié (cf. consigne).
-    comparison:
-      "Les plateformes de livraison prélèvent une commission sur chaque vente. Ici, vous ne payez que le coût réel de la course — jamais un pourcentage.",
+      "Vos clients commandent directement chez vous. La livraison suit, sans commission de plateforme sur vos ventes.",
+    availability:
+      "Disponible en complément des formules Site Autonome et Croissance Digitale. Réservé aux commerces avec activité de livraison.",
+    note: "Le coût de chaque livraison est payé séparément par le commerçant à son prestataire de livraison, non inclus dans ce tarif.",
   },
 };
 

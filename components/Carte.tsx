@@ -97,6 +97,31 @@ export default function Carte() {
                 ))}
               </ul>
 
+              {/* Suppléments à la carte — secondaire, même style menu (plus discret) */}
+              <div className="relative mt-8 border-t border-dashed border-cafe/20 pt-6">
+                <p className="font-mono text-[0.6rem] uppercase tracking-eyebrow text-cafe/50">
+                  {carte.supplement.title}
+                </p>
+                <div className="mt-3 flex flex-wrap items-baseline gap-x-2">
+                  <h4 className="font-display text-lg text-cafe sm:text-xl">
+                    {carte.supplement.name}
+                  </h4>
+                  <span className="dot-leader hidden sm:block" />
+                  <span className="ml-auto font-mono text-sm font-medium text-cafe sm:ml-0 sm:text-base">
+                    {carte.supplement.price}
+                  </span>
+                </div>
+                <p className="mt-1.5 max-w-2xl font-sans text-sm italic leading-snug text-cafe/70">
+                  {carte.supplement.description}
+                </p>
+                <p className="mt-2 max-w-2xl font-sans text-xs leading-snug text-cafe/55">
+                  {carte.supplement.availability}
+                </p>
+                <p className="mt-3 max-w-2xl font-sans text-[0.7rem] leading-relaxed text-cafe/50">
+                  {carte.supplement.note}
+                </p>
+              </div>
+
               {/* Pied du carton */}
               <div className="relative mt-10 border-t border-dashed border-cafe/25 pt-6 text-center">
                 <p className="font-display text-lg italic text-cafe/70">
@@ -116,29 +141,6 @@ export default function Carte() {
             </p>
           </div>
         </ScaleReveal>
-
-        {/* Add-on optionnel (séparé du carton menu pour ne pas le fragmenter) */}
-        <Reveal className="mx-auto mt-8 max-w-4xl">
-          <div className="rounded-2xl border border-sauge/35 bg-sauge/[0.07] p-6 sm:p-9">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="rounded-full bg-sauge px-3 py-1 font-mono text-[0.58rem] uppercase tracking-wide text-nappe">
-                {carte.addon.badge}
-              </span>
-              <h3 className="font-display text-2xl text-cafe sm:text-[1.7rem]">
-                {carte.addon.name}
-              </h3>
-            </div>
-            <p className="mt-3 max-w-2xl font-display text-lg italic leading-snug text-cafe/80">
-              {carte.addon.tagline}
-            </p>
-            <p className="mt-4 max-w-2xl font-sans leading-relaxed text-cafe/75">
-              {carte.addon.description}
-            </p>
-            <p className="mt-4 max-w-2xl border-l-2 border-sauge/50 pl-4 font-sans text-sm leading-relaxed text-cafe/65">
-              {carte.addon.comparison}
-            </p>
-          </div>
-        </Reveal>
       </div>
     </section>
   );

@@ -139,3 +139,15 @@ credential en dur.
 **Contrainte respectée** : le mot **« Uber » n'apparaît NULLE PART** dans le texte
 visible (0 occurrence dans `content/`, `components/` et le HTML rendu). Réservé au
 code/README/API. Aucun chiffre de commission non vérifié affiché.
+
+### C. Tarif « Suppléments à la carte » (dans La Carte)
+- Remplacement de l'ancien bloc add-on sauge par une **section « Suppléments à la
+  carte »** intégrée **dans le carton menu**, sous les 3 formules (inchangées).
+- Ligne au style menu (Plex Mono, points de suite, prix aligné à droite),
+  **visiblement plus discrète** que les 3 offres (titre + prix en plus petit) :
+  « Commande & Livraison directe … 450€ à l'activation + 25€/mois ».
+- Description courte + mention de disponibilité (Site Autonome / Croissance Digitale)
+  + note précisant que **le coût de chaque livraison est payé séparément** au
+  prestataire, non inclus dans ce tarif.
+- Aucune nouvelle couleur, aucun CTA séparé (le CTA existant couvre la question),
+  aucune mention « Uber ». Prix des 3 formules vérifiés inchangés (690€/1490€/dès 1990€).
