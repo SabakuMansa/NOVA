@@ -180,6 +180,26 @@ export const carte = {
       "Disponible en complément des formules Site Autonome et Croissance Digitale. Réservé aux commerces avec activité de livraison.",
     note: "Le coût de chaque livraison est payé séparément par le commerçant à son prestataire de livraison, non inclus dans ce tarif.",
   },
+  // Démo interactive du supplément (parcours simulé côté client final).
+  // ⚠️ Aucune marque technique : « un livreur », « une course », jamais le prestataire.
+  demo: {
+    trigger: "Essayer la démo",
+    replay: "Revoir la démo",
+    close: "Fermer",
+    eyebrow: "Démo interactive",
+    restaurant: "La Table du Marché",
+    items: [
+      { name: "Burger maison & frites", price: "14,50 €" },
+      { name: "Salade César", price: "11,00 €" },
+    ],
+    total: "25,50 €",
+    validate: "Valider la commande",
+    confirmTitle: "Commande reçue",
+    etaLabel: "Estimé ~25 min",
+    steps: ["Commande en préparation", "Livreur en route", "Livré"],
+    disclaimer:
+      "Démonstration simplifiée à titre d'exemple. Le fonctionnement réel s'adapte à votre menu et votre zone de livraison.",
+  },
 };
 
 // --- Configurateur (section Aperçu) ---

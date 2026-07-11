@@ -1,6 +1,7 @@
 import { carte } from "@/content/site";
 import Reveal from "./Reveal";
 import ScaleReveal from "./ScaleReveal";
+import DeliveryDemo from "./delivery/DeliveryDemo";
 
 export default function Carte() {
   return (
@@ -141,6 +142,9 @@ export default function Carte() {
             </p>
           </div>
         </ScaleReveal>
+
+        {/* Démo interactive du supplément — déclenchée volontairement */}
+        <DeliveryDemo />
       </div>
     </section>
   );

@@ -151,3 +151,21 @@ code/README/API. Aucun chiffre de commission non vérifié affiché.
   prestataire, non inclus dans ce tarif.
 - Aucune nouvelle couleur, aucun CTA séparé (le CTA existant couvre la question),
   aucune mention « Uber ». Prix des 3 formules vérifiés inchangés (690€/1490€/dès 1990€).
+
+### D. Démo interactive du supplément (dans La Carte)
+- Sous le bloc supplément, bouton discret **« Essayer la démo »** (fermé par défaut) qui
+  déploie un widget `components/delivery/DeliveryDemo.tsx` — **branché sur le
+  `mock-provider` existant** (`createDelivery`), aucune logique de simulation recréée,
+  aucun appel réseau réel.
+- Parcours simulé en 3 temps déclenché par le visiteur : **panier fictif** (La Table du
+  Marché, 2 plats, 25,50 €) → **« Commande reçue »** (n° de commande + ETA) →
+  **suivi automatique** « Commande en préparation » → « Livreur en route » (petit
+  livreur qui avance le long d'une piste, `transform`/`opacity`, easing
+  `[0.22,1,0.36,1]`, ~2,5 s/étape) → « Livré ». Bouton **« Revoir la démo »** pour
+  rejouer (jamais d'état figé).
+- Mention discrète sous le widget : « Démonstration simplifiée à titre d'exemple… ».
+- Palette NOVA uniquement, **aucune mention « Uber »/« livreur » du prestataire**.
+
+**Vérification** : cycle complet testé dans Chrome (déclenchement → progression auto →
+« Livré » → relance), layout OK en mobile 390px (aucun débordement), 0 erreur console,
+build de prod OK.
