@@ -169,3 +169,21 @@ code/README/API. Aucun chiffre de commission non vérifié affiché.
 **Vérification** : cycle complet testé dans Chrome (déclenchement → progression auto →
 « Livré » → relance), layout OK en mobile 390px (aucun débordement), 0 erreur console,
 build de prod OK.
+
+### E. Page de commande simulée complète (`/demo/commande`)
+- **Lien cliquable** depuis La Carte (« Ouvrir un exemple de commande complet ↗ »,
+  nouvel onglet) → page dédiée qui simule le **parcours client réel** d'un restaurant
+  fictif (La Table du Marché) : **menu** (ajout/quantités, panier fixe) → **checkout**
+  (récap + adresse + devis de livraison) → **confirmation** (n° de commande + ETA) →
+  **suivi en direct** (timeline Préparation → Coursier en route → Livré + ETA).
+- Réutilise `mock-provider` via les **routes API** (`/api/delivery/quote`, `/create`,
+  `/status`) et les composants `DeliveryOptionSelector` + `DeliveryTracker` déjà faits.
+- La course n'est créée qu'à l'ouverture du suivi → le visiteur **voit toujours la
+  progression en direct** (l'horloge de démo démarre à ce moment-là).
+- 100 % sandbox : aucune vraie commande, aucun paiement, aucun appel externe. Palette
+  NOVA. On parle d'« un livreur »/« coursier », **jamais** du prestataire technique.
+
+**Vérification** : parcours complet testé dans Chrome (menu → panier → devis 5,54 € →
+commande → suivi qui progresse « En préparation » → « Coursier en route » → « Livré »),
+mobile 390px OK (barre panier fixe sans débordement), 0 erreur console, build de prod OK,
+0 mention « Uber » dans le texte visible.

@@ -79,7 +79,7 @@ export default function DeliveryDemo() {
   return (
     <div className="mx-auto mt-6 max-w-4xl">
       {!open && (
-        <div className="text-center">
+        <div className="flex flex-col items-center gap-3">
           <button
             type="button"
             onClick={() => toggle(true)}
@@ -88,6 +88,14 @@ export default function DeliveryDemo() {
             {demo.trigger}
             <span aria-hidden>→</span>
           </button>
+          <a
+            href="/demo/commande"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-sans text-sm text-lie underline underline-offset-4 transition-colors hover:text-cafe"
+          >
+            Ouvrir un exemple de commande complet ↗
+          </a>
         </div>
       )}
 
