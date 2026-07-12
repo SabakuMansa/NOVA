@@ -1,6 +1,6 @@
 ---
 name: qa-reviewer
-description: Revue QA en lecture seule du site NOVA Studio. Vérifie le rendu visuel via Playwright (desktop + mobile 375px), contrôle que la section "La Carte" reste un bloc menu unique, cherche les formules interdites, relève les erreurs console, et rend un rapport court en français au format ✅/❌. Ne modifie JAMAIS de fichier du projet.
+description: Agent de contrôle qualité pour le site NOVA Studio. À utiliser UNIQUEMENT sur demande explicite de l'utilisateur (ex: "lance qa-reviewer", "vérifie le site", "fais une QA"). Ne jamais l'invoquer automatiquement après une modification de code, même mineure. Ce n'est pas un agent proactif.
 tools: Bash, Read, Grep, Glob
 model: sonnet
 ---

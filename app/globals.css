@@ -140,3 +140,59 @@ body {
     animation: none;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * Section signature /signature — fonds en dégradation gracieuse.      *
+ * ------------------------------------------------------------------ */
+
+/* Base statique : TOUJOURS présente derrière le WebGL/CSS → jamais de
+   flash noir, et sert de fallback lisible sous prefers-reduced-motion. */
+.signature-static-bg {
+  background:
+    radial-gradient(60% 55% at 28% 32%, rgba(122, 46, 46, 0.32), transparent 70%),
+    radial-gradient(55% 45% at 76% 66%, rgba(200, 155, 60, 0.2), transparent 70%),
+    radial-gradient(42% 42% at 62% 18%, rgba(110, 123, 88, 0.14), transparent 70%),
+    #2e2521;
+}
+
+/* Palier 2 (CSS) : dérive lente des braises quand le WebGL est indisponible. */
+@keyframes sig-drift {
+  from {
+    transform: translate3d(-3%, -2%, 0) scale(1.12);
+  }
+  to {
+    transform: translate3d(3%, 2%, 0) scale(1.18);
+  }
+}
+.signature-css-bg {
+  background:
+    radial-gradient(48% 48% at 34% 40%, rgba(200, 155, 60, 0.22), transparent 70%),
+    radial-gradient(46% 46% at 70% 62%, rgba(122, 46, 46, 0.3), transparent 70%);
+  animation: sig-drift 20s cubic-bezier(0.22, 1, 0.36, 1) infinite alternate;
+  will-change: transform;
+}
+
+/* Typo cinétique : révélation par mot (repose à opacity 1, fill-mode both). */
+@keyframes sig-word {
+  from {
+    opacity: 0;
+    transform: translateY(0.7em) rotate(1.4deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+.sig-word {
+  display: inline-block;
+  animation: sig-word 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signature-css-bg {
+    animation: none;
+  }
+  .sig-word {
+    animation: none;
+  }
+}
