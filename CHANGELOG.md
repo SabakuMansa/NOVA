@@ -5,6 +5,63 @@
 
 ---
 
+## [NUIT 2026-07-12 · ÉTAPE 0] Bug « images manquantes dans le menu » — diagnostic
+
+**Préalable RTK** — hook **actif et configuré** (`rtk init --show` → Hook OK, RTK.md OK,
+settings.json OK). Rien à signaler, le travail continue normalement.
+
+**Constat : aucun bug d'images à corriger.** Investigation complète menée *avant* toute
+modification :
+- Le site ne contient **aucune image raster** ni `next/image`. `git ls-files` → un seul
+  fichier image versionné : `app/icon.svg` (le favicon). Pas de dossier `public/`. Aucun
+  chemin d'image dans `content/site.ts` (relu intégralement).
+- Toutes les « images » sont des **SVG inline** (24 dans le DOM) : illustrations
+  `Motifs.tsx` (plate / bag / tools / heart) de l'Aperçu + icônes. Un SVG inline ne peut
+  pas avoir de « chemin cassé ».
+- « La Carte » est **100 % typographique** (un menu de texte, aucune photo) — par design.
+- `git log --diff-filter=D` → **aucun fichier image supprimé**. Historique de
+  `content/site.ts` : 4 commits cohérents, aucun chemin corrompu.
+- Build **propre** : `GET / → 200`, aucune erreur serveur ni console.
+
+**Pourquoi ça « semblait » cassé (et pourquoi ce n'est PAS un bug utilisateur)**
+Dans l'outil de preview, les sections animées par Framer Motion (`Reveal` / `ScaleReveal`,
+`whileInView`) apparaissent **blanches**. Cause identifiée : l'onglet preview est **en
+arrière-plan** (`document.visibilityState === "hidden"`), ce qui met `requestAnimationFrame`
+en pause → les animations framer restent **figées à `opacity:0`** (mesuré : reveals bloqués
+à opacity 0.11 / 0, transform figé, plusieurs secondes après entrée dans le viewport).
+Preuve : le **hero** (migré en animations **CSS** au Chantier 2 pour la robustesse)
+s'affiche **parfaitement** dans la même capture, tandis que les sections framer sont vides.
+En navigateur réel/visible — comme vérifié dans l'entrée [ÉTAPE 0] précédente « dans Chrome
+réel » — tout le contenu et les motifs s'affichent normalement.
+
+**Décision : rien modifié.** Corriger un bug inexistant aurait introduit une régression sur
+un site qui fonctionne (règle « aucune régression tolérée »).
+⚠️ Fragilité réelle, déjà connue (cf. entrée précédente) : le contenu framer est livré à
+`opacity:0` et dépend du JS pour apparaître. Durcissement possible **à valider** : dégrader
+`Reveal` pour laisser le contenu visible si l'animation ne se lance pas (comme le hero).
+**Non appliqué cette nuit** — voir le blocage de vérification ci-dessous.
+
+**Vérifications de conformité (fiables, indépendantes du preview)**
+- Règle « jamais *Uber* dans le contenu visible » : **respectée** — la marque n'apparaît
+  que dans le technique non-visible (`lib/delivery/uber-direct-client.ts`, `types.ts`,
+  `index.ts`, route `app/api/webhooks/uber-direct/`). `content/site.ts` + composants :
+  0 occurrence.
+- 5 phrases interdites : toutes **absentes**.
+- SEO structurel : **1 seul `<h1>`**, **1 bloc JSON-LD**, `<title>` + meta description
+  présents, hiérarchie h1→h2→h3 cohérente. Rien d'urgent.
+- Module « Commande & Livraison » (Étape 1) : **déjà construit** (git log + `lib/delivery/`,
+  `app/api/delivery/`, `components/delivery/`, pages `/demo/*`). À vérifier/affiner, **pas**
+  à reconstruire.
+
+**⚠️ Blocage de vérification à connaître**
+La règle « vérifier visuellement chaque changement » est **compromise dans ce harnais** :
+l'onglet preview étant en arrière-plan, toute section animée par framer rend **blanc** à la
+capture (les vérifs *de code* restent fiables, pas les vérifs *visuelles* des sections
+animées). J'ai préféré m'arrêter là et te le signaler plutôt qu'enchaîner des changements
+design non vérifiables sur un site déjà validé. Options pour la suite dans mon message.
+
+---
+
 ## [ÉTAPE 0] Correction de la page blanche + robustesse
 
 **Cause exacte**
