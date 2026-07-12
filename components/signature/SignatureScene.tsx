@@ -1,13 +1,13 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { fragmentShader, vertexShader } from "./embers.glsl";
 
 function EmbersPlane({ mobile }: { mobile: boolean }) {
   const mat = useRef<THREE.ShaderMaterial>(null!);
-  const { viewport, size } = useThree();
+  const { size, viewport } = useThree();
   const target = useRef(new THREE.Vector2(0.5, 0.5));
 
   const uniforms = useMemo(
@@ -21,11 +21,22 @@ function EmbersPlane({ mobile }: { mobile: boolean }) {
     []
   );
 
+  // Suivi du pointeur via la fenêtre : le canvas est sous une couche
+  // pointer-events:none, donc r3f ne reçoit pas les events — on écoute window.
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      target.current.set(
+        e.clientX / window.innerWidth,
+        1 - e.clientY / window.innerHeight
+      );
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, []);
+
   useFrame((state) => {
     const u = mat.current.uniforms;
     u.uTime.value = state.clock.elapsedTime;
-    // pointer NDC (-1..1) → uv (0..1), lissé pour un mouvement doux.
-    target.current.set(state.pointer.x * 0.5 + 0.5, state.pointer.y * 0.5 + 0.5);
     (u.uMouse.value as THREE.Vector2).lerp(target.current, mobile ? 0.1 : 0.05);
     (u.uRes.value as THREE.Vector2).set(state.size.width, state.size.height);
   });
