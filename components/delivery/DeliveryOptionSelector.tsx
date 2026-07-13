@@ -7,6 +7,7 @@ import type { Address, DeliveryQuote } from "@/lib/delivery/types";
  * Le client choisit « Retrait » ou « Livraison ».
  * En livraison, il saisit son adresse et obtient un devis (coût + délai estimé).
  * Aucune mention de la marque technique : c'est « une livraison de proximité ».
+ * Habillage : DA v3 (cartes sticker, encre/lait, accents teal/corail).
  */
 export default function DeliveryOptionSelector({
   pickup,
@@ -49,12 +50,12 @@ export default function DeliveryOptionSelector({
   }
 
   const field =
-    "w-full rounded-xl border border-cafe/20 bg-nappe px-4 py-3 font-sans text-cafe placeholder-cafe/40 transition-colors focus:border-lie focus:bg-white";
+    "w-full rounded-xl border-2 border-encre bg-white px-4 py-3 font-sans text-encre placeholder-encre/35 transition-shadow focus:shadow-[3px_3px_0_#211D16] focus:outline-none";
 
   return (
-    <div className="rounded-2xl border border-cafe/12 bg-craie/50 p-6 sm:p-8">
+    <div className="v3-card p-6 sm:p-8">
       {/* Choix retrait / livraison */}
-      <div className="grid grid-cols-2 gap-2.5" role="radiogroup" aria-label="Mode de réception">
+      <div className="grid grid-cols-2 gap-3" role="radiogroup" aria-label="Mode de réception">
         {(["pickup", "delivery"] as const).map((m) => (
           <button
             key={m}
@@ -62,10 +63,10 @@ export default function DeliveryOptionSelector({
             role="radio"
             aria-checked={mode === m}
             onClick={() => setMode(m)}
-            className={`rounded-xl border px-4 py-3 font-sans text-sm transition-all ${
+            className={`rounded-xl border-2 border-encre px-4 py-3 font-sans text-sm font-bold transition-transform hover:-translate-y-0.5 ${
               mode === m
-                ? "border-cafe bg-cafe text-nappe shadow-sm"
-                : "border-cafe/20 bg-nappe text-cafe hover:border-cafe/50"
+                ? "bg-encre text-lait shadow-[3px_3px_0_#6C5CE7]"
+                : "bg-white text-encre shadow-[2px_2px_0_#211D16]"
             }`}
           >
             {m === "pickup" ? "Retrait sur place" : "Livraison"}
@@ -77,7 +78,7 @@ export default function DeliveryOptionSelector({
         <div className="mt-6 space-y-4">
           <div className="grid gap-4 sm:grid-cols-[1.4fr_0.6fr]">
             <label className="block">
-              <span className="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-wide text-cafe/60">
+              <span className="mb-1.5 block font-mono text-[0.62rem] font-bold uppercase tracking-wide text-encre/60">
                 Adresse
               </span>
               <input
@@ -88,7 +89,7 @@ export default function DeliveryOptionSelector({
               />
             </label>
             <label className="block">
-              <span className="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-wide text-cafe/60">
+              <span className="mb-1.5 block font-mono text-[0.62rem] font-bold uppercase tracking-wide text-encre/60">
                 Code postal
               </span>
               <input
@@ -101,7 +102,7 @@ export default function DeliveryOptionSelector({
             </label>
           </div>
           <label className="block">
-            <span className="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-wide text-cafe/60">
+            <span className="mb-1.5 block font-mono text-[0.62rem] font-bold uppercase tracking-wide text-encre/60">
               Ville
             </span>
             <input
@@ -116,31 +117,31 @@ export default function DeliveryOptionSelector({
             type="button"
             onClick={fetchQuote}
             disabled={!canQuote || loading}
-            className="w-full rounded-full border border-cafe/25 px-6 py-3 font-sans text-sm text-cafe transition-colors hover:border-cafe hover:bg-craie/60 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-xl border-2 border-encre bg-white px-6 py-3 font-sans text-sm font-bold text-encre shadow-[3px_3px_0_#211D16] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
           >
             {loading ? "Estimation…" : "Estimer la livraison"}
           </button>
 
           {error && (
-            <p className="font-sans text-sm text-lie">{error}</p>
+            <p className="font-sans text-sm font-bold text-corail">{error}</p>
           )}
 
           {quote && (
-            <div className="rounded-xl border border-sauge/30 bg-sauge/[0.08] px-5 py-4">
-              <p className="font-sans text-sm text-cafe">
+            <div className="rounded-xl border-2 border-encre bg-teal/10 px-5 py-4 shadow-[3px_3px_0_#211D16]">
+              <p className="font-sans text-sm">
                 Livraison estimée :{" "}
-                <span className="font-medium">
+                <span className="font-mono font-bold text-teal">
                   {(quote.feeCents / 100).toFixed(2).replace(".", ",")} €
                 </span>{" "}
                 · environ {quote.etaMinutes} min
               </p>
-              <p className="mt-1 font-mono text-[0.58rem] uppercase tracking-wide text-sauge">
+              <p className="mt-1 font-mono text-[0.6rem] font-bold uppercase tracking-wide text-teal">
                 Estimation — sans commission sur votre vente
               </p>
               <button
                 type="button"
                 onClick={() => onConfirm({ quote, dropoff })}
-                className="mt-4 w-full rounded-full bg-lie px-6 py-3 font-sans text-sm font-medium text-nappe transition-all hover:-translate-y-0.5 hover:bg-cafe"
+                className="mt-4 w-full rounded-xl border-2 border-encre bg-corail px-6 py-3 font-sans text-sm font-bold text-white shadow-[3px_3px_0_#211D16] transition-transform hover:-translate-y-0.5"
               >
                 Commander en livraison
               </button>
@@ -150,7 +151,7 @@ export default function DeliveryOptionSelector({
       )}
 
       {mode === "pickup" && (
-        <p className="mt-6 font-sans text-sm leading-relaxed text-cafe/70">
+        <p className="mt-6 font-sans text-sm leading-relaxed text-encre/70">
           Votre commande vous attend sur place. Vous êtes prévenu dès qu'elle est
           prête.
         </p>

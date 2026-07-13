@@ -37,9 +37,9 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Focus visible cohérent au clavier */
+/* Focus visible cohérent au clavier (violet v3) */
 :focus-visible {
-  outline: 2px solid var(--lie);
+  outline: 3px solid #6c5ce7;
   outline-offset: 3px;
   border-radius: 2px;
 }

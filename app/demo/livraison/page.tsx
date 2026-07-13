@@ -7,11 +7,10 @@ import type { Address, DeliveryQuote } from "@/lib/delivery/types";
 
 /**
  * Page de démonstration (sandbox) du module Commande & Livraison.
- * Isolée et NON reliée à la navigation du site — sert à montrer le module en
- * mode démo. Aucune vraie course n'est déclenchée.
+ * Isolée et NON reliée à la navigation du site — montre le module en mode
+ * démo. Aucune vraie course n'est déclenchée. Habillage : DA v3.
  */
 
-// Adresse « commerce » fictive pour la démo.
 const DEMO_PICKUP: Address = {
   street: "3 place du Marché",
   postalCode: "94100",
@@ -54,18 +53,18 @@ export default function DemoLivraisonPage() {
   }
 
   return (
-    <main className="min-h-screen bg-nappe px-5 py-16 md:py-24">
+    <main className="min-h-screen bg-lait px-5 py-16 text-encre md:py-24">
       <div className="mx-auto max-w-2xl">
-        <div className="rounded-xl border border-moutarde/40 bg-moutarde/[0.1] px-5 py-3">
-          <p className="font-mono text-[0.62rem] uppercase tracking-eyebrow text-cafe">
+        <div className="rounded-xl border-2 border-encre bg-jaune px-5 py-3 shadow-[3px_3px_0_#211D16]">
+          <p className="font-mono text-[0.62rem] font-bold uppercase tracking-eyebrow text-encre">
             Sandbox · mode démo — aucune vraie livraison
           </p>
         </div>
 
-        <h1 className="mt-8 font-display text-4xl leading-tight text-cafe sm:text-5xl">
+        <h1 className="mt-8 font-sans text-4xl font-extrabold tracking-tight sm:text-5xl">
           Commande & livraison directe
         </h1>
-        <p className="mt-4 font-sans text-lg text-cafe/70">
+        <p className="mt-4 font-sans text-lg text-encre/70">
           Démonstration du module : le client choisit son mode de réception,
           obtient une estimation, puis suit sa commande en direct.
         </p>
@@ -75,11 +74,13 @@ export default function DemoLivraisonPage() {
             <>
               <DeliveryOptionSelector pickup={DEMO_PICKUP} onConfirm={handleConfirm} />
               {creating && (
-                <p className="font-sans text-sm text-cafe/60">
+                <p className="font-sans text-sm text-encre/60">
                   Création de la course…
                 </p>
               )}
-              {error && <p className="font-sans text-sm text-lie">{error}</p>}
+              {error && (
+                <p className="font-sans text-sm font-bold text-corail">{error}</p>
+              )}
             </>
           ) : (
             <>
@@ -87,7 +88,7 @@ export default function DemoLivraisonPage() {
               <button
                 type="button"
                 onClick={() => setDeliveryId(null)}
-                className="font-mono text-xs uppercase tracking-wide text-cafe/60 underline underline-offset-4 hover:text-cafe"
+                className="font-mono text-xs font-bold uppercase tracking-wide text-violet underline underline-offset-4 hover:text-encre"
               >
                 Relancer une démo
               </button>

@@ -340,3 +340,20 @@ committé en local (`341ad19`) avant restructuration — tout est récupérable.
   testées → 307 vers `/` · démos 200 · sitemap/robots/OG/favicon 200.
 - Visuel : racine identique à l'ancienne `/v3` (hero aurora + fenêtre LIVE,
   notifs qui tournent), 0 erreur console.
+
+---
+
+## [Cohérence DA v3] Ticker retiré + toutes les pages publiques passées en v3
+
+- **Ticker (bandeau déroulant) supprimé** de la page d'accueil, à la demande du client.
+- **`/demo/commande` et `/demo/livraison` refaits en DA v3** (lait/encre, cartes
+  sticker, boutons corail/jaune, labels mono) — la logique sandbox est inchangée ;
+  composants `DeliveryOptionSelector` et `DeliveryTracker` restylés (fenêtre v3-window).
+- **Page d'erreur** (`error.tsx`) passée en v3 + **404 personnalisée** ajoutée
+  (`not-found.tsx`, « Cette page n'est pas à la carte »).
+- Focus clavier global passé du lie-de-vin au violet v3.
+- Balayage complet anti-ancienne-DA sur les fichiers publics : les seuls restes
+  (`font-display` italique dans Sections.tsx) sont des touches volontaires ;
+  `DeliveryDemo` (ancienne DA) n'est importé que par l'archive.
+- Vérifié : tsc ✅, build 14 routes ✅, ticker absent du DOM, /demo/* rendus v3,
+  404 en 404 réel avec la page custom, 0 mention « Uber » visible.

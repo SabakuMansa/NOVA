@@ -10,6 +10,7 @@ import type { Address, DeliveryQuote } from "@/lib/delivery/types";
  * fictif : menu → panier → commande → livraison suivie en direct.
  * Simule le service de livraison en coulisses (mock-provider) — aucune vraie
  * commande, aucun appel réseau externe, aucune marque de prestataire nommée.
+ * Habillage : DA v3 « geek coloré » (lait/encre, cartes sticker).
  */
 
 const RESTAURANT = {
@@ -64,9 +65,8 @@ export default function CommandeDemoPage() {
       return copy;
     });
 
-  // Validation de la commande : on fige le devis + l'adresse et on passe à la
-  // confirmation. La course n'est créée qu'à l'ouverture du suivi (ci-dessous),
-  // pour que le visiteur voie toujours la progression en direct.
+  // Validation : on fige devis + adresse, la course n'est créée qu'à
+  // l'ouverture du suivi pour que la progression soit toujours visible.
   function handleConfirm({
     quote,
     dropoff,
@@ -79,8 +79,6 @@ export default function CommandeDemoPage() {
     setStep("confirm");
   }
 
-  // Ouverture du suivi : crée la course (horloge de démo remise à zéro) afin que
-  // la timeline progresse pendant que le visiteur regarde.
   async function startTracking() {
     if (!pending) return;
     setCreating(true);
@@ -116,24 +114,25 @@ export default function CommandeDemoPage() {
   }
 
   return (
-    <div className="min-h-screen bg-nappe pb-28">
+    <div className="min-h-screen bg-lait pb-28 text-encre">
       {/* Bandeau sandbox */}
-      <div className="bg-cafe px-5 py-2 text-center">
-        <p className="font-mono text-[0.6rem] uppercase tracking-eyebrow text-moutarde">
+      <div className="border-b-2 border-encre bg-encre px-5 py-2 text-center">
+        <p className="font-mono text-[0.62rem] uppercase tracking-eyebrow text-jaune">
           Démonstration · exemple de commande — aucune vraie commande n'est passée
         </p>
       </div>
 
       {/* En-tête restaurant */}
-      <header className="paper-grain border-b border-cafe/10">
+      <header className="border-b-2 border-encre bg-white">
         <div className="mx-auto max-w-3xl px-5 py-10 md:py-14">
-          <p className="font-mono text-[0.62rem] uppercase tracking-eyebrow text-lie">
+          <p className="inline-flex items-center gap-2 rounded-full border-2 border-encre bg-lait px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-encre shadow-[2px_2px_0_#211D16]">
+            <span className="h-2 w-2 rounded-full bg-teal" aria-hidden />
             Bistrot · {RESTAURANT.city}
           </p>
-          <h1 className="mt-3 font-display text-4xl text-cafe sm:text-5xl">
+          <h1 className="mt-4 font-sans text-4xl font-extrabold tracking-tight sm:text-5xl">
             {RESTAURANT.name}
           </h1>
-          <p className="mt-3 font-sans text-cafe/70">
+          <p className="mt-3 font-sans text-encre/70">
             Cuisine de saison, à emporter ou en livraison de proximité.
           </p>
         </div>
@@ -143,29 +142,29 @@ export default function CommandeDemoPage() {
         {/* ÉTAPE MENU */}
         {step === "menu" && (
           <>
-            <h2 className="font-display text-2xl text-cafe">La carte</h2>
-            <ul className="mt-6 space-y-3">
+            <h2 className="font-sans text-2xl font-extrabold tracking-tight">La carte</h2>
+            <ul className="mt-6 space-y-4">
               {MENU.map((d) => {
                 const qty = cart[d.id] || 0;
                 return (
                   <li
                     key={d.id}
-                    className="flex items-center gap-4 rounded-2xl border border-cafe/10 bg-craie/40 p-4 sm:p-5"
+                    className="v3-card v3-card-hover flex items-center gap-4 p-4 sm:p-5"
                   >
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-baseline gap-2">
-                        <h3 className="font-display text-lg text-cafe">{d.name}</h3>
-                        <span className="font-mono text-sm text-cafe/70">
+                      <div className="flex flex-wrap items-baseline gap-x-2">
+                        <h3 className="font-sans text-lg font-bold">{d.name}</h3>
+                        <span className="font-mono text-sm text-violet">
                           {euro(d.price)}
                         </span>
                       </div>
-                      <p className="mt-0.5 font-sans text-sm text-cafe/60">{d.desc}</p>
+                      <p className="mt-0.5 font-sans text-sm text-encre/60">{d.desc}</p>
                     </div>
                     {qty === 0 ? (
                       <button
                         type="button"
                         onClick={() => setQty(d.id, 1)}
-                        className="shrink-0 rounded-full border border-cafe/25 px-4 py-2 font-sans text-sm text-cafe transition-colors hover:border-cafe hover:bg-craie/60"
+                        className="shrink-0 rounded-xl border-2 border-encre bg-white px-4 py-2 font-sans text-sm font-bold text-encre shadow-[2px_2px_0_#211D16] transition-transform hover:-translate-y-0.5"
                       >
                         Ajouter
                       </button>
@@ -175,18 +174,18 @@ export default function CommandeDemoPage() {
                           type="button"
                           aria-label={`Retirer un ${d.name}`}
                           onClick={() => setQty(d.id, -1)}
-                          className="flex h-8 w-8 items-center justify-center rounded-full border border-cafe/25 text-cafe hover:bg-craie/60"
+                          className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-encre bg-white font-bold text-encre shadow-[2px_2px_0_#211D16]"
                         >
                           −
                         </button>
-                        <span className="w-4 text-center font-mono text-sm text-cafe">
+                        <span className="w-4 text-center font-mono text-sm font-bold">
                           {qty}
                         </span>
                         <button
                           type="button"
                           aria-label={`Ajouter un ${d.name}`}
                           onClick={() => setQty(d.id, 1)}
-                          className="flex h-8 w-8 items-center justify-center rounded-full bg-cafe text-nappe hover:bg-lie"
+                          className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-encre bg-jaune font-bold text-encre shadow-[2px_2px_0_#211D16]"
                         >
                           +
                         </button>
@@ -205,37 +204,43 @@ export default function CommandeDemoPage() {
             <button
               type="button"
               onClick={() => setStep("menu")}
-              className="font-mono text-xs uppercase tracking-wide text-cafe/60 hover:text-cafe"
+              className="font-mono text-xs font-bold uppercase tracking-wide text-encre/60 hover:text-encre"
             >
               ← Retour à la carte
             </button>
-            <h2 className="mt-5 font-display text-2xl text-cafe">Votre commande</h2>
+            <h2 className="mt-5 font-sans text-2xl font-extrabold tracking-tight">
+              Votre commande
+            </h2>
 
-            <ul className="mt-5 space-y-2.5">
-              {lines.map((l) => (
-                <li
-                  key={l.id}
-                  className="flex items-baseline justify-between border-b border-cafe/10 pb-2.5 font-sans text-cafe/85"
-                >
-                  <span>
-                    <span className="font-mono text-cafe/60">{l.qty}×</span> {l.name}
+            <div className="v3-card mt-5 p-5 sm:p-6">
+              <ul className="space-y-2.5">
+                {lines.map((l) => (
+                  <li
+                    key={l.id}
+                    className="flex items-baseline justify-between border-b-2 border-dashed border-encre/15 pb-2.5 font-sans"
+                  >
+                    <span>
+                      <span className="font-mono text-encre/50">{l.qty}×</span> {l.name}
+                    </span>
+                    <span className="font-mono text-sm font-bold">
+                      {euro(l.price * l.qty)}
+                    </span>
+                  </li>
+                ))}
+                <li className="flex items-baseline justify-between pt-1">
+                  <span className="font-mono text-[0.65rem] font-bold uppercase tracking-wide text-encre/60">
+                    Sous-total
                   </span>
-                  <span className="font-mono text-sm text-cafe">
-                    {euro(l.price * l.qty)}
+                  <span className="font-mono text-lg font-bold text-violet">
+                    {euro(totalCents)}
                   </span>
                 </li>
-              ))}
-              <li className="flex items-baseline justify-between pt-1">
-                <span className="font-mono text-[0.62rem] uppercase tracking-wide text-cafe/60">
-                  Sous-total
-                </span>
-                <span className="font-mono text-lg font-medium text-cafe">
-                  {euro(totalCents)}
-                </span>
-              </li>
-            </ul>
+              </ul>
+            </div>
 
-            <h3 className="mt-8 font-display text-xl text-cafe">Livraison</h3>
+            <h3 className="mt-8 font-sans text-xl font-extrabold tracking-tight">
+              Livraison
+            </h3>
             <div className="mt-4">
               <DeliveryOptionSelector
                 pickup={RESTAURANT.address}
@@ -248,7 +253,7 @@ export default function CommandeDemoPage() {
         {/* ÉTAPE CONFIRMATION */}
         {step === "confirm" && (
           <div className="flex flex-col items-center py-10 text-center">
-            <span className="flex h-16 w-16 items-center justify-center rounded-full bg-sauge text-nappe">
+            <span className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-encre bg-teal text-white shadow-[3px_3px_0_#211D16]">
               <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" aria-hidden>
                 <path
                   d="m5 13 4 4L19 7"
@@ -259,11 +264,13 @@ export default function CommandeDemoPage() {
                 />
               </svg>
             </span>
-            <h2 className="mt-6 font-display text-3xl text-cafe">Commande confirmée</h2>
-            <p className="mt-2 font-mono text-sm uppercase tracking-wide text-lie">
+            <h2 className="mt-6 font-sans text-3xl font-extrabold tracking-tight">
+              Commande confirmée
+            </h2>
+            <p className="mt-2 inline-flex rounded-full border-2 border-encre bg-jaune px-3 py-1 font-mono text-sm font-bold uppercase tracking-wide shadow-[2px_2px_0_#211D16]">
               {orderNo}
             </p>
-            <p className="mt-3 max-w-sm font-sans text-cafe/70">
+            <p className="mt-4 max-w-sm font-sans text-encre/70">
               {RESTAURANT.name} prépare votre commande. Un livreur passera la récupérer
               puis vous l'apportera.
             </p>
@@ -271,19 +278,21 @@ export default function CommandeDemoPage() {
               type="button"
               onClick={startTracking}
               disabled={creating}
-              className="mt-8 rounded-full bg-lie px-7 py-3.5 font-sans text-sm font-medium text-nappe transition-all hover:-translate-y-0.5 hover:bg-cafe disabled:opacity-60"
+              className="mt-8 rounded-xl border-2 border-encre bg-corail px-6 py-3.5 font-sans text-base font-bold text-white shadow-[4px_4px_0_#211D16] transition-transform hover:-translate-y-0.5 disabled:opacity-60"
             >
               {creating ? "Ouverture du suivi…" : "Suivre ma commande"}
             </button>
-            {error && <p className="mt-3 font-sans text-sm text-lie">{error}</p>}
+            {error && <p className="mt-3 font-sans text-sm font-bold text-corail">{error}</p>}
           </div>
         )}
 
         {/* ÉTAPE SUIVI */}
         {step === "tracking" && deliveryId && (
           <>
-            <h2 className="font-display text-2xl text-cafe">Suivi en direct</h2>
-            <p className="mt-2 font-mono text-xs uppercase tracking-wide text-cafe/60">
+            <h2 className="font-sans text-2xl font-extrabold tracking-tight">
+              Suivi en direct
+            </h2>
+            <p className="mt-2 font-mono text-xs uppercase tracking-wide text-encre/60">
               Commande {orderNo} · {RESTAURANT.name}
             </p>
             <div className="mt-5">
@@ -292,14 +301,14 @@ export default function CommandeDemoPage() {
             <button
               type="button"
               onClick={reset}
-              className="mt-6 font-mono text-xs uppercase tracking-wide text-lie underline underline-offset-4 hover:text-cafe"
+              className="mt-6 font-mono text-xs font-bold uppercase tracking-wide text-violet underline underline-offset-4 hover:text-encre"
             >
               Passer une nouvelle commande
             </button>
           </>
         )}
 
-        <p className="mt-10 border-t border-cafe/10 pt-6 font-sans text-xs leading-relaxed text-cafe/50">
+        <p className="mt-10 border-t-2 border-dashed border-encre/15 pt-6 font-sans text-xs leading-relaxed text-encre/50">
           Exemple de démonstration. Un vrai site s'adapte à votre menu, vos prix et votre
           zone de livraison. Aucune commande ni aucun paiement réels ne sont effectués ici.
         </p>
@@ -307,17 +316,17 @@ export default function CommandeDemoPage() {
 
       {/* Barre panier fixe (étape menu) */}
       {step === "menu" && itemCount > 0 && (
-        <div className="fixed inset-x-0 bottom-0 border-t border-cafe/10 bg-nappe/95 backdrop-blur-md">
+        <div className="fixed inset-x-0 bottom-0 border-t-2 border-encre bg-white/95 backdrop-blur-md">
           <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-5 py-3.5">
-            <span className="font-sans text-sm text-cafe">
-              <span className="font-medium">{itemCount}</span> article
+            <span className="font-sans text-sm">
+              <span className="font-bold">{itemCount}</span> article
               {itemCount > 1 ? "s" : ""} ·{" "}
-              <span className="font-mono">{euro(totalCents)}</span>
+              <span className="font-mono font-bold text-violet">{euro(totalCents)}</span>
             </span>
             <button
               type="button"
               onClick={() => setStep("checkout")}
-              className="rounded-full bg-lie px-6 py-2.5 font-sans text-sm font-medium text-nappe transition-all hover:-translate-y-0.5 hover:bg-cafe"
+              className="rounded-xl border-2 border-encre bg-corail px-6 py-2.5 font-sans text-sm font-bold text-white shadow-[3px_3px_0_#211D16] transition-transform hover:-translate-y-0.5"
             >
               Commander →
             </button>
