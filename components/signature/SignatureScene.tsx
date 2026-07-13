@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { fragmentShader, vertexShader } from "./embers.glsl";
 
-function EmbersPlane({ mobile }: { mobile: boolean }) {
+function EmbersPlane() {
   const mat = useRef<THREE.ShaderMaterial>(null!);
   const { size, viewport } = useThree();
   const target = useRef(new THREE.Vector2(0.5, 0.5));
@@ -15,7 +15,6 @@ function EmbersPlane({ mobile }: { mobile: boolean }) {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uRes: { value: new THREE.Vector2(size.width, size.height) },
-      uMobile: { value: mobile ? 1 : 0 },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -23,6 +22,8 @@ function EmbersPlane({ mobile }: { mobile: boolean }) {
 
   // Suivi du pointeur via la fenêtre : le canvas est sous une couche
   // pointer-events:none, donc r3f ne reçoit pas les events — on écoute window.
+  // La position est stockée dans une ref (pas de state React → pas de
+  // re-render), et consommée une seule fois par frame dans useFrame.
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
       target.current.set(
@@ -37,7 +38,7 @@ function EmbersPlane({ mobile }: { mobile: boolean }) {
   useFrame((state) => {
     const u = mat.current.uniforms;
     u.uTime.value = state.clock.elapsedTime;
-    (u.uMouse.value as THREE.Vector2).lerp(target.current, mobile ? 0.1 : 0.05);
+    (u.uMouse.value as THREE.Vector2).lerp(target.current, 0.05);
     (u.uRes.value as THREE.Vector2).set(state.size.width, state.size.height);
   });
 
@@ -54,16 +55,22 @@ function EmbersPlane({ mobile }: { mobile: boolean }) {
   );
 }
 
-export default function SignatureScene({ mobile }: { mobile: boolean }) {
+/**
+ * Scène WebGL du fond « braises ». Desktop uniquement (le fallback CSS couvre
+ * mobile/tactile). `active` pilote la boucle de rendu : quand le hero sort de
+ * l'écran, `frameloop="never"` stoppe complètement le shader (0 coût GPU) au
+ * lieu de le laisser tourner à 60fps hors champ.
+ */
+export default function SignatureScene({ active }: { active: boolean }) {
   return (
     <Canvas
       style={{ position: "absolute", inset: 0 }}
-      dpr={[1, mobile ? 1.25 : 1.5]}
+      dpr={[1, 1.5]}
       gl={{ antialias: false, powerPreference: "high-performance" }}
       camera={{ position: [0, 0, 5], fov: 50 }}
-      frameloop="always"
+      frameloop={active ? "always" : "never"}
     >
-      <EmbersPlane mobile={mobile} />
+      <EmbersPlane />
     </Canvas>
   );
 }

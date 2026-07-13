@@ -16,7 +16,6 @@ export const fragmentShader = /* glsl */ `
   uniform float uTime;
   uniform vec2  uMouse; // 0..1
   uniform vec2  uRes;
-  uniform float uMobile;
 
   // Palette NOVA (linéaire approx).
   const vec3 CAFE     = vec3(0.180, 0.145, 0.129);
@@ -49,10 +48,13 @@ export const fragmentShader = /* glsl */ `
     return 130.0 * dot(m, g);
   }
 
+  // 3 octaves (au lieu de 4) : la 4e n'apportait qu'un détail d'amplitude
+  // 0.0625, entièrement masqué par le grain (0.03) — invisible, mais ~25 %
+  // d'évaluations de bruit en moins par pixel.
   float fbm(vec2 p) {
     float v = 0.0;
     float a = 0.5;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 3; i++) {
       v += a * snoise(p);
       p *= 2.0;
       a *= 0.5;

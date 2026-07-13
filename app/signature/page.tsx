@@ -30,7 +30,7 @@ export default function SignaturePage() {
             Un site qui bosse pour vous, même quand vous n'avez pas une minute.
           </p>
 
-          <p className="mt-12 font-mono text-[0.62rem] uppercase tracking-eyebrow text-nappe/40">
+          <p className="mt-12 hidden font-mono text-[0.62rem] uppercase tracking-eyebrow text-nappe/40 md:block">
             Bougez le curseur — l'ardoise réagit
           </p>
         </div>

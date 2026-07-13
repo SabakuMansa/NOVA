@@ -103,7 +103,8 @@ export default function V2Hero() {
           </Link>
         </div>
 
-        <p className="sig-word mt-14 font-mono text-[0.6rem] uppercase tracking-eyebrow text-nappe/35">
+        {/* Indication curseur : cachée sur mobile/tactile (fallback CSS sans effet pointeur) */}
+        <p className="sig-word mt-14 hidden font-mono text-[0.6rem] uppercase tracking-eyebrow text-nappe/35 md:block">
           Bougez le curseur — l'ardoise réagit
         </p>
       </div>
