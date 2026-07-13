@@ -244,3 +244,60 @@ build de prod OK.
 commande → suivi qui progresse « En préparation » → « Coursier en route » → « Livré »),
 mobile 390px OK (barre panier fixe sans débordement), 0 erreur console, build de prod OK,
 0 mention « Uber » dans le texte visible.
+
+---
+
+## [Refonte v3] Direction « geek coloré » (niveau soumission Awwwards)
+
+### Réponses obtenues en phase de questions (13/07/2026)
+- **Direction** : référence donnée par le client — **appsignal.com** (« plein de
+  couleur, un peu geek, c'est plus mon univers »). Les 3 pistes proposées
+  (journée du commerçant / éditorial local / clarté B2B) n'ont pas été retenues.
+- **Technique** : équilibré — 1 seul moment WebGL, cible Lighthouse 85+.
+- **Contenu** : **carte blanche totale** (copy réécrit, « La Carte » remplacée).
+- **Portée** : tout d'un coup, **mobile = desktop**.
+
+### Recherche (INSPIRATION.md)
+Exploration réelle d'awwwards.com (Sites of the Day) + analyse des 6 sites
+fournis par le client (Longbow, Vectr, Julien Calot, Depo Luxe, Lula Oil,
+LunaSol) + références vérifiées en session (By-Kin, Mat Voyce, Minh Pham).
+Documenté dans `INSPIRATION.md`, avec la direction validée.
+
+### Ce qui a été construit — espace isolé `/v3` (noindex)
+- **Nouvelle identité** : fond lait `#FBF7EF`, encre `#211D16`, accents vifs
+  corail/violet/teal/jaune/rose, cartes « sticker » (bordure 2px + ombre franche),
+  fenêtres façon app (barre de titre à pastilles), labels monospace. Palette
+  ajoutée en additif dans Tailwind (aucun impact sur l'existant).
+- **Nouveau copy** (`content/v3.ts`) : ton direct et joueur, vouvoiement,
+  faits inchangés (prix 690/1490/dès 1990 € + mensuels, add-on livraison
+  450 € + 25 €/mois avec sa note légale, villes, process 6 étapes, légitimité
+  restaurateur). Aucune phrase interdite, aucun « Uber » visible.
+- **Nouvelle signature** (remplace le menu de resto) : **« Pendant que vous êtes
+  en plein service, votre site bosse »** — fenêtre « live » dans le hero avec un
+  flux de notifications simulé (résa, avis, commande, admin) qui défile.
+- **Sections** : hero aurora + ticker (villes/cibles) + constat (4 cartes
+  sticker) + « trois moteurs » (bento) + plans (fenêtres de pricing, plan
+  Autonome mis en avant, add-on livraison + lien démo /demo/commande) +
+  process sur encre + fondateur (3 situations vécues) + contact (formulaire
+  en fenêtre) + footer.
+- **Le moment WebGL** : shader « aurora » (blobs violet/corail/teal/jaune sur
+  lait, lueur qui suit le curseur) — même architecture perf que le hero /v2
+  vérifié : chargement différé après `load`+idle, pause hors écran
+  (IntersectionObserver → frameloop never), **fallback CSS animé sur
+  mobile/tactile** (aucun canvas en 390px), statique en reduced-motion.
+- `prefers-reduced-motion` : ticker, notifs, blobs et hover stoppés ; contenu
+  100 % lisible sans JS (texte dans le DOM, animations à `fill-mode: both`).
+
+### Vérification
+- `tsc --noEmit` ✅ · build prod ✅ (21 routes, `/v3` statique 9,66 kB).
+- Visuel vérifié section par section (preview) : **desktop** (hero, ticker,
+  constat, moteurs, plans, process, contact) et **mobile 390px** (hero, plans —
+  `scrollWidth` = 390, zéro débordement).
+- 0 erreur console. Ancien one-page `/` revérifié : **inchangé**.
+- **Lighthouse (build prod, /v3)** : **Perf 91 · Accessibilité 95 · Bonnes
+  pratiques 96 · SEO 92** — TBT 0 ms, CLS 0, LCP 3,5 s (borné par le swap de
+  webfont sous throttling, comme mesuré précédemment sur les autres pages).
+  Cible 85+ atteinte.
+
+> Espace en évaluation : `/v3` est noindex et n'est PAS poussé. L'ancien site
+> et /v2 restent accessibles pour comparaison.

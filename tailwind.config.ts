@@ -20,6 +20,15 @@ const config: Config = {
         lie: "#7A2E2E", // accent secondaire — lie-de-vin
         sauge: "#6E7B58", // accent tertiaire
         craie: "#EDE2CE", // surface carte
+        // Palette v3 « geek coloré » (refonte AppSignal-like) — additive,
+        // n'affecte pas les pages existantes.
+        lait: "#FBF7EF", // fond v3
+        encre: "#211D16", // texte v3
+        corail: "#FF6B4A",
+        violet: "#6C5CE7",
+        teal: "#0EA88B",
+        jaune: "#FFC53D",
+        rose: "#F272BA",
       },
       fontFamily: {
         display: ["var(--font-instrument)", "Georgia", "serif"],
