@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { EASE } from "@/components/Reveal";
+import { useReducedMotion } from "framer-motion";
 import { v3hero } from "@/content/v3";
 import V3Backdrop from "./V3Backdrop";
 
@@ -12,48 +11,6 @@ const TAG_COLORS: Record<string, string> = {
   commande: "bg-corail/15 text-corail",
   admin: "bg-teal/15 text-teal",
 };
-
-const ANSWER_CYCLE_MS = 1800;
-
-/** Réponse qui défile en boucle sous la question (mécanique inspirée
- *  d'AppSignal). reduced-motion : answers[0] affichée seule, statique. */
-function RotatingAnswer() {
-  const reduce = useReducedMotion();
-  const [i, setI] = useState(0);
-
-  useEffect(() => {
-    if (reduce) return;
-    const t = setInterval(
-      () => setI((v) => (v + 1) % v3hero.answers.length),
-      ANSWER_CYCLE_MS
-    );
-    return () => clearInterval(t);
-  }, [reduce]);
-
-  const textClass =
-    "font-sans text-2xl font-extrabold leading-tight text-corail sm:text-3xl md:text-4xl";
-
-  if (reduce) {
-    return <p className={textClass}>{v3hero.answers[0]}</p>;
-  }
-
-  return (
-    <div className="relative h-10 sm:h-11 md:h-14">
-      <AnimatePresence mode="popLayout" initial={false}>
-        <motion.p
-          key={i}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.4, ease: EASE }}
-          className={`absolute inset-0 flex items-center ${textClass}`}
-        >
-          {v3hero.answers[i]}
-        </motion.p>
-      </AnimatePresence>
-    </div>
-  );
-}
 
 /** Flux d'événements simulé : une notif toutes les 2,2 s, 4 visibles max.
  *  Reduced-motion : liste statique, aucune rotation. */
@@ -111,29 +68,30 @@ export default function V3Hero() {
           </p>
 
           <h1
-            className="hero-rise font-sans text-4xl font-extrabold leading-[1.05] tracking-tight text-encre sm:text-6xl md:text-7xl"
+            className="hero-rise mt-6 font-sans text-[2.5rem] font-extrabold leading-[1.06] tracking-tight text-encre sm:text-5xl md:text-6xl"
             style={{ animationDelay: "0.08s" }}
           >
-            {v3hero.question}
+            {v3hero.titleA}{" "}
+            <span className="relative inline-block whitespace-nowrap">
+              <span className="relative z-10 px-1">{v3hero.titleEm}</span>
+              <span
+                aria-hidden
+                className="absolute inset-x-0 bottom-1 top-1 -rotate-1 rounded-md bg-jaune"
+              />
+            </span>
+            {v3hero.titleB}
           </h1>
 
-          <div
-            className="hero-rise mt-5"
+          <p
+            className="hero-rise mt-7 max-w-xl font-sans text-lg leading-relaxed text-encre/75"
             style={{ animationDelay: "0.16s" }}
           >
-            <RotatingAnswer />
-          </div>
-
-          <p
-            className="hero-rise mt-5 max-w-xl font-sans text-lg font-bold leading-relaxed text-encre/85"
-            style={{ animationDelay: "0.22s" }}
-          >
-            {v3hero.resolution}
+            {v3hero.subtitle}
           </p>
 
           <div
             className="hero-rise mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
-            style={{ animationDelay: "0.28s" }}
+            style={{ animationDelay: "0.24s" }}
           >
             <a
               href={v3hero.ctaPrimary.href}
