@@ -603,3 +603,61 @@ profondeur en plus du court-circuit React).
 - Section Constat : confirmé par inspection DOM que 2 cartes seulement
   restent (« Il est verrouillé », « Il coûte sans compter »).
 - **Aucun push** — en attente de relecture avant mise en ligne.
+
+---
+
+## [LABO · expérience 01] Portail qui se fissure — page technique HORS périmètre commercial
+
+**Nature** : expérimentation créative pure sur `/labo`, totalement séparée du
+site commercial. **Jamais liée depuis la navigation** (vérifié par grep : zéro
+lien dans content/, components/v3, app/page.tsx), **non indexable** (meta
+`noindex, nofollow` vérifiée dans le HTML servi + `Disallow: /labo` dans
+robots.txt + absente du sitemap).
+
+**L'effet** : au clic sur « Entrer », l'écran se brise en verre —
+1. toile de fissures **procédurales** (rayons + anneaux jitterés autour du
+   point d'impact, graine aléatoire à chaque déclenchement — vérifié par deux
+   captures gelées au même instant : géométries totalement différentes) ;
+2. l'écran suivant **transparaît dans les interstices** dès la phase de
+   fissuration (léger écartement radial des fragments) ;
+3. les fragments **tombent** (balistique analytique : gravité + rotation +
+   fondu) et révèlent l'écran final. Durée totale : **1,4 s**.
+
+**Technique** (`components/labo/ShatterPortal.tsx` + route `app/labo/page.tsx`) :
+- Canvas 2D (pas de Three.js — inutile ici). L'écran A est **repeint** sur une
+  texture offscreen au moment du clic (fond + blobs via constantes partagées
+  DOM/canvas, textes/bouton mesurés sur le DOM réel avec leurs styles
+  calculés) — pas de lib de capture DOM.
+- Fragments = quads/triangles jitterés découpés dans la texture via `clip()` :
+  **65 desktop / 36 mobile** (< 640px) — pas des centaines de micro-morceaux.
+- Trajectoires **analytiques** (position = f(t), pas d'intégration frame par
+  frame) : déterministe, robuste aux frames sautées.
+- Boucle rAF + filet `setInterval(50ms)` idempotent (les rAF sont suspendus
+  en onglet d'arrière-plan ; l'effet se termine quoi qu'il arrive).
+- **Son** : éclat de verre 100 % synthétisé en Web Audio (bruit passe-haut à
+  décroissance rapide + 3 tintements sinusoïdaux), créé uniquement sur geste
+  utilisateur, `try/catch` intégral, aucun fichier audio.
+- Debug labo : `/labo?freeze=<ms>` fige l'effet à un instant donné
+  (inspection/captures). Inactif sans le paramètre.
+
+**Contraintes respectées**
+- `prefers-reduced-motion` : fondu croisé simple, aucun canvas, aucune
+  fragmentation, aucun son — vérifié en forçant temporairement le flag
+  (méthode habituelle), hack retiré, `tsc` re-vérifié.
+- Mobile : nombre de fragments réduit (36), rendu vérifié en 375px gelé à
+  t=500ms — éclats plus gros, écran B visible dans les vides. Fluidité par
+  construction (une passe de dessin par frame, clip+drawImage compositée,
+  DPR plafonné à 2).
+- Performance desktop : capture gelée nette à t=180ms (toile de fissures) et
+  t=600ms (plein vol) ; run réel complet sans aucune erreur console.
+
+**Incident rencontré et résolu pendant la vérif** : la page semblait morte au
+premier clic — en réalité le serveur de dev servait un HTML dont les chunks
+`_next/static` étaient en 404 (conséquence du `rm -rf .next` d'un build lancé
+pendant que le dev tournait — piège déjà documenté). Redémarrage du serveur de
+dev → hydratation OK. À retenir : toujours redémarrer le dev server après un
+build de prod dans ce repo.
+
+**Vérifications** : `tsc` ✅ · build **16 routes** (dont `/labo`) ✅ ·
+noindex/robots/sitemap ✅ · variation procédurale ✅ (2 tirages ≠) ·
+reduced-motion ✅ · mobile ✅ · console 0 erreur ✅. **Aucun push.**
