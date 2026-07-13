@@ -357,3 +357,56 @@ committé en local (`341ad19`) avant restructuration — tout est récupérable.
   `DeliveryDemo` (ancienne DA) n'est importé que par l'archive.
 - Vérifié : tsc ✅, build 14 routes ✅, ticker absent du DOM, /demo/* rendus v3,
   404 en 404 réel avec la page custom, 0 mention « Uber » visible.
+
+---
+
+## [Copywriting v3] Réécriture complète du texte pour coller au ton visuel
+
+**Contexte** : le design v3 « geek coloré » est validé, mais les textes dataient
+de la DA précédente (« chaleureux restaurateur »). Objectif : un copy accrocheur,
+direct, avec de la personnalité, sans jargon — et recentré sur **tous les
+commerçants locaux** (boutiques, artisans, restaurants, assos), pas seulement les
+restaurateurs.
+
+**Références consultées (WebSearch/WebFetch, pas de Chrome)**
+- **Linear** — phrases < 20 mots, énoncés qui vont droit au bénéfice, jargon
+  vulgarisé (« structural diffs » expliqué, pas asséné).
+- **Raycast** — le plus proche du ton visé : questions rhétoriques (« Tired of
+  typing the same thing? »), problèmes relatables, bénéfice-action plutôt que
+  specs (« keyboard first » et non « input optimization »). 5–12 mots/phrase.
+- **Stripe (FR)** — vulgariser sans infantiliser : bénéfice d'abord, preuve par
+  les chiffres concrets plutôt que par les adjectifs.
+- **Qonto (FR)** — modèle de ton FR moderne pour non-tech : fragments nominaux
+  (« Fini la paperasse »), impératif/infinitif dans les CTA, zéro jargon bancaire.
+
+**Mécanique de ton retenue** (forme, pas vocabulaire — la cible NOVA n'est pas dev)
+- Une idée par phrase, phrases courtes, fragments nominaux autorisés
+  (« Des prix affichés. Oui, vraiment. »).
+- Personnalité par la question rhétorique + le problème vécu, pas par le gag gratuit.
+- Bénéfice/résultat d'abord, jamais la spec (« vous changez tout en deux minutes »,
+  jamais « CMS »/« responsive »).
+- Confiance par le fait concret : 15 min, 48h, 0 %, prix affichés.
+
+**Recentrage cible (dé-restaurantisation)**
+- Hero, sous-titre, flux de notifs, constat, moteur, plans : tous les exemples
+  trop « resto » (couverts, réservation de table, « en salle », menu) remplacés
+  par des exemples génériques (horaires, photos, avis Google, prise de contact,
+  rendez-vous, commande) qui parlent à n'importe quel commerce.
+- **Conservé volontairement** : la section « Qui suis-je » (crédibilité) reste
+  celle d'un restaurateur en activité — c'est un fait vécu, pas une promesse de
+  ciblage. Le sous-titre du hero garde « Je gère des restaurants » comme ancrage
+  de légitimité, puis élargit à « les commerçants du coin ».
+
+**Titre du hero — 2 variantes proposées**
+- **B (retenue par le client, en ligne)** : « Votre site devrait *bosser* autant
+  que vous. » — même idée que A, ton plus mordant. Highlight jaune sur « bosser ».
+- **A (alternative, écartée)** : « Vous faites votre métier. Votre site fait *le
+  reste*. » — universelle et parallèle. Basculable en 3 champs dans `content/v3.ts`.
+
+**Structure** : ordre des sections inchangé (Hero → Constat → Moteur → Plans/La
+Carte → Process → Fondateur → Contact). Le concept « menu/La Carte » des offres
+est conservé tel quel.
+
+**Vérifications** : `tsc` ✅, build 14 routes ✅, 0 phrase interdite, 0 « Uber »
+visible, 6 titres de section cohérents en ton, rendu hero + notifs vérifié en
+preview. **Aucun push** — en attente du choix de variante hero par le client.

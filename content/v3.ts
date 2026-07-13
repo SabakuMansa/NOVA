@@ -1,9 +1,14 @@
 /**
  * Contenu de la refonte v3 — direction « geek coloré » (univers AppSignal).
- * Carte blanche validée le 13/07/2026 : copy réécrit, signature « menu de
- * resto » remplacée par « le site qui bosse pendant le service ».
- * Les FAITS sont inchangés : prix, offres, villes, process, légitimité
- * restaurateur. Vouvoiement partout.
+ * Copy retravaillé le 13/07/2026 pour coller au ton visuel : phrases courtes,
+ * une idée par phrase, personnalité assumée, zéro jargon.
+ *
+ * CIBLE : commerçants locaux qui n'ont PAS de site, ou un site vieillissant —
+ * boutiques, artisans, restaurants, associations, petites entreprises. Les
+ * exemples restent génériques (horaires, photos, avis Google, prise de contact)
+ * et ne supposent jamais que le lecteur est restaurateur.
+ * EXCEPTION : la légitimité du fondateur reste liée au fait qu'il gère lui-même
+ * des restaurants (fait vécu, pas une promesse de ciblage). Vouvoiement partout.
  */
 
 export const v3nav = {
@@ -19,22 +24,23 @@ export const v3nav = {
 
 export const v3hero = {
   eyebrow: "Studio digital · Île-de-France",
-  titleA: "Pendant que vous êtes",
-  titleEm: "en plein service",
-  titleB: "votre site bosse.",
+  // Variante retenue (B) — rendue « titleA <em>titleEm</em> titleB ».
+  titleA: "Votre site devrait",
+  titleEm: "bosser",
+  titleB: " autant que vous.",
   subtitle:
-    "Je gère des restaurants entre Saint-Maur-des-Fossés et Suresnes, et je construis des sites et des outils qui tournent tout seuls — réservations, avis, commandes — pendant que vous faites votre vrai métier.",
+    "Je gère des restaurants en Île-de-France. À côté, je construis des sites pour les commerçants du coin : des sites qui affichent vos horaires, remontent vos avis Google et attrapent les clients qui vous cherchent — pendant que vous, vous êtes avec les vôtres.",
   ctaPrimary: { label: "Réserver un audit gratuit (15 min)", href: "#contact" },
   ctaSecondary: { label: "Voir les plans", href: "#plans" },
   // Flux de notifications simulé dans la fenêtre du hero.
-  terminalTitle: "votre-commerce.fr — en service",
+  terminalTitle: "votre-commerce.fr — en ligne",
   events: [
-    { icon: "📅", text: "Nouvelle réservation — 4 couverts, 20h30", tag: "résa" },
+    { icon: "📅", text: "Nouveau rendez-vous — mardi 14h30", tag: "résa" },
     { icon: "⭐", text: "Avis Google 5★ — réponse envoyée automatiquement", tag: "avis" },
-    { icon: "🛵", text: "Commande #214 confirmée — livraison en cours", tag: "commande" },
-    { icon: "🕗", text: "Horaires du dimanche mis à jour depuis votre téléphone", tag: "admin" },
-    { icon: "📅", text: "Réservation modifiée — 2 → 6 couverts", tag: "résa" },
-    { icon: "⭐", text: "Nouvel avis client — 4,8/5 en moyenne", tag: "avis" },
+    { icon: "🛒", text: "Commande #214 confirmée — en préparation", tag: "commande" },
+    { icon: "🕗", text: "Horaires mis à jour depuis votre téléphone", tag: "admin" },
+    { icon: "📩", text: "Demande de contact — nouveau client", tag: "résa" },
+    { icon: "⭐", text: "Note moyenne : 4,8/5 sur 126 avis", tag: "avis" },
   ],
 };
 
@@ -44,9 +50,9 @@ export const v3ticker = {
     "Suresnes",
     "Val-de-Marne",
     "Hauts-de-Seine",
-    "restaurants",
     "boutiques",
     "artisans",
+    "restaurants",
     "associations",
     "zéro jargon",
     "zéro commission",
@@ -64,7 +70,7 @@ export const v3constat = {
       emoji: "😴",
       color: "corail",
       title: "Il dort",
-      text: "Un client vous cherche un dimanche soir. Il tombe sur un site figé depuis 2019. Il réserve ailleurs.",
+      text: "Un client vous cherche un dimanche soir. Il tombe sur un site figé depuis 2019. Il va voir ailleurs.",
     },
     {
       emoji: "🔒",
@@ -82,7 +88,7 @@ export const v3constat = {
       emoji: "🧾",
       color: "jaune",
       title: "Il coûte sans compter",
-      text: "Chaque commande passée par une plateforme, c'est une commission qui part avant même de couvrir vos coûts. Et le client n'est même pas le vôtre.",
+      text: "Chaque vente qui passe par une plateforme, c'est une commission prélevée. Et un client qui reste le sien, jamais le vôtre.",
     },
   ],
 };
@@ -90,14 +96,14 @@ export const v3constat = {
 export const v3moteur = {
   id: "moteur",
   eyebrow: "Ce que ça fait",
-  title: "Un site, trois moteurs qui tournent pour vous.",
+  title: "Pas une vitrine de plus. Un site qui bosse.",
   bento: [
     {
       size: "large",
       color: "violet",
       icon: "🔍",
       title: "Visibilité",
-      text: "Être trouvé au moment exact où quelqu'un cherche un endroit comme le vôtre — Google, fiche à jour, avis suivis.",
+      text: "Être trouvé au moment exact où quelqu'un cherche un commerce comme le vôtre — Google, fiche à jour, avis suivis.",
       chip: "SEO local inclus",
     },
     {
@@ -113,8 +119,8 @@ export const v3moteur = {
       color: "corail",
       icon: "⚡",
       title: "Automatisation",
-      text: "Relances d'avis, notifications, réservations : les tâches répétitives tournent toutes seules.",
-      chip: "Pendant le service",
+      text: "Relances d'avis, notifications, prises de contact : les tâches répétitives tournent toutes seules.",
+      chip: "En continu",
     },
     {
       size: "large",
@@ -165,8 +171,8 @@ export const v3plans = {
       pitch: "Votre site, vos mains. Plus jamais dépendant.",
       features: [
         "Site complet sur-mesure",
-        "Espace admin : photos, menu, horaires",
-        "Réservation / contact intégré",
+        "Espace admin : photos, textes, horaires",
+        "Prise de contact / rendez-vous intégrés",
         "SEO local travaillé",
       ],
       featured: true,
@@ -217,7 +223,7 @@ export const v3fondateur = {
   title: "Pas une agence. Un restaurateur qui code sa propre solution.",
   points: [
     "Un dimanche soir, pas de webmaster à qui écrire pour changer un horaire.",
-    "Un client qui appelle parce que le site affiche encore l'ancien menu.",
+    "Un client qui appelle parce que le site affiche encore l'ancienne info.",
     "Une heure de moins avec l'équipe parce qu'il a fallu répondre à un avis.",
   ],
   closing:

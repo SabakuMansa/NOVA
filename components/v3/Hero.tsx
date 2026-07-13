@@ -79,7 +79,7 @@ export default function V3Hero() {
                 className="absolute inset-x-0 bottom-1 top-1 -rotate-1 rounded-md bg-jaune"
               />
             </span>
-            , {v3hero.titleB}
+            {v3hero.titleB}
           </h1>
 
           <p
@@ -124,7 +124,7 @@ export default function V3Hero() {
           <div className="p-4 sm:p-5">
             <NotifFeed />
             <p className="mt-4 border-t-2 border-dashed border-encre/10 pt-3 font-mono text-[0.6rem] uppercase tracking-wide text-encre/45">
-              Pendant ce temps, vous êtes en salle.
+              Pendant ce temps, vous êtes avec vos clients.
             </p>
           </div>
         </div>
