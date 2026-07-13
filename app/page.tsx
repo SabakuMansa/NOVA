@@ -1,31 +1,33 @@
-import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
-import Approche from "@/components/Approche";
-import Problemes from "@/components/Problemes";
-import Methode from "@/components/Methode";
-import Carte from "@/components/Carte";
-import Configurator from "@/components/Configurator";
-import Process from "@/components/Process";
-import Temoignages from "@/components/Temoignages";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
+import V3Nav from "@/components/v3/Nav";
+import V3Hero from "@/components/v3/Hero";
+import SmoothScroll from "@/components/v2/SmoothScroll";
+import {
+  V3Constat,
+  V3Contact,
+  V3Fondateur,
+  V3Footer,
+  V3Moteur,
+  V3Plans,
+  V3Process,
+  V3Ticker,
+} from "@/components/v3/Sections";
 
 export default function Home() {
   return (
-    <>
-      <Nav />
+    <div className="bg-lait text-encre">
+      <SmoothScroll />
+      <V3Nav />
       <main>
-        <Hero />
-        <Problemes />
-        <Approche />
-        <Methode />
-        <Carte />
-        <Configurator />
-        <Process />
-        <Temoignages />
-        <Contact />
+        <V3Hero />
+        <V3Ticker />
+        <V3Constat />
+        <V3Moteur />
+        <V3Plans />
+        <V3Process />
+        <V3Fondateur />
+        <V3Contact />
       </main>
-      <Footer />
-    </>
+      <V3Footer />
+    </div>
   );
 }

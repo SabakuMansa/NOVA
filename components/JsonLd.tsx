@@ -30,7 +30,7 @@ export default function JsonLd() {
       "SEO local",
       "Outils digitaux pour commerces",
     ],
-    slogan: "Votre commerce mérite mieux qu'un site qui dort.",
+    slogan: "Pendant que vous êtes en plein service, votre site bosse.",
   };
 
   return (

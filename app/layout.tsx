@@ -30,11 +30,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(seo.siteUrl),
   title: {
     default:
-      "NOVA Studio — Création de sites internet pour commerçants, Île-de-France",
+      "NOVA Studio — Sites internet pour commerçants qui bossent tout seuls, Île-de-France",
     template: "%s · NOVA Studio",
   },
   description:
-    "Studio digital fondé par un restaurateur en Île-de-France. Création de sites internet et d'outils numériques pour les commerces locaux — restaurants, boutiques, artisans — de Saint-Maur-des-Fossés à Suresnes (Val-de-Marne, Hauts-de-Seine). Visibilité, autonomie, automatisation.",
+    "Pendant que vous êtes en plein service, votre site bosse : réservations, avis, commandes. Sites et outils numériques pour commerces locaux — restaurants, boutiques, artisans — de Saint-Maur-des-Fossés à Suresnes (Val-de-Marne, Hauts-de-Seine), construits par un restaurateur en activité.",
   keywords: [
     "création site internet commerçants",
     "création site internet Île-de-France",
@@ -52,9 +52,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   authors: [{ name: seo.name }],
   openGraph: {
-    title: "NOVA Studio — Studio digital local",
+    title: "NOVA Studio — Votre site bosse pendant que vous servez",
     description:
-      "Des sites et outils digitaux pensés pour les commerces locaux, par un restaurateur en activité.",
+      "Réservations, avis, commandes : ça tourne tout seul. Par un restaurateur en activité, pour les commerces locaux d'Île-de-France.",
     url: seo.siteUrl,
     siteName: seo.name,
     locale: "fr_FR",
@@ -62,9 +62,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NOVA Studio — Studio digital local",
+    title: "NOVA Studio — Votre site bosse pendant que vous servez",
     description:
-      "Des sites et outils digitaux pensés pour les commerces locaux, par un restaurateur en activité.",
+      "Réservations, avis, commandes : ça tourne tout seul. Par un restaurateur en activité, pour les commerces locaux d'Île-de-France.",
   },
   robots: {
     index: true,

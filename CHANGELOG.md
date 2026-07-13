@@ -301,3 +301,42 @@ Documenté dans `INSPIRATION.md`, avec la direction validée.
 
 > Espace en évaluation : `/v3` est noindex et n'est PAS poussé. L'ancien site
 > et /v2 restent accessibles pour comparaison.
+
+---
+
+## [Promotion v3] La refonte devient LE site (racine `/`)
+
+**Commit de sécurité préalable** : l'état complet (toutes versions) était déjà
+committé en local (`341ad19`) avant restructuration — tout est récupérable.
+
+### Déplacements (aucun fichier supprimé — uniquement des `git mv`)
+- `app/v3/page.tsx` → **`app/page.tsx`** : la v3 « geek coloré » est désormais
+  la page d'accueil. Ses métadonnées (title/description/OG/Twitter, indexables)
+  ont été fusionnées dans `app/layout.tsx` ; slogan JSON-LD mis à jour.
+- Anciennes versions **archivées hors routing public** dans `app/_archive/`
+  (dossier privé Next.js, préfixe `_` = jamais routé) :
+  - `app/_archive/v1-onepage.tsx` (ex-`app/page.tsx`, le one-page bistrot)
+  - `app/_archive/v2/` (l'essai multi-pages complet)
+  - `app/_archive/signature/` (la pièce WebGL isolée)
+  - `app/_archive/v3-layout.tsx` (layout v3, fusionné dans la racine)
+- Les composants et contenus (`components/*`, `content/site.ts`, `content/v3.ts`)
+  restent en place — les archives compilent toujours (rien de cassé, rien de perdu).
+
+### Routes publiques
+- `/` → la v3, indexable (noindex retiré avec la promotion).
+- `/v2`, `/v2/*`, `/v3`, `/v3/*`, `/signature` → **redirection 307 vers `/`**
+  (via `next.config.mjs` — plus simple à maintenir qu'une 404 dédiée).
+- `/demo/commande` et `/demo/livraison` conservés (liés depuis les plans),
+  exclus du crawl via `robots.txt` (`Disallow: /demo`).
+- `sitemap.xml` → ancres v3 (`#constat #moteur #plans #process #fondateur
+  #contact`) ; règle robots obsolète `/v2` retirée.
+- **Favicon** et **image Open Graph** refaits à l'identité v3 (badge N jaune,
+  surligneur, blobs colorés).
+
+### Vérification
+- `tsc` ✅ · `npm run build` ✅ — 14 routes (contre 21), plus aucune route
+  `/v2`/`/v3`/`/signature` générée.
+- Runtime (build de prod) : `/` = 200 avec le contenu v3 · les 4 anciennes URLs
+  testées → 307 vers `/` · démos 200 · sitemap/robots/OG/favicon 200.
+- Visuel : racine identique à l'ancienne `/v3` (hero aurora + fenêtre LIVE,
+  notifs qui tournent), 0 erreur console.

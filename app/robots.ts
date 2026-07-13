@@ -6,9 +6,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      // /v2 : espace de démonstration multi-pages en évaluation (déjà en
-      // noindex,nofollow par page) — exclu du crawl tant qu'il n'est pas validé.
-      disallow: "/v2",
+      // Pages de démonstration sandbox : utiles en lien direct, pas en SEO.
+      disallow: "/demo",
     },
     sitemap: `${seo.siteUrl}/sitemap.xml`,
     host: seo.siteUrl,
