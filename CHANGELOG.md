@@ -661,3 +661,85 @@ build de prod dans ce repo.
 **Vérifications** : `tsc` ✅ · build **16 routes** (dont `/labo`) ✅ ·
 noindex/robots/sitemap ✅ · variation procédurale ✅ (2 tirages ≠) ·
 reduced-motion ✅ · mobile ✅ · console 0 erreur ✅. **Aucun push.**
+
+---
+
+## [Module Relance avis Google] Email automatique post-réservation
+
+**Nature** : nouveau module isolé et optionnel, même logique que le module
+Commande & Livraison — le site fonctionne normalement s'il n'est pas
+configuré (`EMAIL_MODE` et `REVIEWS_STORE_MODE` absents → `demo`/`memory`,
+jamais d'erreur).
+
+**Principe** : à la création d'une réservation (email + horodatage), une
+relance avis Google est planifiée à *réservation + délai* et envoyée seule,
+sans intervention. Lien direct vers la fenêtre de notation du commerce
+(jamais générique). **Règle de conformité non négociable, documentée en
+commentaire au-dessus du template** : le même email part pour tous les
+clients ayant réservé, aucune question de satisfaction en amont pour
+orienter les mécontents ailleurs que Google (*review gating*, interdit par
+Google et risqué juridiquement).
+
+**Architecture** (`lib/reviews/*`, détail complet dans `README-reviews.md`) :
+- `types.ts` / `businesses.ts` — contrats + registre des commerces (jetons de
+  marque + lien avis Google, propres à CHAQUE commerce, pas génériques).
+- `store.ts` + `supabase-store.ts` — persistance des jobs planifiés,
+  sélectionnée par `REVIEWS_STORE_MODE` (`memory` par défaut, dev uniquement ;
+  `supabase` pour un vrai déploiement — store Supabase entièrement codé,
+  schéma SQL fourni, mais non testable sans projet réel, comme le client Uber
+  Direct du module livraison).
+- `email-provider.ts` — `EMAIL_MODE` `demo` (log console, statut `simulated`)
+  ou `live` (Resend, REST brut via `fetch`, aucun SDK ajouté).
+- `scheduler.ts` — `scheduleReviewRequest()` calcule `sendAt` (délai
+  configurable à 3 niveaux : par commerce > `REVIEW_REQUEST_DELAY_HOURS` >
+  override ponctuel de la démo — jamais codé en dur) ; `processDueJobs()`
+  envoie tout ce qui est dû, appelée par la route cron ET par un poller local
+  (dev uniquement, désactivé si `VERCEL`/prod) pour que la démo tourne sans
+  curl manuel.
+- `templates/review-request.tsx` — email HTML en styles inline (tables, pas
+  de Tailwind — la plupart des clients mail dégradent le CSS moderne),
+  reprend les jetons de marque du commerçant, un seul CTA, lien de
+  désinscription.
+- Routes : `POST /api/reservations` (création + planification), `GET/POST
+  /api/reviews/run` (cron), `GET /api/reviews/status` (suivi commerçant — un
+  statut par job, simplification volontaire vs. table `email_log` séparée),
+  `GET /api/reviews/unsubscribe` (RGPD, lien direct depuis l'email).
+- `vercel.json` — cron `/api/reviews/run` toutes les 10 min (⚠️ le plan Vercel
+  Hobby limite les cron à 1×/jour — un plan Pro est nécessaire en prod réelle).
+- `app/demo/avis/` — sandbox non liée à la nav, désindexée (même traitement
+  que `/demo/commande`) : formulaire de réservation fictive (délai réglable en
+  minutes) + tableau de suivi live des statuts.
+
+**Bug trouvé et corrigé pendant la vérification** : le store en mémoire
+utilisait un simple singleton de module (`let memoryStore = ...`). Or
+Next.js peut bundler chaque route handler comme une entrée séparée — deux
+routes important le même fichier se retrouvaient chacune avec leur PROPRE
+copie du module, donc deux instances différentes du store : un job créé via
+`/api/reservations` restait invisible depuis `/api/reviews/status`. Corrigé
+en portant le singleton sur `globalThis` (même technique que le contournement
+Prisma/HMR bien connu de l'écosystème Next.js) — vérifié après coup : le job
+créé par une route est immédiatement visible depuis l'autre.
+
+**Deuxième point trouvé en vérifiant le build** : `/api/reviews/status` et
+`/api/reviews/run` ne lisant ni cookies ni paramètres de requête, Next.js les
+pré-rendait en **statique** au build (réponse figée pour toujours en
+production) — jamais ce qu'on veut pour un état qui change à chaque envoi.
+Ajout de `export const dynamic = "force-dynamic"` sur les deux routes ;
+rebuild : les deux apparaissent bien en `ƒ` (dynamique) désormais.
+
+**Vérifications effectuées**
+- `tsc --noEmit` ✅, build production **19 routes** ✅.
+- Cycle complet testé en mode démo (`EMAIL_MODE` non défini) : réservation
+  créée via l'API → job `scheduled` visible immédiatement depuis une AUTRE
+  route → au bout du délai (testé à 1-2 minutes), le poller local l'envoie
+  tout seul → statut `simulated` + `sentAt` renseigné → ligne
+  `[reviews:demo] Email simulé → ...` visible en console serveur. Reproduit
+  deux fois (2 jobs distincts), les deux confirmés.
+- Désinscription testée : lien `/api/reviews/unsubscribe?id=...` marque le
+  job `canceled`/`unsubscribed`, et une NOUVELLE réservation pour le même
+  couple commerce/email est créée déjà `canceled` (vérifié par requête directe).
+- Erreurs gérées proprement : commerce inconnu → 404 avec message clair ;
+  champs requis manquants → 400 ; absence totale de config `EMAIL_MODE` /
+  `REVIEWS_STORE_MODE` → aucune erreur, comportement démo par défaut.
+- Site principal non affecté : `/` répond toujours en 200, aucune régression.
+- **Aucun push** — en attente de relecture avant mise en ligne.
