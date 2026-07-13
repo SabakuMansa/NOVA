@@ -29,12 +29,22 @@ export const v3nav = {
 
 export const v3hero = {
   eyebrow: "Studio digital · Île-de-France",
-  // Titre stratégique — phrase fournie, rendue « titleA <em>titleEm</em> titleB ».
-  titleA: "Vos futurs clients vous cherchent déjà.",
-  titleEm: "Assurez-vous",
-  titleB: " qu'ils vous trouvent.",
-  subtitle:
-    "Je gère des restaurants en Île-de-France. J'y ai vu trop de commerces excellents avec une image en ligne qui ne leur ressemble pas. Je construis des vitrines numériques à la hauteur de votre commerce.",
+  // Mécanique inspirée d'AppSignal (appsignal.com) : question fixe, la plus
+  // grande typo du site, + une réponse qui défile en boucle en dessous, puis
+  // une résolution permanente qui referme la boucle vers le CTA.
+  // reduced-motion : answers[0] (la plus forte) affichée seule, sans défilement.
+  question: "Votre site actuel, il fait quoi, là, tout de suite ?",
+  answers: [
+    "Rien. Absolument rien.",
+    "Il dort.",
+    "Il est invisible.",
+    "Il fait fuir vos clients.",
+    "Il tourne en rond.",
+    "Il ment sur vos horaires.",
+    "Il rate des opportunités.",
+  ],
+  resolution:
+    "Vos futurs clients vous cherchent déjà. Assurez-vous qu'ils vous trouvent.",
   ctaPrimary: { label: "Réserver un audit gratuit (15 min)", href: "#contact" },
   ctaSecondary: { label: "Voir les plans", href: "#plans" },
   // Flux de notifications simulé dans la fenêtre du hero.
@@ -70,26 +80,14 @@ export const v3constat = {
   title: "Que voit un nouveau client lorsqu'il découvre votre commerce sur internet ?",
   subtitle:
     "Probablement pas ce que vous méritez. Et pendant ce temps, des opportunités passent à côté.",
-  // Ligne isolée, placée après la grille de cartes — rupture de rythme avant la section suivante.
-  rupture: "Votre site actuel, il fait quoi, là, tout de suite ?",
+  // « Il dort » / « Il est invisible » ne sont plus des cartes ici : elles
+  // vivent maintenant dans le défilement du Hero (v3hero.answers).
   cards: [
-    {
-      emoji: "😴",
-      color: "corail",
-      title: "Il dort",
-      text: "Un client vous cherche un dimanche soir. Il tombe sur un site figé depuis 2019. Une opportunité de plus qui s'en va.",
-    },
     {
       emoji: "🔒",
       color: "violet",
       title: "Il est verrouillé",
       text: "Changer un prix ou une photo = appeler quelqu'un, attendre, relancer. Votre propre site, et vous n'avez pas la main.",
-    },
-    {
-      emoji: "🕳️",
-      color: "teal",
-      title: "Il est invisible",
-      text: "Vos concurrents passent devant vous sur Google. Pas parce qu'ils sont meilleurs — parce que leur fiche est à jour.",
     },
     {
       emoji: "🧾",

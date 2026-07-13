@@ -75,7 +75,7 @@ export function V3Constat() {
         </h2>
         <p className="mt-4 max-w-xl font-sans text-lg text-encre/70">{v3constat.subtitle}</p>
       </Reveal>
-      <div className="mt-12 grid gap-5 sm:grid-cols-2">
+      <div className="mt-12 grid max-w-2xl gap-5 sm:grid-cols-2">
         {v3constat.cards.map((c, i) => (
           <Reveal key={c.title} delay={i * 0.08}>
             <div className="v3-card v3-card-hover h-full p-6">
@@ -90,11 +90,6 @@ export function V3Constat() {
           </Reveal>
         ))}
       </div>
-      <Reveal className="mt-14 text-center">
-        <p className="mx-auto max-w-2xl font-sans text-2xl font-extrabold tracking-tight text-encre sm:text-3xl">
-          {v3constat.rupture}
-        </p>
-      </Reveal>
     </section>
   );
 }
