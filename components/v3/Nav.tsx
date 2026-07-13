@@ -26,7 +26,7 @@ export default function V3Nav() {
         }`}
         aria-label="Navigation principale"
       >
-        <a href="#top" className="flex items-center gap-2">
+        <a href="/" className="flex items-center gap-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-encre bg-jaune font-sans text-sm font-extrabold text-encre shadow-[2px_2px_0_#211D16]">
             N
           </span>

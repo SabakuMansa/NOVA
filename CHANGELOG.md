@@ -410,3 +410,108 @@ est conservé tel quel.
 **Vérifications** : `tsc` ✅, build 14 routes ✅, 0 phrase interdite, 0 « Uber »
 visible, 6 titres de section cohérents en ton, rendu hero + notifs vérifié en
 preview. **Aucun push** — en attente du choix de variante hero par le client.
+
+---
+
+## [Repositionnement stratégique] Fini « on vend un site », place au déclic
+
+**Contexte** : le titre hero variante B (« Votre site devrait bosser autant que
+vous. ») a été validé et mis en ligne. Ce chantier va plus loin : changer la
+nature du message central du site. Objectif : ne plus convaincre le commerçant
+qu'il « a besoin d'un site », mais lui faire réaliser que **son commerce est
+meilleur que ce qu'on en voit en ligne** — le déclic qui amène naturellement
+vers l'audit gratuit.
+
+### 1. Nouveau positionnement
+
+- **Reformulation clé appliquée** : plus jamais « création de site » comme
+  accroche — remplacé par **« une vitrine numérique à la hauteur de votre
+  commerce »**, intégrée directement dans le titre de la section « Ce que ça
+  fait » (`v3moteur.title` : *« Pas juste un site. Une vitrine à la hauteur de
+  votre commerce. »*) et dans le sous-titre du Hero.
+- **« Opportunités » remplace « clients perdus »** partout où l'idée de perte
+  apparaissait (sous-titre du Constat, carte « Il dort ») — même constat, ton
+  moins agressif, plus juste.
+- **Les 3 phrases fournies, placées chacune à un endroit différent** (pas
+  toutes au même endroit, pour ne pas surcharger) :
+  - *« Vos futurs clients vous cherchent déjà. Assurez-vous qu'ils vous
+    trouvent. »* → **titre du Hero**, remplace la variante B précédente.
+    Repositionne l'angle de « le site bosse » vers « vous êtes déjà cherché,
+    encore faut-il qu'on vous trouve ».
+  - *« Que voit un nouveau client lorsqu'il découvre votre commerce sur
+    internet ? »* → **titre de la section Constat** (`v3constat.title`).
+    Ouvre directement sur le miroir tendu au commerçant.
+  - *« Votre site actuel, il fait quoi, là, tout de suite ? »* → **ligne
+    isolée** (`v3constat.rupture`), affichée seule entre la grille de 4 cartes
+    du Constat et la section Moteur. Marque une rupture de rythme au lieu de
+    rester un titre de section comme avant.
+- Hero et section Problème réécrits en cohérence (`content/v3.ts` :
+  `v3hero.subtitle`, `v3constat.title/subtitle/rupture/cards[0]`).
+
+### 2. Épuration du contenu
+
+- **Section Moteur** : passée de 4 cartes bento à **3**, layout simplifié en
+  grille égale (plus de carte large asymétrique orpheline). La suppression de
+  la 4ᵉ carte (Commande directe) sert à la fois l'épuration et le point 3
+  ci-dessous.
+- **Section Plans** : le bloc add-on « Module Commande & Livraison directe »
+  (icône 🛵, prix, lien démo) entièrement retiré de l'affichage — ne reste que
+  la note de bas de section (`v3plans.footnote`). Section nettement plus
+  courte.
+- **Section Fondateur (homepage)** : les 3 cartes `>_` + la citation de
+  clôture ont été retirées de la page d'accueil, remplacées par un **teaser
+  d'une phrase** + un lien « Voir mon parcours → » vers la nouvelle page
+  dédiée (point 4). Le contenu complet n'est pas perdu : il vit maintenant sur
+  `/qui-je-suis`.
+
+### 3. Module Commande & Livraison masqué de l'affichage public
+
+**Aucun fichier ni code supprimé** — uniquement désactivé de l'affichage,
+même logique que l'archivage v1/v2 :
+- `content/v3.ts` : l'entrée « Commande directe » du bento (`v3moteur.bento`)
+  a désormais `hidden: true` ; `v3plans.addon` reste défini tel quel, simplement
+  plus rendu par le composant.
+- `components/v3/Sections.tsx` : `V3Moteur` filtre `bento.filter(b =>
+  !b.hidden)` ; `V3Plans` ne rend plus le bloc addon.
+- Les pages `/demo/commande` et `/demo/livraison`, ainsi que les composants
+  `components/delivery/*` et les routes `app/api/delivery/*`, restent
+  **intacts et fonctionnels** — juste non liés depuis la nav ou la homepage
+  (vérifié : les deux répondent toujours en 200 en accès direct).
+- Ce module reviendra en avant plus tard ; il suffira de repasser `hidden` à
+  `false` et de rétablir le bloc addon dans `V3Plans`.
+
+### 4. Nouvelle page « Qui je suis »
+
+- **`app/qui-je-suis/page.tsx`** créée : présente le fondateur en détail
+  (gérant de plusieurs restaurants en Île-de-France, à l'origine de NOVA
+  Studio suite à ce constat vécu). Reste factuel — aucune date ni détail
+  inventé au-delà de ce qui était déjà établi ailleurs sur le site.
+  Contenu piloté par de nouveaux champs sur `v3fondateur`
+  (`pageIntro`, réutilise `points`/`closing`/`badges`) dans `content/v3.ts`.
+  Métadonnées SEO dédiées (title/description).
+- **Navigation mise à jour** : le lien « Qui suis-je » (`v3nav.links`) pointe
+  désormais vers `/qui-je-suis` au lieu de l'ancre `#fondateur`. Tous les
+  autres liens de nav (ancres) sont passés en chemins absolus (`/#constat`,
+  `/#moteur`, etc.) pour fonctionner correctement depuis n'importe quelle page
+  du site, pas seulement l'accueil — nécessaire dès qu'une deuxième page
+  existe. Logo de la nav : `#top` → `/`.
+- **`app/sitemap.ts`** : ajout de l'URL `/qui-je-suis` (priorité 0.7), retrait
+  de l'ancre `#fondateur` obsolète.
+- **`components/JsonLd.tsx`** : `slogan` mis à jour pour matcher le nouveau
+  titre du Hero (était encore l'ancienne accroche « Pendant que vous êtes en
+  plein service »).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅ aucune erreur.
+- Build production : **15 routes** générées proprement (`/qui-je-suis` inclus).
+- Balayage : 0 phrase interdite, 0 « clients perdus », 0 « Uber » visible,
+  0 mention du module livraison hors data/démo.
+- Preview vérifiée en direct : Hero (nouveau titre + highlight), Constat
+  (nouveau titre + ligne de rupture), Moteur (3 cartes égales, sans livraison),
+  Plans (sans bloc addon), Fondateur (teaser condensé + lien), page
+  `/qui-je-suis` complète (intro, points, citation, CTA, footer) accessible en
+  navigation directe, `sitemap.xml` à jour, `/demo/commande` et
+  `/demo/livraison` toujours répondent en 200 (code intact, juste non liés).
+  Aucune erreur console.
+- **Aucun push** — en attente de relecture avant mise en ligne.

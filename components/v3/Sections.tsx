@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import {
   v3constat,
@@ -89,6 +90,11 @@ export function V3Constat() {
           </Reveal>
         ))}
       </div>
+      <Reveal className="mt-14 text-center">
+        <p className="mx-auto max-w-2xl font-sans text-2xl font-extrabold tracking-tight text-encre sm:text-3xl">
+          {v3constat.rupture}
+        </p>
+      </Reveal>
     </section>
   );
 }
@@ -105,7 +111,7 @@ export function V3Moteur() {
           </h2>
         </Reveal>
         <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {v3moteur.bento.map((b, i) => (
+          {v3moteur.bento.filter((b) => !b.hidden).map((b, i) => (
             <Reveal
               key={b.title}
               delay={i * 0.08}
@@ -189,30 +195,10 @@ export function V3Plans() {
         ))}
       </div>
 
-      {/* Add-on livraison */}
-      <Reveal className="mx-auto mt-8 max-w-4xl">
-        <div className="v3-card flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:gap-6 sm:p-7">
-          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border-2 border-encre bg-jaune text-3xl" aria-hidden>
-            🛵
-          </span>
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-baseline gap-x-3">
-              <h3 className="font-sans text-lg font-extrabold text-encre">{v3plans.addon.name}</h3>
-              <span className="font-mono text-sm font-bold text-corail">{v3plans.addon.price}</span>
-            </div>
-            <p className="mt-1.5 font-sans text-sm leading-relaxed text-encre/75">{v3plans.addon.text}</p>
-            <p className="mt-2 font-sans text-xs text-encre/50">{v3plans.addon.note}</p>
-          </div>
-          <a
-            href={v3plans.addon.demo.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 rounded-xl border-2 border-encre bg-white px-4 py-2.5 text-center font-sans text-sm font-bold text-encre shadow-[3px_3px_0_#211D16] transition-transform hover:-translate-y-0.5"
-          >
-            {v3plans.addon.demo.label} ↗
-          </a>
-        </div>
-        <p className="mt-6 text-center font-sans text-sm italic text-encre/60">{v3plans.footnote}</p>
+      {/* Module Commande & Livraison (v3plans.addon) volontairement masqué :
+          pas prioritaire pour le moment. Données conservées dans content/v3.ts. */}
+      <Reveal className="mx-auto mt-10 max-w-2xl text-center">
+        <p className="font-sans text-sm italic text-encre/60">{v3plans.footnote}</p>
       </Reveal>
     </section>
   );
@@ -254,7 +240,7 @@ export function V3Process() {
 export function V3Fondateur() {
   return (
     <section id={v3fondateur.id} className="mx-auto max-w-content px-5 py-20 md:px-8 md:py-28">
-      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:items-center">
         <Reveal>
           <Eyebrow color="jaune">{v3fondateur.eyebrow}</Eyebrow>
           <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-tight text-encre sm:text-4xl">
@@ -269,19 +255,13 @@ export function V3Fondateur() {
           </div>
         </Reveal>
         <Reveal delay={0.1}>
-          <ul className="space-y-3.5">
-            {v3fondateur.points.map((p, i) => (
-              <li key={i} className="v3-card flex items-start gap-3.5 p-4">
-                <span className="font-mono text-sm font-bold text-corail" aria-hidden>
-                  {">"}_
-                </span>
-                <span className="font-sans leading-snug text-encre/85">{p}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-6 border-l-4 border-jaune pl-4 font-display text-xl italic leading-snug text-encre/80">
-            {v3fondateur.closing}
-          </p>
+          <p className="font-sans text-lg leading-relaxed text-encre/80">{v3fondateur.teaser}</p>
+          <Link
+            href={v3fondateur.ctaHref}
+            className="mt-5 inline-flex items-center gap-2 font-sans text-sm font-bold text-violet underline underline-offset-4 hover:text-encre"
+          >
+            {v3fondateur.ctaLabel} →
+          </Link>
         </Reveal>
       </div>
     </section>

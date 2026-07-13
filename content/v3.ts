@@ -1,35 +1,40 @@
 /**
  * Contenu de la refonte v3 — direction « geek coloré » (univers AppSignal).
- * Copy retravaillé le 13/07/2026 pour coller au ton visuel : phrases courtes,
- * une idée par phrase, personnalité assumée, zéro jargon.
+ * Repositionnement du 13/07/2026 : on ne vend plus « un site internet », on
+ * fait réaliser au commerçant que son commerce est meilleur que ce qu'on en
+ * voit en ligne — le déclic doit amener naturellement vers l'audit gratuit.
+ * Reformulation clé : jamais « création de site » en accroche, toujours
+ * « une vitrine numérique à la hauteur de votre commerce ». « Opportunités »
+ * plutôt que « clients perdus » (plus juste, moins agressif).
  *
  * CIBLE : commerçants locaux qui n'ont PAS de site, ou un site vieillissant —
  * boutiques, artisans, restaurants, associations, petites entreprises. Les
  * exemples restent génériques (horaires, photos, avis Google, prise de contact)
  * et ne supposent jamais que le lecteur est restaurateur.
  * EXCEPTION : la légitimité du fondateur reste liée au fait qu'il gère lui-même
- * des restaurants (fait vécu, pas une promesse de ciblage). Vouvoiement partout.
+ * des restaurants (fait vécu, pas une promesse de ciblage) — développée en
+ * détail sur /qui-je-suis. Vouvoiement partout.
  */
 
 export const v3nav = {
   links: [
-    { label: "Le constat", href: "#constat" },
-    { label: "Ce que ça fait", href: "#moteur" },
-    { label: "Les plans", href: "#plans" },
-    { label: "Le process", href: "#process" },
-    { label: "Qui suis-je", href: "#fondateur" },
+    { label: "Le constat", href: "/#constat" },
+    { label: "Ce que ça fait", href: "/#moteur" },
+    { label: "Les plans", href: "/#plans" },
+    { label: "Le process", href: "/#process" },
+    { label: "Qui suis-je", href: "/qui-je-suis" },
   ],
-  cta: { label: "Audit gratuit", href: "#contact" },
+  cta: { label: "Audit gratuit", href: "/#contact" },
 };
 
 export const v3hero = {
   eyebrow: "Studio digital · Île-de-France",
-  // Variante retenue (B) — rendue « titleA <em>titleEm</em> titleB ».
-  titleA: "Votre site devrait",
-  titleEm: "bosser",
-  titleB: " autant que vous.",
+  // Titre stratégique — phrase fournie, rendue « titleA <em>titleEm</em> titleB ».
+  titleA: "Vos futurs clients vous cherchent déjà.",
+  titleEm: "Assurez-vous",
+  titleB: " qu'ils vous trouvent.",
   subtitle:
-    "Je gère des restaurants en Île-de-France. À côté, je construis des sites pour les commerçants du coin : des sites qui affichent vos horaires, remontent vos avis Google et attrapent les clients qui vous cherchent — pendant que vous, vous êtes avec les vôtres.",
+    "Je gère des restaurants en Île-de-France. J'y ai vu trop de commerces excellents avec une image en ligne qui ne leur ressemble pas. Je construis des vitrines numériques à la hauteur de votre commerce.",
   ctaPrimary: { label: "Réserver un audit gratuit (15 min)", href: "#contact" },
   ctaSecondary: { label: "Voir les plans", href: "#plans" },
   // Flux de notifications simulé dans la fenêtre du hero.
@@ -62,15 +67,17 @@ export const v3ticker = {
 export const v3constat = {
   id: "constat",
   eyebrow: "Le constat",
-  title: "Votre site actuel, il fait quoi, là, tout de suite ?",
+  title: "Que voit un nouveau client lorsqu'il découvre votre commerce sur internet ?",
   subtitle:
-    "Probablement rien. Et pendant ce temps, des clients passent — et vont ailleurs.",
+    "Probablement pas ce que vous méritez. Et pendant ce temps, des opportunités passent à côté.",
+  // Ligne isolée, placée après la grille de cartes — rupture de rythme avant la section suivante.
+  rupture: "Votre site actuel, il fait quoi, là, tout de suite ?",
   cards: [
     {
       emoji: "😴",
       color: "corail",
       title: "Il dort",
-      text: "Un client vous cherche un dimanche soir. Il tombe sur un site figé depuis 2019. Il va voir ailleurs.",
+      text: "Un client vous cherche un dimanche soir. Il tombe sur un site figé depuis 2019. Une opportunité de plus qui s'en va.",
     },
     {
       emoji: "🔒",
@@ -96,15 +103,16 @@ export const v3constat = {
 export const v3moteur = {
   id: "moteur",
   eyebrow: "Ce que ça fait",
-  title: "Pas une vitrine de plus. Un site qui bosse.",
+  title: "Pas juste un site. Une vitrine à la hauteur de votre commerce.",
   bento: [
     {
-      size: "large",
+      size: "small",
       color: "violet",
       icon: "🔍",
       title: "Visibilité",
       text: "Être trouvé au moment exact où quelqu'un cherche un commerce comme le vôtre — Google, fiche à jour, avis suivis.",
       chip: "SEO local inclus",
+      hidden: false,
     },
     {
       size: "small",
@@ -113,6 +121,7 @@ export const v3moteur = {
       title: "Autonomie",
       text: "Prix, photos, horaires : vous changez tout vous-même, en deux minutes, depuis votre téléphone.",
       chip: "Sans coder",
+      hidden: false,
     },
     {
       size: "small",
@@ -121,7 +130,11 @@ export const v3moteur = {
       title: "Automatisation",
       text: "Relances d'avis, notifications, prises de contact : les tâches répétitives tournent toutes seules.",
       chip: "En continu",
+      hidden: false,
     },
+    // Module Commande & Livraison — masqué de l'affichage public (pas prioritaire
+    // pour le moment). Code et contenu conservés intacts, simplement filtrés à
+    // l'affichage dans V3Moteur (components/v3/Sections.tsx).
     {
       size: "large",
       color: "jaune",
@@ -129,6 +142,7 @@ export const v3moteur = {
       title: "Commande directe",
       text: "Vos clients commandent chez vous, un réseau de coursiers professionnels livre. Vous ne payez que la course — jamais un pourcentage sur la vente.",
       chip: "0 % de commission",
+      hidden: true,
     },
   ],
 };
@@ -221,6 +235,14 @@ export const v3fondateur = {
   id: "fondateur",
   eyebrow: "Qui suis-je",
   title: "Pas une agence. Un restaurateur qui code sa propre solution.",
+  // Teaser condensé pour la section homepage (renvoie vers /qui-je-suis).
+  teaser:
+    "Restaurateur en activité, pas une agence : chaque outil que je construis part de situations vécues derrière un comptoir.",
+  ctaLabel: "Voir mon parcours",
+  ctaHref: "/qui-je-suis",
+  // Contenu complet — utilisé sur la page dédiée /qui-je-suis.
+  pageIntro:
+    "Je gère plusieurs restaurants en Île-de-France. NOVA Studio n'est pas né d'une étude de marché, mais d'un constat direct : gérer un commerce au quotidien avec des outils numériques mal pensés, ça use. Alors j'ai commencé par construire les miens — puis ceux d'autres commerçants.",
   points: [
     "Un dimanche soir, pas de webmaster à qui écrire pour changer un horaire.",
     "Un client qui appelle parce que le site affiche encore l'ancienne info.",
