@@ -273,3 +273,65 @@ body {
   .v3-notif { animation: none; }
   .v3-card, .v3-card-hover:hover { transition: none; transform: none; }
 }
+
+/* ------------------------------------------------------------------ *
+ * Section Verdict — réponse qui défile avec effet glitch / RGB-split. *
+ * Toutes propriétés compositées (transform/opacity/filter/clip-path), *
+ * aucun repaint de layout : un seul élément + 2 pseudo-éléments.       *
+ * ------------------------------------------------------------------ */
+.glitch-answer {
+  position: relative;
+  display: inline-block;
+}
+.glitch-answer.is-glitching {
+  animation: glitch-jitter 0.35s steps(6, end);
+}
+.glitch-answer.is-glitching::before,
+.glitch-answer.is-glitching::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.glitch-answer.is-glitching::before {
+  color: #ff6b4a;
+  animation: glitch-split-a 0.35s steps(6, end);
+}
+.glitch-answer.is-glitching::after {
+  color: #0ea88b;
+  animation: glitch-split-b 0.35s steps(6, end);
+}
+@keyframes glitch-jitter {
+  0%, 100% { transform: translate(0, 0); filter: none; }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); filter: blur(0.3px); }
+  60% { transform: translate(-1px, 0); }
+  80% { transform: translate(1px, 1px); filter: none; }
+}
+@keyframes glitch-split-a {
+  0% { transform: translate(0, 0); clip-path: inset(10% 0 70% 0); opacity: 0; }
+  15% { opacity: 0.85; }
+  25% { transform: translate(-4px, 1px); clip-path: inset(45% 0 20% 0); }
+  45% { transform: translate(3px, -1px); clip-path: inset(0 0 60% 0); }
+  65% { transform: translate(-3px, 0); clip-path: inset(65% 0 5% 0); }
+  85% { transform: translate(2px, 0); clip-path: inset(20% 0 40% 0); opacity: 0.6; }
+  100% { transform: translate(0, 0); clip-path: inset(0 0 0 0); opacity: 0; }
+}
+@keyframes glitch-split-b {
+  0% { transform: translate(0, 0); clip-path: inset(55% 0 5% 0); opacity: 0; }
+  15% { opacity: 0.85; }
+  25% { transform: translate(4px, -1px); clip-path: inset(5% 0 55% 0); }
+  45% { transform: translate(-3px, 1px); clip-path: inset(35% 0 25% 0); }
+  65% { transform: translate(3px, 0); clip-path: inset(0 0 70% 0); }
+  85% { transform: translate(-2px, 0); clip-path: inset(50% 0 10% 0); opacity: 0.6; }
+  100% { transform: translate(0, 0); clip-path: inset(0 0 0 0); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glitch-answer.is-glitching,
+  .glitch-answer.is-glitching::before,
+  .glitch-answer.is-glitching::after {
+    animation: none;
+    content: none;
+  }
+}

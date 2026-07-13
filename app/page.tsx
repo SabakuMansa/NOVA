@@ -9,6 +9,7 @@ import {
   V3Moteur,
   V3Plans,
   V3Process,
+  V3Verdict,
 } from "@/components/v3/Sections";
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
       <V3Nav />
       <main>
         <V3Hero />
+        <V3Verdict />
         <V3Constat />
         <V3Moteur />
         <V3Plans />

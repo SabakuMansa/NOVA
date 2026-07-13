@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { seo } from "@/content/site";
 
 // Ancres de la page d'accueil v3 + la page dédiée /qui-je-suis.
-const SECTIONS = ["constat", "moteur", "plans", "process", "contact"];
+const SECTIONS = ["verdict", "constat", "moteur", "plans", "process", "contact"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

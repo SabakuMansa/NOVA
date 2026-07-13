@@ -49,6 +49,24 @@ export const v3hero = {
   ],
 };
 
+// Section dédiée, plein écran, juste après le Hero — PAS le titre du Hero
+// (celui-ci reste v3hero.titleA/Em/B). Mécanique inspirée d'AppSignal :
+// question fixe + réponse qui défile en boucle (effet glitch, voir V3Verdict
+// dans components/v3/Sections.tsx).
+export const v3verdict = {
+  id: "verdict",
+  question: "Votre site actuel, il fait quoi, là, tout de suite ?",
+  answers: [
+    "Rien. Absolument rien.",
+    "Il dort.",
+    "Il est invisible.",
+    "Il fait fuir vos clients.",
+    "Il tourne en rond.",
+    "Il ment sur vos horaires.",
+    "Il rate des opportunités.",
+  ],
+};
+
 export const v3ticker = {
   items: [
     "Saint-Maur-des-Fossés",
@@ -70,26 +88,15 @@ export const v3constat = {
   title: "Que voit un nouveau client lorsqu'il découvre votre commerce sur internet ?",
   subtitle:
     "Probablement pas ce que vous méritez. Et pendant ce temps, des opportunités passent à côté.",
-  // Ligne isolée, placée après la grille de cartes — rupture de rythme avant la section suivante.
-  rupture: "Votre site actuel, il fait quoi, là, tout de suite ?",
+  // « Il dort » / « Il est invisible » ne sont plus des cartes ici : elles
+  // vivent dans le défilement de la section Verdict (v3verdict.answers),
+  // juste avant cette section.
   cards: [
-    {
-      emoji: "😴",
-      color: "corail",
-      title: "Il dort",
-      text: "Un client vous cherche un dimanche soir. Il tombe sur un site figé depuis 2019. Une opportunité de plus qui s'en va.",
-    },
     {
       emoji: "🔒",
       color: "violet",
       title: "Il est verrouillé",
       text: "Changer un prix ou une photo = appeler quelqu'un, attendre, relancer. Votre propre site, et vous n'avez pas la main.",
-    },
-    {
-      emoji: "🕳️",
-      color: "teal",
-      title: "Il est invisible",
-      text: "Vos concurrents passent devant vous sur Google. Pas parce qu'ils sont meilleurs — parce que leur fiche est à jour.",
     },
     {
       emoji: "🧾",

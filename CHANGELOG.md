@@ -515,3 +515,91 @@ même logique que l'archivage v1/v2 :
   `/demo/livraison` toujours répondent en 200 (code intact, juste non liés).
   Aucune erreur console.
 - **Aucun push** — en attente de relecture avant mise en ligne.
+
+---
+
+## [Correction] Titre du Hero restauré + section « Verdict » dédiée, plein écran
+
+**Contexte** : un chantier précédent avait remplacé le titre du Hero par
+« Votre site actuel, il fait quoi, là, tout de suite ? » — ce n'était pas la
+demande. Ce chantier corrige le tir : le titre du Hero est restauré tel quel,
+et cette phrase devient le titre d'une **toute nouvelle section**, à part
+entière.
+
+### 1. Titre du Hero restauré
+
+`components/v3/Hero.tsx` : reverté à l'état d'avant l'erreur, via
+`git revert` du commit fautif. Titre définitif, inchangé : **« Vos futurs
+clients vous cherchent déjà. Assurez-vous qu'ils vous trouvent. »** — n'apparaît
+qu'une fois sur la page, dans le Hero uniquement.
+
+### 2. Nouvelle section « Verdict », plein écran
+
+- `content/v3.ts` : nouvel export `v3verdict` (`question` + `answers[]` —
+  mêmes réponses que précédemment : « Rien. Absolument rien. », « Il dort. »,
+  « Il est invisible. », « Il fait fuir vos clients. », « Il tourne en
+  rond. », « Il ment sur vos horaires. », « Il rate des opportunités. »).
+- `components/v3/Sections.tsx` : nouveau composant `V3Verdict` — section
+  `min-h-screen` (plein écran, vrai temps de pause dans le scroll), fond
+  sombre `bg-encre` (cohérent avec la section Process, déjà sombre — alterne
+  la respiration visuelle du site). Titre en très grande typo (`md:text-7xl`)
+  sur fond `lait`, réponse qui défile en dessous en `jaune`.
+- Insérée dans `app/page.tsx` entre `<V3Hero />` et `<V3Constat />`.
+- Les cartes « Il dort » / « Il est invisible » sont retirées de la section
+  Constat (doublon avec le contenu de Verdict, juste au-dessus) — 2 cartes
+  restantes (« Il est verrouillé », « Il coûte sans compter »), grille
+  recentrée. `app/sitemap.ts` : ancre `#verdict` ajoutée.
+
+### 3. Animation de transition — glitch / RGB-split (pas un simple fondu)
+
+Le fondu simple d'un chantier précédent est remplacé par un vrai effet
+glitch à chaque changement de réponse (~350ms, dans le budget 300-500ms
+demandé) :
+- `.glitch-answer` (nouvelles règles dans `app/globals.css`) : au moment du
+  changement, deux pseudo-éléments (`::before`/`::after`) dupliquent le texte
+  en corail et en teal (couleurs de marque), décalés et découpés par
+  `clip-path` animé, en `mix-blend-mode: screen` (fait ressortir les couleurs
+  sur fond sombre) — un vrai split chromatique façon glitch, pas un fondu.
+  Le texte de base tremble légèrement (`glitch-jitter`, `transform` +
+  `filter: blur` bref).
+- **Uniquement des propriétés compositées** (`transform`, `opacity`,
+  `filter`, `clip-path`) sur 1 élément réel + 2 pseudo-éléments — aucune
+  propriété de layout animée, donc aucun repaint/reflow déclenché par
+  l'animation. Choix fait explicitement pour éviter de reproduire le problème
+  de performance déjà rencontré sur ce site (cf. Chantier 2 Performance).
+- Cycle : nouvelle réponse toutes les 2 s, effet glitch actif les 350
+  premières ms de chaque nouvelle réponse.
+
+### Reduced motion
+
+`GlitchAnswer` (dans `components/v3/Sections.tsx`) utilise
+`useReducedMotion()` : si activé, affiche `answers[0]` (« Rien. Absolument
+rien. ») statique, sans intervalle, sans classe `is-glitching`, sans
+pseudo-éléments (`content: none` en reduced-motion dans le CSS, défense en
+profondeur en plus du court-circuit React).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅, build production 15 routes ✅.
+- Hero confirmé visuellement : bon titre, une seule occurrence sur la page
+  (grep sur le code confirme `v3hero.titleA/Em/B` intacts, aucune référence
+  à l'ancien titre erroné).
+- Section Verdict vérifiée en preview desktop **et** mobile (375px) : plein
+  écran, question lisible, défilement actif sur plusieurs cycles.
+- **Glitch capturé en plein transition** via screenshot minuté (~1,7s après
+  chargement) : split chromatique corail/teal visible et propre sur « Il rate
+  des opportunités. », aucun artefact visuel.
+- Mesure FPS via rAF non concluante dans l'outil de preview (le rAF se met en
+  pause quand l'onglet est en arrière-plan — limite déjà documentée dans ce
+  journal) ; la fluidité est garantie par construction (propriétés compositées
+  uniquement, 1 élément + 2 pseudo-éléments, aucune boucle JS pilotant
+  l'animation frame par frame — seul un `setInterval` toggle une classe toutes
+  les 2s) et confirmée visuellement sans saccade sur les captures.
+- **Reduced motion vérifié fonctionnellement** : flag forcé temporairement
+  (`useReducedMotion() || true`) le temps d'un screenshot confirmant le rendu
+  statique correct (couleur/opacité du titre vérifiées via inspection des
+  styles calculés, pas seulement visuellement), confirmé stable sur 4s sans
+  cycle, puis le hack immédiatement retiré — `tsc` re-vérifié après coup.
+- Section Constat : confirmé par inspection DOM que 2 cartes seulement
+  restent (« Il est verrouillé », « Il coûte sans compter »).
+- **Aucun push** — en attente de relecture avant mise en ligne.

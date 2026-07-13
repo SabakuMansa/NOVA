@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useReducedMotion } from "framer-motion";
 import Reveal from "@/components/Reveal";
 import {
   v3constat,
@@ -12,6 +13,7 @@ import {
   v3plans,
   v3process,
   v3ticker,
+  v3verdict,
 } from "@/content/v3";
 
 /* Couleurs mappées statiquement (Tailwind ne compile pas les classes dynamiques). */
@@ -64,6 +66,67 @@ export function V3Ticker() {
   );
 }
 
+/* --------------------------------------------------------------- Verdict */
+const VERDICT_CYCLE_MS = 2000;
+const VERDICT_GLITCH_MS = 350;
+
+/** Réponse qui défile en boucle avec effet glitch/RGB-split au changement.
+ *  reduced-motion : answers[0] affichée seule, sans animation ni pseudo-éléments. */
+function GlitchAnswer({ items }: { items: string[] }) {
+  const reduce = useReducedMotion();
+  const [i, setI] = useState(0);
+  const [glitching, setGlitching] = useState(false);
+  const glitchTimeout = useRef<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => {
+    if (reduce) return;
+    const interval = setInterval(() => {
+      setI((v) => (v + 1) % items.length);
+      setGlitching(true);
+      glitchTimeout.current = setTimeout(() => setGlitching(false), VERDICT_GLITCH_MS);
+    }, VERDICT_CYCLE_MS);
+    return () => {
+      clearInterval(interval);
+      if (glitchTimeout.current) clearTimeout(glitchTimeout.current);
+    };
+  }, [reduce, items.length]);
+
+  const textClass =
+    "font-sans text-3xl font-extrabold tracking-tight text-jaune sm:text-5xl md:text-6xl";
+
+  if (reduce) {
+    return <p className={textClass}>{items[0]}</p>;
+  }
+
+  const current = items[i];
+  return (
+    <p
+      data-text={current}
+      className={`glitch-answer ${glitching ? "is-glitching" : ""} ${textClass}`}
+    >
+      {current}
+    </p>
+  );
+}
+
+export function V3Verdict() {
+  return (
+    <section
+      id={v3verdict.id}
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-encre px-5 py-24 text-center md:px-8"
+    >
+      <Reveal>
+        <h2 className="mx-auto max-w-4xl font-sans text-4xl font-extrabold leading-[1.05] tracking-tight text-lait sm:text-6xl md:text-7xl">
+          {v3verdict.question}
+        </h2>
+      </Reveal>
+      <div className="mt-10 md:mt-14">
+        <GlitchAnswer items={v3verdict.answers} />
+      </div>
+    </section>
+  );
+}
+
 /* --------------------------------------------------------------- Constat */
 export function V3Constat() {
   return (
@@ -75,7 +138,7 @@ export function V3Constat() {
         </h2>
         <p className="mt-4 max-w-xl font-sans text-lg text-encre/70">{v3constat.subtitle}</p>
       </Reveal>
-      <div className="mt-12 grid gap-5 sm:grid-cols-2">
+      <div className="mt-12 grid max-w-2xl gap-5 sm:grid-cols-2">
         {v3constat.cards.map((c, i) => (
           <Reveal key={c.title} delay={i * 0.08}>
             <div className="v3-card v3-card-hover h-full p-6">
@@ -90,11 +153,6 @@ export function V3Constat() {
           </Reveal>
         ))}
       </div>
-      <Reveal className="mt-14 text-center">
-        <p className="mx-auto max-w-2xl font-sans text-2xl font-extrabold tracking-tight text-encre sm:text-3xl">
-          {v3constat.rupture}
-        </p>
-      </Reveal>
     </section>
   );
 }
