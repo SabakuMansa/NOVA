@@ -216,6 +216,7 @@ export const v3plans = {
       featured: true,
       badge: "Le plus choisi",
       color: "violet",
+      exampleHref: "/exemples/site-autonome",
     },
     {
       name: "Machine",

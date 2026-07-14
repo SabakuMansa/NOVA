@@ -1190,3 +1190,139 @@ disponible" nulle part — l'absence est silencieuse, comme demandé.
   horizontal (`scrollWidth` = 375px exact).
 - Console navigateur : 0 erreur sur les 4 pages.
 - **Aucun push** — en attente de relecture.
+
+## [Glitch Verdict] Simplification clip-path → transform/opacity
+
+### Le problème
+
+Lighthouse flaggait toujours 2 éléments sur l'audit `non-composited-
+animations` : les pseudo-éléments `::before`/`::after` du glitch RGB-split
+de la section Verdict (`.glitch-answer`), qui animaient `clip-path` — une
+propriété qui force un repaint, jamais accélérée par le compositeur GPU,
+même après la correction précédente du micro-flou (`filter`) sur l'élément
+principal.
+
+### La décision (tranchée par l'utilisateur)
+
+Remplacer l'usage de `clip-path` par une combinaison `translate` +
+`scaleX` + `opacity` uniquement — entièrement composité/accéléré GPU. Effet
+visuel accepté comme potentiellement un peu moins marqué en échange de la
+fluidité garantie (fidèle à l'esprit "signal qui saute", juste sans la
+découpe nette).
+
+### Ce qui a changé
+
+- `app/globals.css` — keyframes `glitch-split-a` / `glitch-split-b` :
+  suppression totale de `clip-path`, remplacé par `transform: translate(…)
+  scaleX(…)` + `opacity` en 8 étapes, toujours joué avec `steps(6, end)`
+  pour garder le rendu saccadé (pas d'interpolation lisse — ce serait un
+  autre effet).
+- Le reste de la mécanique (`glitch-jitter`, `mix-blend-mode: screen`,
+  couleurs #ff6b4a / #0ea88b, `content: attr(data-text)`, le bloc
+  `prefers-reduced-motion` qui neutralise tout) reste **inchangé**.
+
+### Vérifications effectuées
+
+- Effet visuel confirmé en figeant manuellement l'animation à mi-parcours
+  (`animation-play-state: paused` + `animation-delay` négatif) : le
+  frange RGB (orange/teal) est toujours visible sur le texte, effet
+  reconnaissable.
+- Build production propre + `next start` sur port isolé (3009) + Lighthouse
+  (`--only-categories=performance`) : **`non-composited-animations` → 0
+  élément flaggé** (contre 2 avant correction). Score performance revenu à
+  **96/100**, TBT 30ms, LCP 2.8s — identique à la baseline post-optimisation.
+- Piège rencontré pendant la vérification : un ancien process `next start`
+  orphelin occupait déjà le port choisi et un serveur `next dev` resté actif
+  en tâche de fond partageait le même dossier `.next` que le build de
+  production — combinaison qui a fait servir du JS non minifié le temps de
+  identifier et tuer les deux processus, avant un rebuild propre. Aucun
+  rapport avec le code applicatif.
+- `prefers-reduced-motion` : bloc CSS non modifié, structurellement toujours
+  correct (neutralise animation + contenu sur l'élément et ses deux
+  pseudo-éléments, indépendamment des propriétés animées à l'intérieur).
+- `tsc --noEmit` ✅.
+
+## [Pages exemples] "Salon Marguerite" — démo concrète du plan Autonome
+
+### Objectif
+
+Deuxième page de la série `/exemples/*` (après Présence), montrant
+concrètement ce que couvre le plan **Autonome** (1490€) — différenciateur
+clé face à Présence : un **espace admin** où le commerçant modifierait
+lui-même son site (photos, textes, horaires), sans back-office réellement
+connecté.
+
+### Contrainte de méthode (rappelée par l'utilisateur, respectée)
+
+Réutiliser tel quel le squelette de `/exemples/presence` (layout, nav,
+footer, `PlaceholderImage`) plutôt que reconstruire une architecture —
+aucun nouveau composant partagé créé dans `components/exemples/`, à
+l'exception d'une correction ponctuelle sur `ExempleFooter` (voir
+ci-dessous).
+
+### Ce qui a été construit
+
+- **Commerce fictif** : « Salon Marguerite », salon de coiffure générique
+  (Suresnes) — délibérément différent de la boutique de plantes de
+  Présence, toujours générique (pas un restaurant).
+- **6 pages**, structure et style identiques à `/exemples/presence` :
+  - `app/exemples/site-autonome/page.tsx` — Accueil
+  - `.../prestations/page.tsx` — Prestations & tarifs (nouveau : liste de
+    services avec durée/prix, mise en avant comme contenu que le
+    commerçant pourrait modifier lui-même)
+  - `.../galerie/page.tsx` — Galerie (4 blocs placeholder)
+  - `.../a-propos/page.tsx` — À propos
+  - `.../contact/page.tsx` — Contact / prise de rendez-vous (formulaire
+    repris du pattern `presence/contact`, un seul champ ajouté :
+    "Prestation souhaitée" — même composant, mêmes classes, pas de
+    nouvelle architecture)
+  - `.../espace-admin/page.tsx` — **Espace admin (mockup visuel)**
+- **Espace admin** (le différenciateur) : fenêtre façon back-office
+  (`v3-window`) avec onglets (Horaires / Textes du site / Prestations &
+  tarifs / Photos), champs pré-remplis modifiables localement (`useState`
+  simple, rien de persisté), bouton "Enregistrer les modifications" qui
+  affiche une confirmation temporaire. Bandeau `AVERTISSEMENT` explicite en
+  haut de page : « Aperçu à titre de démonstration — cet espace n'est pas
+  connecté à un vrai compte, rien n'est enregistré. » Aucune connexion
+  réelle, aucun état persistant entre rechargements.
+- **Contenu** : `content/exemples/site-autonome.ts`, même en-tête de
+  commentaire rappelant le périmètre strict (pas d'automatisation, pas
+  d'e-commerce).
+- **Correction ponctuelle sur `ExempleFooter`** (`components/exemples/
+  ExempleFooter.tsx`) : le texte de pied de page mentionnait en dur « plan
+  Présence », ce qui aurait affiché une info fausse sur la démo Autonome.
+  Ajout d'une prop `planLabel` (obligatoire) ; mise à jour du site
+  d'appel dans `app/exemples/presence/layout.tsx` pour passer
+  `planLabel="plan Présence"` explicitement — comportement inchangé pour
+  Présence, correct pour Autonome.
+- **Bouton sur la carte « Autonome »** (`content/v3.ts` → `exampleHref:
+  "/exemples/site-autonome"` sur `v3plans.plans[1]`) : « Voir un exemple
+  concret ↗ », rendu par le bloc conditionnel générique déjà en place dans
+  `V3Plans`. Vérifié : présent uniquement sur les cartes Présence et
+  Autonome, absent de Machine.
+
+### Périmètre strictement respecté (vérifié, pas juste écrit)
+
+`grep` exhaustif sur `content/exemples/site-autonome.ts` et
+`app/exemples/site-autonome/` pour "relance", "notification", "panier",
+"paiement", "e-commerce"/"ecommerce", "stripe", "checkout", "commande" :
+**0 occurrence dans le contenu réel** (seules correspondances : le
+commentaire de tête de `site-autonome.ts`, qui rappelle justement de ne
+jamais les ajouter).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- Les 6 pages vérifiées visuellement en preview, desktop et mobile
+  (375px) : aucun débordement horizontal, nav qui wrap proprement.
+- Espace admin testé en interaction réelle : changement d'onglet
+  fonctionnel, soumission du formulaire "Horaires" → confirmation "✓
+  Enregistré" + message de confirmation affichés (vérifié via
+  `requestAnimationFrame` double, le round-trip des outils de preview étant
+  plus lent que le timeout de 2,2s de la confirmation).
+- Formulaire de contact/rendez-vous testé bout en bout (état "Demande
+  envoyée !" fonctionnel).
+- Bouton "Voir un exemple concret" vérifié présent sur Présence ET
+  Autonome (2 occurrences exactement), absent de Machine.
+- Console navigateur : 0 erreur sur les 6 pages.
+- **Aucun push** — en attente de relecture.

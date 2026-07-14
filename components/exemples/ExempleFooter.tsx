@@ -7,10 +7,12 @@ export default function ExempleFooter({
   businessName,
   address,
   hours,
+  planLabel,
 }: {
   businessName: string;
   address: string;
   hours: string;
+  planLabel: string;
 }) {
   return (
     <footer className="border-t-2 border-encre bg-white px-5 py-8 text-center md:px-8">
@@ -19,8 +21,8 @@ export default function ExempleFooter({
         {address} · {hours}
       </p>
       <p className="mt-4 font-mono text-[0.58rem] uppercase tracking-wide text-encre/35">
-        Site d&apos;exemple réalisé avec le plan Présence de NOVA Studio · Hébergement
-        inclus
+        Site d&apos;exemple réalisé avec le {planLabel} de NOVA Studio ·
+        Hébergement inclus
       </p>
     </footer>
   );

@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import ExempleBanner from "@/components/exemples/ExempleBanner";
 import ExempleFooter from "@/components/exemples/ExempleFooter";
 import ExempleNav from "@/components/exemples/ExempleNav";
-import { presenceDemo } from "@/content/exemples/presence";
+import { siteAutonomeDemo } from "@/content/exemples/site-autonome";
 
 // Exemple fictif, jamais indexé (même traitement que /demo/*).
 export const metadata: Metadata = {
-  title: `Exemple — Plan Présence (${presenceDemo.business.name})`,
+  title: `Exemple — Plan Autonome (${siteAutonomeDemo.business.name})`,
   description:
-    "Exemple concret de ce qu'inclut le plan Présence de NOVA Studio : site 3-4 pages, fiche Google Business, formulaire de contact.",
+    "Exemple concret de ce qu'inclut le plan Autonome de NOVA Studio : site complet sur-mesure, espace admin, prise de rendez-vous, SEO local.",
   robots: {
     index: false,
     follow: false,
@@ -16,24 +16,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PresenceDemoLayout({
+export default function SiteAutonomeDemoLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <div className="min-h-screen bg-lait text-encre">
-      <ExempleBanner planLabel="Plan Présence" />
+      <ExempleBanner planLabel="Plan Autonome" />
       <ExempleNav
-        businessName={presenceDemo.business.name}
-        links={presenceDemo.nav}
+        businessName={siteAutonomeDemo.business.name}
+        links={siteAutonomeDemo.nav}
       />
       <main>{children}</main>
       <ExempleFooter
-        businessName={presenceDemo.business.name}
-        address={presenceDemo.business.address}
-        hours={presenceDemo.business.hours}
-        planLabel="plan Présence"
+        businessName={siteAutonomeDemo.business.name}
+        address={siteAutonomeDemo.business.address}
+        hours={siteAutonomeDemo.business.hours}
+        planLabel="plan Autonome"
       />
     </div>
   );
