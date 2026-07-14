@@ -3,7 +3,10 @@ import Reveal from "./Reveal";
 
 export default function Approche() {
   return (
-    <section id={approche.id} className="mx-auto max-w-content px-5 py-24 md:px-8 md:py-32">
+    <section
+      id={approche.id}
+      className="mx-auto max-w-content px-5 py-24 md:px-8 md:py-32"
+    >
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         {/* Portrait typographique / signature */}
         <Reveal>
@@ -21,7 +24,16 @@ export default function Approche() {
 
                 {/* Bandeau enseigne */}
                 <rect x="0" y="44" width="320" height="52" fill="#2E2521" />
-                <text x="160" y="79" textAnchor="middle" fill="#C89B3C" fontFamily="Georgia, serif" fontSize="26" fontStyle="italic" letterSpacing="1">
+                <text
+                  x="160"
+                  y="79"
+                  textAnchor="middle"
+                  fill="#C89B3C"
+                  fontFamily="Georgia, serif"
+                  fontSize="26"
+                  fontStyle="italic"
+                  letterSpacing="1"
+                >
                   Le Bistrot
                 </text>
 
@@ -48,35 +60,123 @@ export default function Approche() {
                 </g>
 
                 {/* Vitrine éclairée (gauche) */}
-                <rect x="34" y="178" width="128" height="150" rx="4" fill="#2E2521" />
-                <rect x="42" y="186" width="112" height="134" rx="2" fill="#F6E7C2" />
-                <line x1="98" y1="186" x2="98" y2="320" stroke="#2E2521" strokeWidth="3" />
-                <line x1="42" y1="252" x2="154" y2="252" stroke="#2E2521" strokeWidth="3" />
+                <rect
+                  x="34"
+                  y="178"
+                  width="128"
+                  height="150"
+                  rx="4"
+                  fill="#2E2521"
+                />
+                <rect
+                  x="42"
+                  y="186"
+                  width="112"
+                  height="134"
+                  rx="2"
+                  fill="#F6E7C2"
+                />
+                <line
+                  x1="98"
+                  y1="186"
+                  x2="98"
+                  y2="320"
+                  stroke="#2E2521"
+                  strokeWidth="3"
+                />
+                <line
+                  x1="42"
+                  y1="252"
+                  x2="154"
+                  y2="252"
+                  stroke="#2E2521"
+                  strokeWidth="3"
+                />
                 {/* petite table + tasse en vitrine */}
                 <circle cx="70" cy="300" r="9" fill="#6E7B58" />
-                <rect x="120" y="292" width="18" height="14" rx="3" fill="#7A2E2E" />
+                <rect
+                  x="120"
+                  y="292"
+                  width="18"
+                  height="14"
+                  rx="3"
+                  fill="#7A2E2E"
+                />
 
                 {/* Porte (droite) */}
-                <rect x="180" y="178" width="106" height="150" rx="4" fill="#2E2521" />
-                <rect x="188" y="186" width="90" height="134" rx="2" fill="#E4D7BE" />
-                <rect x="196" y="196" width="74" height="54" rx="2" fill="#F6E7C2" />
+                <rect
+                  x="180"
+                  y="178"
+                  width="106"
+                  height="150"
+                  rx="4"
+                  fill="#2E2521"
+                />
+                <rect
+                  x="188"
+                  y="186"
+                  width="90"
+                  height="134"
+                  rx="2"
+                  fill="#E4D7BE"
+                />
+                <rect
+                  x="196"
+                  y="196"
+                  width="74"
+                  height="54"
+                  rx="2"
+                  fill="#F6E7C2"
+                />
                 <circle cx="200" cy="258" r="4" fill="#C89B3C" />
 
                 {/* Pancarte « Ouvert » suspendue */}
-                <line x1="243" y1="196" x2="243" y2="206" stroke="#2E2521" strokeWidth="2" />
-                <rect x="216" y="206" width="54" height="20" rx="4" fill="#7A2E2E" />
-                <text x="243" y="220" textAnchor="middle" fill="#F5EEE1" fontFamily="ui-monospace, monospace" fontSize="10" letterSpacing="1.5">
+                <line
+                  x1="243"
+                  y1="196"
+                  x2="243"
+                  y2="206"
+                  stroke="#2E2521"
+                  strokeWidth="2"
+                />
+                <rect
+                  x="216"
+                  y="206"
+                  width="54"
+                  height="20"
+                  rx="4"
+                  fill="#7A2E2E"
+                />
+                <text
+                  x="243"
+                  y="220"
+                  textAnchor="middle"
+                  fill="#F5EEE1"
+                  fontFamily="ui-monospace, monospace"
+                  fontSize="10"
+                  letterSpacing="1.5"
+                >
                   OUVERT
                 </text>
 
                 {/* Seuil / trottoir */}
-                <rect x="0" y="328" width="320" height="14" fill="#2E2521" opacity="0.55" />
+                <rect
+                  x="0"
+                  y="328"
+                  width="320"
+                  height="14"
+                  fill="#2E2521"
+                  opacity="0.55"
+                />
                 <rect x="0" y="342" width="320" height="58" fill="#D8C9AC" />
               </svg>
             </div>
             <ul className="mt-6 space-y-2">
               {approche.credibility.map((c) => (
-                <li key={c} className="flex items-center gap-2.5 font-mono text-xs uppercase tracking-wide text-cafe/70">
+                <li
+                  key={c}
+                  className="flex items-center gap-2.5 font-mono text-xs uppercase tracking-wide text-cafe/70"
+                >
                   <span className="h-1.5 w-1.5 rounded-full bg-sauge" />
                   {c}
                 </li>
@@ -102,7 +202,10 @@ export default function Approche() {
                 delay={i * 0.15}
                 className="flex items-start gap-4"
               >
-                <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-lie" aria-hidden />
+                <span
+                  className="mt-2 h-2 w-2 shrink-0 rounded-full bg-lie"
+                  aria-hidden
+                />
                 <span className="font-sans text-lg leading-snug text-cafe/85">
                   {p}
                 </span>

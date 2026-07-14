@@ -24,7 +24,7 @@ function readClient(): SupabaseClient {
     throw new Error(
       "REVIEWS_STORE_MODE=supabase demandé mais SUPABASE_URL / " +
         "SUPABASE_SERVICE_ROLE_KEY sont absentes. Renseignez-les dans " +
-        ".env.local — voir README-reviews.md."
+        ".env.local — voir README-reviews.md.",
     );
   }
   return createClient(url, key, { auth: { persistSession: false } });
@@ -107,7 +107,10 @@ export function createSupabaseReviewStore(): ReviewJobStore {
         patch.sent_at = new Date().toISOString();
       }
       if (result.error) patch.error = result.error;
-      const { error } = await readClient().from(TABLE).update(patch).eq("id", id);
+      const { error } = await readClient()
+        .from(TABLE)
+        .update(patch)
+        .eq("id", id);
       if (error) throw new Error(`Supabase (markSent): ${error.message}`);
     },
 

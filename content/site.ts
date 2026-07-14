@@ -21,7 +21,8 @@ export const nav = {
 export const hero = {
   eyebrow: "CONÇU PAR UN RESTAURATEUR, PAS PAR UNE AGENCE",
   // Le mot en italique display est mis en avant via {em}
-  titleLead: "Un site qui ne travaille pas pour vous n'est pas gratuit. Il vous coûte des",
+  titleLead:
+    "Un site qui ne travaille pas pour vous n'est pas gratuit. Il vous coûte des",
   titleEm: "clients",
   subtitle:
     "Je gère des restaurants en Île-de-France. Je conçois des sites et des outils numériques pour que le digital vous fasse gagner du temps et des clients — pas l'inverse.",
@@ -42,8 +43,10 @@ export const hero = {
 export const approche = {
   id: "approche",
   eyebrow: "CRÉDIBILITÉ",
-  title: "Ce n'est pas une agence qui a lu sur les restaurants. C'est moi qui les gère.",
-  intro: "Chaque situation ci-dessus, je l'ai vécue avant de la résoudre pour d'autres.",
+  title:
+    "Ce n'est pas une agence qui a lu sur les restaurants. C'est moi qui les gère.",
+  intro:
+    "Chaque situation ci-dessus, je l'ai vécue avant de la résoudre pour d'autres.",
   proofs: [
     "Un dimanche soir, pas de webmaster à qui écrire pour changer un horaire.",
     "Un client qui appelle parce que le site affiche encore l'ancien menu.",
@@ -62,7 +65,8 @@ export const problemes = {
   id: "problemes",
   eyebrow: "LE CONSTAT",
   title: "Le vrai coût d'un site qui ne travaille pas pour vous.",
-  subtitle: "Ce ne sont pas des détails. Ce sont des clients qui partent ailleurs.",
+  subtitle:
+    "Ce ne sont pas des détails. Ce sont des clients qui partent ailleurs.",
   cards: [
     {
       tag: "Dimanche soir",
@@ -128,7 +132,8 @@ export const carte = {
       name: "Vitrine Essentielle",
       price: "690€",
       priceValue: "690",
-      tagline: "Si votre priorité, c'est d'exister en ligne, sérieusement et rapidement.",
+      tagline:
+        "Si votre priorité, c'est d'exister en ligne, sérieusement et rapidement.",
       features: [
         "Site 3–4 pages, pensé mobile",
         "Fiche Google Business optimisée",
@@ -141,7 +146,8 @@ export const carte = {
       name: "Site Autonome",
       price: "1490€",
       priceValue: "1490",
-      tagline: "Si vous voulez ne plus jamais dépendre de quelqu'un d'autre pour votre propre site.",
+      tagline:
+        "Si vous voulez ne plus jamais dépendre de quelqu'un d'autre pour votre propre site.",
       features: [
         "Site complet sur-mesure",
         "Espace admin : photos, menu, horaires",
@@ -156,7 +162,8 @@ export const carte = {
       name: "Croissance Digitale",
       price: "dès 1990€",
       priceValue: "1990",
-      tagline: "Si votre digital doit vous faire gagner du temps chaque semaine, pas juste exister.",
+      tagline:
+        "Si votre digital doit vous faire gagner du temps chaque semaine, pas juste exister.",
       features: [
         "Tout le Site Autonome",
         "Automatisations : relance d'avis, notifications",
@@ -166,7 +173,8 @@ export const carte = {
       subscription: "puis 95€/mois",
     },
   ] as Offre[],
-  footnote: "Une question sur la formule qu'il vous faut ? Quinze minutes suffisent pour le savoir.",
+  footnote:
+    "Une question sur la formule qu'il vous faut ? Quinze minutes suffisent pour le savoir.",
   footnoteCta: { label: "Réserver 15 minutes", href: "#contact" },
   // Supplément « à la carte » (secondaire, dans le style menu, pas une 4e offre).
   // ⚠️ Ne jamais nommer la marque technique dans ce texte visible.
@@ -204,7 +212,8 @@ export const carte = {
 
 // --- Configurateur (section Aperçu) ---
 
-export type CommerceType = "Restaurant" | "Boutique" | "Artisan" | "Association";
+export type CommerceType =
+  "Restaurant" | "Boutique" | "Artisan" | "Association";
 export type StyleType = "Chaleureux" | "Épuré" | "Premium";
 
 export type PreviewCombo = {
@@ -227,8 +236,14 @@ export const apercu = {
   id: "apercu",
   eyebrow: "DÉMONSTRATION",
   title: "Voyez, plutôt qu'on vous le décrive.",
-  subtitle: "Choisissez votre activité et un style. L'aperçu s'ajuste en direct.",
-  commerceTypes: ["Restaurant", "Boutique", "Artisan", "Association"] as CommerceType[],
+  subtitle:
+    "Choisissez votre activité et un style. L'aperçu s'ajuste en direct.",
+  commerceTypes: [
+    "Restaurant",
+    "Boutique",
+    "Artisan",
+    "Association",
+  ] as CommerceType[],
   styleTypes: ["Chaleureux", "Épuré", "Premium"] as StyleType[],
   disclaimer:
     "Ceci reste un aperçu simplifié. Votre vrai site sera pensé pour votre commerce, pas pour une démo.",
@@ -250,7 +265,8 @@ export const previewCombos: Record<
   Restaurant: {
     Chaleureux: {
       headline: "La table qui vous ressemble",
-      tagline: "Cuisine de saison, ambiance de quartier. Réservez votre table en deux clics.",
+      tagline:
+        "Cuisine de saison, ambiance de quartier. Réservez votre table en deux clics.",
       cta: "Réserver une table",
       category: "BISTROT · SAINT-MAUR",
       bg: "#F5EEE1",
@@ -262,7 +278,8 @@ export const previewCombos: Record<
     },
     Épuré: {
       headline: "Bien manger, simplement",
-      tagline: "Une carte courte, des produits justes. Ouvert du mardi au samedi.",
+      tagline:
+        "Une carte courte, des produits justes. Ouvert du mardi au samedi.",
       cta: "Voir la carte",
       category: "RESTAURANT",
       bg: "#FBFAF7",
@@ -274,7 +291,8 @@ export const previewCombos: Record<
     },
     Premium: {
       headline: "Une expérience à table",
-      tagline: "Gastronomie, accords mets & vins, service d'exception. Sur réservation.",
+      tagline:
+        "Gastronomie, accords mets & vins, service d'exception. Sur réservation.",
       cta: "Réserver une expérience",
       category: "TABLE GASTRONOMIQUE",
       bg: "#211C1A",
@@ -288,7 +306,8 @@ export const previewCombos: Record<
   Boutique: {
     Chaleureux: {
       headline: "Vos trouvailles de quartier",
-      tagline: "Une sélection choisie avec soin. Poussez la porte, on vous attend.",
+      tagline:
+        "Une sélection choisie avec soin. Poussez la porte, on vous attend.",
       cta: "Découvrir la boutique",
       category: "CONCEPT STORE",
       bg: "#F5EEE1",
@@ -300,7 +319,8 @@ export const previewCombos: Record<
     },
     Épuré: {
       headline: "L'essentiel, bien choisi",
-      tagline: "Des pièces qui durent, sans superflu. Nouvelle collection en boutique.",
+      tagline:
+        "Des pièces qui durent, sans superflu. Nouvelle collection en boutique.",
       cta: "Voir la sélection",
       category: "BOUTIQUE",
       bg: "#FBFAF7",
@@ -312,7 +332,8 @@ export const previewCombos: Record<
     },
     Premium: {
       headline: "La sélection d'exception",
-      tagline: "Pièces rares et conseil personnalisé. Sur rendez-vous ou en boutique.",
+      tagline:
+        "Pièces rares et conseil personnalisé. Sur rendez-vous ou en boutique.",
       cta: "Prendre rendez-vous",
       category: "MAISON · SÉLECTION",
       bg: "#211C1A",
@@ -326,7 +347,8 @@ export const previewCombos: Record<
   Artisan: {
     Chaleureux: {
       headline: "Le savoir-faire, près de chez vous",
-      tagline: "Un métier, une passion, un contact direct. Demandez votre devis.",
+      tagline:
+        "Un métier, une passion, un contact direct. Demandez votre devis.",
       cta: "Demander un devis",
       category: "ATELIER · ÎLE-DE-FRANCE",
       bg: "#F5EEE1",
@@ -338,7 +360,8 @@ export const previewCombos: Record<
     },
     Épuré: {
       headline: "Un travail bien fait",
-      tagline: "Devis clair, délais tenus, finitions soignées. Parlons de votre projet.",
+      tagline:
+        "Devis clair, délais tenus, finitions soignées. Parlons de votre projet.",
       cta: "Parler de mon projet",
       category: "ARTISAN",
       bg: "#FBFAF7",
@@ -350,7 +373,8 @@ export const previewCombos: Record<
     },
     Premium: {
       headline: "L'artisanat d'exception",
-      tagline: "Pièces sur-mesure et matériaux nobles. Un accompagnement de A à Z.",
+      tagline:
+        "Pièces sur-mesure et matériaux nobles. Un accompagnement de A à Z.",
       cta: "Débuter un projet",
       category: "ATELIER · SUR-MESURE",
       bg: "#211C1A",
@@ -364,7 +388,8 @@ export const previewCombos: Record<
   Association: {
     Chaleureux: {
       headline: "Ensemble, on va plus loin",
-      tagline: "Rejoignez une équipe engagée près de chez vous. Adhérez en ligne.",
+      tagline:
+        "Rejoignez une équipe engagée près de chez vous. Adhérez en ligne.",
       cta: "Nous rejoindre",
       category: "ASSOCIATION LOCALE",
       bg: "#F5EEE1",
@@ -376,7 +401,8 @@ export const previewCombos: Record<
     },
     Épuré: {
       headline: "Agir, simplement",
-      tagline: "Nos actions, nos rendez-vous, comment participer. Tout est clair.",
+      tagline:
+        "Nos actions, nos rendez-vous, comment participer. Tout est clair.",
       cta: "Voir nos actions",
       category: "ASSOCIATION",
       bg: "#FBFAF7",
@@ -388,7 +414,8 @@ export const previewCombos: Record<
     },
     Premium: {
       headline: "Un engagement qui compte",
-      tagline: "Soutenez nos projets et suivez leur impact en toute transparence.",
+      tagline:
+        "Soutenez nos projets et suivez leur impact en toute transparence.",
       cta: "Soutenir la cause",
       category: "FONDATION · MÉCÉNAT",
       bg: "#211C1A",
@@ -406,12 +433,36 @@ export const process = {
   eyebrow: "COMMENT ÇA SE PASSE",
   title: "Ce qui se passe après que vous ayez cliqué sur ce bouton.",
   steps: [
-    { n: "01", name: "Audit", text: "15 minutes pour comprendre votre activité. Pas un argumentaire de vente déguisé." },
-    { n: "02", name: "Proposition", text: "Un devis clair sous 48h. Un prix, pas une fourchette." },
-    { n: "03", name: "Conception", text: "Vous validez avant qu'une seule ligne de code soit écrite." },
-    { n: "04", name: "Développement", text: "Des points d'étape réguliers. Jamais trois semaines de silence." },
-    { n: "05", name: "Livraison", text: "On configure votre espace ensemble, en direct. Pas un tutoriel PDF." },
-    { n: "06", name: "Suivi", text: "Je reste disponible après la mise en ligne. Pas seulement pendant le projet." },
+    {
+      n: "01",
+      name: "Audit",
+      text: "15 minutes pour comprendre votre activité. Pas un argumentaire de vente déguisé.",
+    },
+    {
+      n: "02",
+      name: "Proposition",
+      text: "Un devis clair sous 48h. Un prix, pas une fourchette.",
+    },
+    {
+      n: "03",
+      name: "Conception",
+      text: "Vous validez avant qu'une seule ligne de code soit écrite.",
+    },
+    {
+      n: "04",
+      name: "Développement",
+      text: "Des points d'étape réguliers. Jamais trois semaines de silence.",
+    },
+    {
+      n: "05",
+      name: "Livraison",
+      text: "On configure votre espace ensemble, en direct. Pas un tutoriel PDF.",
+    },
+    {
+      n: "06",
+      name: "Suivi",
+      text: "Je reste disponible après la mise en ligne. Pas seulement pendant le projet.",
+    },
   ],
 };
 
@@ -420,8 +471,7 @@ export const contact = {
   eyebrow: "CONTACT",
   title: "Parlons de votre commerce, pas de technique.",
   subtitle: "Audit gratuit, sans engagement. Réponse sous 24h.",
-  intro:
-    "Dites-m'en un peu sur votre commerce. Le reste, on le voit ensemble.",
+  intro: "Dites-m'en un peu sur votre commerce. Le reste, on le voit ensemble.",
   email: "bonjour@nova-studio.fr",
   phone: "06 12 34 56 78",
   fields: {

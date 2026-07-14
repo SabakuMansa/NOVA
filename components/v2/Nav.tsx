@@ -67,7 +67,9 @@ export default function V2Nav() {
         <div className="hidden items-center gap-7 lg:flex">
           {PAGES.map((p) => {
             const isActive =
-              p.href === "/v2" ? pathname === "/v2" : pathname.startsWith(p.href);
+              p.href === "/v2"
+                ? pathname === "/v2"
+                : pathname.startsWith(p.href);
             return (
               <Link
                 key={p.href}
@@ -79,8 +81,8 @@ export default function V2Nav() {
                       ? "text-nappe"
                       : "text-nappe/70 hover:text-nappe"
                     : isActive
-                    ? "text-cafe"
-                    : "text-cafe/70 hover:text-cafe"
+                      ? "text-cafe"
+                      : "text-cafe/70 hover:text-cafe"
                 }`}
               >
                 {p.label}

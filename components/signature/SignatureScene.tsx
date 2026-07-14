@@ -17,7 +17,7 @@ function EmbersPlane() {
       uRes: { value: new THREE.Vector2(size.width, size.height) },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   // Suivi du pointeur via la fenêtre : le canvas est sous une couche
@@ -28,7 +28,7 @@ function EmbersPlane() {
     const onMove = (e: PointerEvent) => {
       target.current.set(
         e.clientX / window.innerWidth,
-        1 - e.clientY / window.innerHeight
+        1 - e.clientY / window.innerHeight,
       );
     };
     window.addEventListener("pointermove", onMove, { passive: true });

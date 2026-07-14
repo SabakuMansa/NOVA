@@ -37,13 +37,15 @@ class MemoryReviewStore implements ReviewJobStore {
 
   async listAll(): Promise<ReviewJob[]> {
     // Le plus récent d'abord — plus lisible pour un tableau de bord.
-    return [...this.jobs].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    return [...this.jobs].sort((a, b) =>
+      b.createdAt.localeCompare(a.createdAt),
+    );
   }
 
   async listDue(now: Date): Promise<ReviewJob[]> {
     const nowMs = now.getTime();
     return this.jobs.filter(
-      (j) => j.status === "scheduled" && new Date(j.sendAt).getTime() <= nowMs
+      (j) => j.status === "scheduled" && new Date(j.sendAt).getTime() <= nowMs,
     );
   }
 
@@ -62,7 +64,9 @@ class MemoryReviewStore implements ReviewJobStore {
     if (!job) return;
     job.unsubscribed = true;
     job.status = "canceled";
-    this.unsubscribed.add(`${job.businessId}:${job.customerEmail.toLowerCase()}`);
+    this.unsubscribed.add(
+      `${job.businessId}:${job.customerEmail.toLowerCase()}`,
+    );
   }
 
   async isUnsubscribed(businessId: string, email: string): Promise<boolean> {

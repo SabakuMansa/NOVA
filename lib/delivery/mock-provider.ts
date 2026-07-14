@@ -35,9 +35,13 @@ function statusFromElapsed(elapsedSec: number): {
   status: DeliveryStatusValue;
   etaMinutes: number | null;
 } {
-  if (elapsedSec < PREPARING_UNTIL) return { status: "preparing", etaMinutes: 20 };
+  if (elapsedSec < PREPARING_UNTIL)
+    return { status: "preparing", etaMinutes: 20 };
   if (elapsedSec < EN_ROUTE_UNTIL) {
-    const remaining = Math.max(1, Math.round((EN_ROUTE_UNTIL - elapsedSec) / 2));
+    const remaining = Math.max(
+      1,
+      Math.round((EN_ROUTE_UNTIL - elapsedSec) / 2),
+    );
     return { status: "courier_en_route", etaMinutes: remaining };
   }
   return { status: "delivered", etaMinutes: 0 };

@@ -26,12 +26,42 @@ const RESTAURANT = {
 type Dish = { id: string; name: string; desc: string; price: number };
 
 const MENU: Dish[] = [
-  { id: "burger", name: "Burger maison & frites", desc: "Bœuf français, cheddar affiné, frites fraîches", price: 1450 },
-  { id: "cesar", name: "Salade César", desc: "Poulet rôti, parmesan, croûtons maison", price: 1100 },
-  { id: "poke", name: "Poke bowl saumon", desc: "Saumon, riz vinaigré, edamame, avocat", price: 1350 },
-  { id: "risotto", name: "Risotto aux champignons", desc: "Arborio, champignons de Paris, parmesan", price: 1300 },
-  { id: "tarte", name: "Tarte du jour", desc: "Pâte sablée, fruits de saison", price: 600 },
-  { id: "limo", name: "Limonade artisanale", desc: "Citron pressé, menthe fraîche", price: 400 },
+  {
+    id: "burger",
+    name: "Burger maison & frites",
+    desc: "Bœuf français, cheddar affiné, frites fraîches",
+    price: 1450,
+  },
+  {
+    id: "cesar",
+    name: "Salade César",
+    desc: "Poulet rôti, parmesan, croûtons maison",
+    price: 1100,
+  },
+  {
+    id: "poke",
+    name: "Poke bowl saumon",
+    desc: "Saumon, riz vinaigré, edamame, avocat",
+    price: 1350,
+  },
+  {
+    id: "risotto",
+    name: "Risotto aux champignons",
+    desc: "Arborio, champignons de Paris, parmesan",
+    price: 1300,
+  },
+  {
+    id: "tarte",
+    name: "Tarte du jour",
+    desc: "Pâte sablée, fruits de saison",
+    price: 600,
+  },
+  {
+    id: "limo",
+    name: "Limonade artisanale",
+    desc: "Citron pressé, menthe fraîche",
+    price: 400,
+  },
 ];
 
 const euro = (cents: number) =>
@@ -41,17 +71,26 @@ type Step = "menu" | "checkout" | "confirm" | "tracking";
 
 export default function CommandeDemoPage() {
   const [step, setStep] = useState<Step>("menu");
-  const [cart, setCart] = useState<Record<string, number>>({ burger: 1, cesar: 1 });
+  const [cart, setCart] = useState<Record<string, number>>({
+    burger: 1,
+    cesar: 1,
+  });
   const [deliveryId, setDeliveryId] = useState<string | null>(null);
   const [orderNo, setOrderNo] = useState("");
-  const [pending, setPending] = useState<{ quote: DeliveryQuote; dropoff: Address } | null>(null);
+  const [pending, setPending] = useState<{
+    quote: DeliveryQuote;
+    dropoff: Address;
+  } | null>(null);
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const lines = useMemo(
     () =>
-      MENU.filter((d) => cart[d.id] > 0).map((d) => ({ ...d, qty: cart[d.id] })),
-    [cart]
+      MENU.filter((d) => cart[d.id] > 0).map((d) => ({
+        ...d,
+        qty: cart[d.id],
+      })),
+    [cart],
   );
   const totalCents = lines.reduce((s, l) => s + l.price * l.qty, 0);
   const itemCount = lines.reduce((s, l) => s + l.qty, 0);
@@ -118,7 +157,8 @@ export default function CommandeDemoPage() {
       {/* Bandeau sandbox */}
       <div className="border-b-2 border-encre bg-encre px-5 py-2 text-center">
         <p className="font-mono text-[0.62rem] uppercase tracking-eyebrow text-jaune">
-          Démonstration · exemple de commande — aucune vraie commande n'est passée
+          Démonstration · exemple de commande — aucune vraie commande n'est
+          passée
         </p>
       </div>
 
@@ -142,7 +182,9 @@ export default function CommandeDemoPage() {
         {/* ÉTAPE MENU */}
         {step === "menu" && (
           <>
-            <h2 className="font-sans text-2xl font-extrabold tracking-tight">La carte</h2>
+            <h2 className="font-sans text-2xl font-extrabold tracking-tight">
+              La carte
+            </h2>
             <ul className="mt-6 space-y-4">
               {MENU.map((d) => {
                 const qty = cart[d.id] || 0;
@@ -153,12 +195,16 @@ export default function CommandeDemoPage() {
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-baseline gap-x-2">
-                        <h3 className="font-sans text-lg font-bold">{d.name}</h3>
+                        <h3 className="font-sans text-lg font-bold">
+                          {d.name}
+                        </h3>
                         <span className="font-mono text-sm text-violet">
                           {euro(d.price)}
                         </span>
                       </div>
-                      <p className="mt-0.5 font-sans text-sm text-encre/60">{d.desc}</p>
+                      <p className="mt-0.5 font-sans text-sm text-encre/60">
+                        {d.desc}
+                      </p>
                     </div>
                     {qty === 0 ? (
                       <button
@@ -220,7 +266,8 @@ export default function CommandeDemoPage() {
                     className="flex items-baseline justify-between border-b-2 border-dashed border-encre/15 pb-2.5 font-sans"
                   >
                     <span>
-                      <span className="font-mono text-encre/50">{l.qty}×</span> {l.name}
+                      <span className="font-mono text-encre/50">{l.qty}×</span>{" "}
+                      {l.name}
                     </span>
                     <span className="font-mono text-sm font-bold">
                       {euro(l.price * l.qty)}
@@ -254,7 +301,12 @@ export default function CommandeDemoPage() {
         {step === "confirm" && (
           <div className="flex flex-col items-center py-10 text-center">
             <span className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-encre bg-teal text-white shadow-[3px_3px_0_#211D16]">
-              <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" aria-hidden>
+              <svg
+                viewBox="0 0 24 24"
+                className="h-8 w-8"
+                fill="none"
+                aria-hidden
+              >
                 <path
                   d="m5 13 4 4L19 7"
                   stroke="currentColor"
@@ -271,8 +323,8 @@ export default function CommandeDemoPage() {
               {orderNo}
             </p>
             <p className="mt-4 max-w-sm font-sans text-encre/70">
-              {RESTAURANT.name} prépare votre commande. Un livreur passera la récupérer
-              puis vous l'apportera.
+              {RESTAURANT.name} prépare votre commande. Un livreur passera la
+              récupérer puis vous l'apportera.
             </p>
             <button
               type="button"
@@ -282,7 +334,11 @@ export default function CommandeDemoPage() {
             >
               {creating ? "Ouverture du suivi…" : "Suivre ma commande"}
             </button>
-            {error && <p className="mt-3 font-sans text-sm font-bold text-corail">{error}</p>}
+            {error && (
+              <p className="mt-3 font-sans text-sm font-bold text-corail">
+                {error}
+              </p>
+            )}
           </div>
         )}
 
@@ -309,8 +365,9 @@ export default function CommandeDemoPage() {
         )}
 
         <p className="mt-10 border-t-2 border-dashed border-encre/15 pt-6 font-sans text-xs leading-relaxed text-encre/50">
-          Exemple de démonstration. Un vrai site s'adapte à votre menu, vos prix et votre
-          zone de livraison. Aucune commande ni aucun paiement réels ne sont effectués ici.
+          Exemple de démonstration. Un vrai site s'adapte à votre menu, vos prix
+          et votre zone de livraison. Aucune commande ni aucun paiement réels ne
+          sont effectués ici.
         </p>
       </main>
 
@@ -321,7 +378,9 @@ export default function CommandeDemoPage() {
             <span className="font-sans text-sm">
               <span className="font-bold">{itemCount}</span> article
               {itemCount > 1 ? "s" : ""} ·{" "}
-              <span className="font-mono font-bold text-violet">{euro(totalCents)}</span>
+              <span className="font-mono font-bold text-violet">
+                {euro(totalCents)}
+              </span>
             </span>
             <button
               type="button"

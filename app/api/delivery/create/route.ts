@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     if (!body?.quoteId || !body?.pickup || !body?.dropoff) {
       return NextResponse.json(
         { error: "quoteId, pickup et dropoff sont requis." },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const job = await getDeliveryProvider().createDelivery(body);

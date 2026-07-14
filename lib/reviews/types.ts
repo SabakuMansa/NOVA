@@ -9,15 +9,15 @@ export type EmailMode = "demo" | "live";
 
 export type ReviewJobStatus =
   | "scheduled" // en attente de l'heure d'envoi
-  | "sent"      // envoyé pour de vrai (mode live)
+  | "sent" // envoyé pour de vrai (mode live)
   | "simulated" // envoi simulé (mode demo), jamais parti réellement
-  | "error"     // tentative d'envoi échouée
+  | "error" // tentative d'envoi échouée
   | "canceled"; // désinscrit avant l'envoi
 
 /** Jetons de marque du commerçant — l'email reprend SA charte, pas celle de NOVA. */
 export interface BusinessBrand {
-  primary: string;   // couleur d'accent (bouton CTA)
-  ink: string;       // couleur de texte principale
+  primary: string; // couleur d'accent (bouton CTA)
+  ink: string; // couleur de texte principale
   background: string;
   fontFamily: string; // pile de polices "email-safe" (web fonts non fiables en email)
 }
@@ -68,7 +68,10 @@ export interface SendResult {
 /** Contrat commun aux fournisseurs d'email (démo et réel). */
 export interface EmailProvider {
   readonly mode: EmailMode;
-  sendReviewRequest(job: ReviewJob, business: BusinessProfile): Promise<SendResult>;
+  sendReviewRequest(
+    job: ReviewJob,
+    business: BusinessProfile,
+  ): Promise<SendResult>;
 }
 
 /** Contrat de persistance des jobs planifiés (mémoire en dev, Supabase en prod). */

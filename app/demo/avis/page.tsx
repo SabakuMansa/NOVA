@@ -28,7 +28,9 @@ function statusBadge(status: ReviewJob["status"]) {
     canceled: "Désinscrite",
   };
   return (
-    <span className={`rounded-full border-2 border-encre px-2.5 py-1 font-mono text-[0.6rem] font-bold uppercase ${map[status]}`}>
+    <span
+      className={`rounded-full border-2 border-encre px-2.5 py-1 font-mono text-[0.6rem] font-bold uppercase ${map[status]}`}
+    >
       {label[status]}
     </span>
   );
@@ -100,7 +102,8 @@ export default function AvisDemoPage() {
     <div className="min-h-screen bg-lait pb-20 text-encre">
       <div className="border-b-2 border-encre bg-encre px-5 py-2 text-center">
         <p className="font-mono text-[0.62rem] uppercase tracking-wide text-jaune">
-          Démonstration · module Relance avis Google — aucun vrai email n'est envoyé en mode démo
+          Démonstration · module Relance avis Google — aucun vrai email n'est
+          envoyé en mode démo
         </p>
       </div>
 
@@ -109,13 +112,16 @@ export default function AvisDemoPage() {
           Réservation → relance avis
         </h1>
         <p className="mt-2 font-sans text-encre/70">
-          Créez une réservation fictive. La relance est planifiée à
-          « réservation + délai » (ici en minutes pour tester vite), puis
-          envoyée automatiquement — simulée en mode démo, réellement via
-          Resend en mode live.
+          Créez une réservation fictive. La relance est planifiée à «
+          réservation + délai » (ici en minutes pour tester vite), puis envoyée
+          automatiquement — simulée en mode démo, réellement via Resend en mode
+          live.
         </p>
 
-        <form onSubmit={createReservation} className="v3-card mt-8 space-y-4 p-6">
+        <form
+          onSubmit={createReservation}
+          className="v3-card mt-8 space-y-4 p-6"
+        >
           <div className="grid gap-4 sm:grid-cols-2">
             <input
               required
@@ -135,7 +141,8 @@ export default function AvisDemoPage() {
           </div>
           <label className="block">
             <span className="mb-1.5 block font-mono text-[0.62rem] font-bold uppercase tracking-wide text-encre/60">
-              Délai avant envoi (minutes — remplace les heures réelles pour tester vite)
+              Délai avant envoi (minutes — remplace les heures réelles pour
+              tester vite)
             </span>
             <input
               type="number"
@@ -153,7 +160,9 @@ export default function AvisDemoPage() {
           >
             {creating ? "Création…" : "Créer la réservation"}
           </button>
-          {error && <p className="font-sans text-sm font-bold text-corail">{error}</p>}
+          {error && (
+            <p className="font-sans text-sm font-bold text-corail">{error}</p>
+          )}
           {lastJob && (
             <p className="font-sans text-sm text-encre/70">
               Relance planifiée pour{" "}
@@ -179,22 +188,29 @@ export default function AvisDemoPage() {
           </button>
         </div>
         <p className="mt-1 font-mono text-[0.6rem] uppercase tracking-wide text-encre/40">
-          Rafraîchi automatiquement toutes les 4s · un poller local vérifie aussi toutes les 15s
+          Rafraîchi automatiquement toutes les 4s · un poller local vérifie
+          aussi toutes les 15s
         </p>
 
         <ul className="mt-4 space-y-3">
           {jobs.length === 0 && (
-            <p className="font-sans text-sm text-encre/50">Aucune réservation pour l'instant.</p>
+            <p className="font-sans text-sm text-encre/50">
+              Aucune réservation pour l'instant.
+            </p>
           )}
           {jobs.map((j) => (
-            <li key={j.id} className="v3-card flex items-center justify-between gap-4 p-4">
+            <li
+              key={j.id}
+              className="v3-card flex items-center justify-between gap-4 p-4"
+            >
               <div className="min-w-0">
                 <p className="truncate font-sans text-sm font-bold">
                   {j.customerName || j.customerEmail}
                 </p>
                 <p className="font-mono text-[0.65rem] text-encre/50">
                   envoi prévu {new Date(j.sendAt).toLocaleTimeString("fr-FR")}
-                  {j.sentAt && ` · traité ${new Date(j.sentAt).toLocaleTimeString("fr-FR")}`}
+                  {j.sentAt &&
+                    ` · traité ${new Date(j.sentAt).toLocaleTimeString("fr-FR")}`}
                   {j.error && ` · ${j.error}`}
                 </p>
               </div>

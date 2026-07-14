@@ -55,7 +55,11 @@ export default function DeliveryOptionSelector({
   return (
     <div className="v3-card p-6 sm:p-8">
       {/* Choix retrait / livraison */}
-      <div className="grid grid-cols-2 gap-3" role="radiogroup" aria-label="Mode de réception">
+      <div
+        className="grid grid-cols-2 gap-3"
+        role="radiogroup"
+        aria-label="Mode de réception"
+      >
         {(["pickup", "delivery"] as const).map((m) => (
           <button
             key={m}
@@ -85,7 +89,9 @@ export default function DeliveryOptionSelector({
                 className={field}
                 placeholder="12 rue du Marché"
                 value={dropoff.street}
-                onChange={(e) => setDropoff({ ...dropoff, street: e.target.value })}
+                onChange={(e) =>
+                  setDropoff({ ...dropoff, street: e.target.value })
+                }
               />
             </label>
             <label className="block">
@@ -97,7 +103,9 @@ export default function DeliveryOptionSelector({
                 placeholder="94100"
                 inputMode="numeric"
                 value={dropoff.postalCode}
-                onChange={(e) => setDropoff({ ...dropoff, postalCode: e.target.value })}
+                onChange={(e) =>
+                  setDropoff({ ...dropoff, postalCode: e.target.value })
+                }
               />
             </label>
           </div>
@@ -152,8 +160,8 @@ export default function DeliveryOptionSelector({
 
       {mode === "pickup" && (
         <p className="mt-6 font-sans text-sm leading-relaxed text-encre/70">
-          Votre commande vous attend sur place. Vous êtes prévenu dès qu'elle est
-          prête.
+          Votre commande vous attend sur place. Vous êtes prévenu dès qu'elle
+          est prête.
         </p>
       )}
     </div>

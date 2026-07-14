@@ -33,7 +33,7 @@ function getDefaultDelayHours(): number {
 export class UnknownBusinessError extends Error {}
 
 export async function scheduleReviewRequest(
-  input: CreateReviewJobInput
+  input: CreateReviewJobInput,
 ): Promise<ReviewJob> {
   const business = getBusiness(input.businessId);
   if (!business) {
@@ -43,7 +43,9 @@ export async function scheduleReviewRequest(
   const reservationAt = new Date(input.reservationAt);
   let sendAt: Date;
   if (input.delayMinutesOverride != null) {
-    sendAt = new Date(reservationAt.getTime() + input.delayMinutesOverride * 60_000);
+    sendAt = new Date(
+      reservationAt.getTime() + input.delayMinutesOverride * 60_000,
+    );
   } else {
     const hours = business.reviewDelayHours ?? getDefaultDelayHours();
     sendAt = new Date(reservationAt.getTime() + hours * 60 * 60_000);

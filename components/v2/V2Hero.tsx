@@ -89,11 +89,17 @@ export default function V2Hero() {
           style={{ animationDelay: `${(leadWords * 0.05 + 0.4).toFixed(2)}s` }}
         >
           <Link
-            href={hero.ctaPrimary.href.startsWith("#") ? "/v2/contact" : hero.ctaPrimary.href}
+            href={
+              hero.ctaPrimary.href.startsWith("#")
+                ? "/v2/contact"
+                : hero.ctaPrimary.href
+            }
             className="group inline-flex items-center justify-center gap-2 rounded-full bg-lie px-7 py-4 font-sans text-base font-medium text-nappe shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
           >
             {hero.ctaPrimary.label}
-            <span className="transition-transform group-hover:translate-x-1">→</span>
+            <span className="transition-transform group-hover:translate-x-1">
+              →
+            </span>
           </Link>
           <Link
             href="/v2/approche"

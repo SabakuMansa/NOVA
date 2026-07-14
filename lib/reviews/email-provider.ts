@@ -12,7 +12,13 @@
  */
 
 import { renderReviewRequestEmail } from "./templates/review-request";
-import type { BusinessProfile, EmailMode, EmailProvider, ReviewJob, SendResult } from "./types";
+import type {
+  BusinessProfile,
+  EmailMode,
+  EmailProvider,
+  ReviewJob,
+  SendResult,
+} from "./types";
 
 export function getEmailMode(): EmailMode {
   return process.env.EMAIL_MODE === "live" ? "live" : "demo";
@@ -25,12 +31,15 @@ export function isEmailLive(): boolean {
 /** Mode démo : aucun appel réseau. Log clair en console (mode "simulé"). */
 const demoEmailProvider: EmailProvider = {
   mode: "demo",
-  async sendReviewRequest(job: ReviewJob, business: BusinessProfile): Promise<SendResult> {
+  async sendReviewRequest(
+    job: ReviewJob,
+    business: BusinessProfile,
+  ): Promise<SendResult> {
     const { subject } = renderReviewRequestEmail(job, business);
     // eslint-disable-next-line no-console
     console.log(
       `[reviews:demo] Email simulé → ${job.customerEmail} · "${subject}" ` +
-        `· commerce=${business.name} · avis=${business.googleReviewUrl}`
+        `· commerce=${business.name} · avis=${business.googleReviewUrl}`,
     );
     return { status: "simulated", providerId: `demo-${job.id}` };
   },
@@ -43,14 +52,17 @@ const RESEND_API_URL = "https://api.resend.com/emails";
 function createResendEmailProvider(): EmailProvider {
   return {
     mode: "live",
-    async sendReviewRequest(job: ReviewJob, business: BusinessProfile): Promise<SendResult> {
+    async sendReviewRequest(
+      job: ReviewJob,
+      business: BusinessProfile,
+    ): Promise<SendResult> {
       const apiKey = process.env.RESEND_API_KEY;
       const from = process.env.RESEND_FROM_EMAIL;
       if (!apiKey || !from) {
         throw new Error(
           "EMAIL_MODE=live demandé mais RESEND_API_KEY / RESEND_FROM_EMAIL sont " +
             "absentes. Renseignez-les dans .env.local — voir README-reviews.md " +
-            "(domaine d'envoi vérifié requis)."
+            "(domaine d'envoi vérifié requis).",
         );
       }
       const { subject, html } = renderReviewRequestEmail(job, business);

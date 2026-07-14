@@ -72,14 +72,19 @@ export default function DemoLivraisonPage() {
         <div className="mt-10 space-y-6">
           {!deliveryId ? (
             <>
-              <DeliveryOptionSelector pickup={DEMO_PICKUP} onConfirm={handleConfirm} />
+              <DeliveryOptionSelector
+                pickup={DEMO_PICKUP}
+                onConfirm={handleConfirm}
+              />
               {creating && (
                 <p className="font-sans text-sm text-encre/60">
                   Création de la course…
                 </p>
               )}
               {error && (
-                <p className="font-sans text-sm font-bold text-corail">{error}</p>
+                <p className="font-sans text-sm font-bold text-corail">
+                  {error}
+                </p>
               )}
             </>
           ) : (

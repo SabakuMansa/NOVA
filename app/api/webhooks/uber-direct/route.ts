@@ -15,7 +15,11 @@ import { isDeliveryLive } from "@/lib/delivery";
 export async function POST(request: Request) {
   if (!isDeliveryLive()) {
     // Démo : on accuse réception sans traiter.
-    return NextResponse.json({ received: true, mode: "demo", processed: false });
+    return NextResponse.json({
+      received: true,
+      mode: "demo",
+      processed: false,
+    });
   }
 
   try {
@@ -23,7 +27,11 @@ export async function POST(request: Request) {
     // TODO (live) : vérifier X-Uber-Signature (HMAC) avant de faire confiance
     // au payload, puis router la mise à jour de statut vers la commande.
     void payload;
-    return NextResponse.json({ received: true, mode: "live", processed: false });
+    return NextResponse.json({
+      received: true,
+      mode: "live",
+      processed: false,
+    });
   } catch {
     return NextResponse.json({ received: false }, { status: 400 });
   }

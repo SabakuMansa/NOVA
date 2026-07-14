@@ -40,7 +40,7 @@ function escapeHtml(s: string): string {
 
 export function renderReviewRequestEmail(
   job: ReviewJob,
-  business: BusinessProfile
+  business: BusinessProfile,
 ): { subject: string; html: string } {
   const { brand } = business;
   const subject = `Un avis sur votre visite chez ${business.name} ?`;

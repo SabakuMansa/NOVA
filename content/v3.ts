@@ -41,9 +41,21 @@ export const v3hero = {
   terminalTitle: "votre-commerce.fr — en ligne",
   events: [
     { icon: "📅", text: "Nouveau rendez-vous — mardi 14h30", tag: "résa" },
-    { icon: "⭐", text: "Avis Google 5★ — réponse envoyée automatiquement", tag: "avis" },
-    { icon: "🛒", text: "Commande #214 confirmée — en préparation", tag: "commande" },
-    { icon: "🕗", text: "Horaires mis à jour depuis votre téléphone", tag: "admin" },
+    {
+      icon: "⭐",
+      text: "Avis Google 5★ — réponse envoyée automatiquement",
+      tag: "avis",
+    },
+    {
+      icon: "🛒",
+      text: "Commande #214 confirmée — en préparation",
+      tag: "commande",
+    },
+    {
+      icon: "🕗",
+      text: "Horaires mis à jour depuis votre téléphone",
+      tag: "admin",
+    },
     { icon: "📩", text: "Demande de contact — nouveau client", tag: "résa" },
     { icon: "⭐", text: "Note moyenne : 4,8/5 sur 126 avis", tag: "avis" },
   ],
@@ -85,7 +97,8 @@ export const v3ticker = {
 export const v3constat = {
   id: "constat",
   eyebrow: "Le constat",
-  title: "Que voit un nouveau client lorsqu'il découvre votre commerce sur internet ?",
+  title:
+    "Que voit un nouveau client lorsqu'il découvre votre commerce sur internet ?",
   subtitle:
     "Probablement pas ce que vous méritez. Et pendant ce temps, des opportunités passent à côté.",
   // « Il dort » / « Il est invisible » ne sont plus des cartes ici : elles
@@ -221,7 +234,8 @@ export const v3plans = {
     note: "Le coût de chaque course est payé séparément par le commerçant à son prestataire de livraison, non inclus dans ce tarif.",
     demo: { label: "Essayer la démo de commande", href: "/demo/commande" },
   },
-  footnote: "Pas sûr du bon plan ? Quinze minutes d'audit suffisent pour le savoir.",
+  footnote:
+    "Pas sûr du bon plan ? Quinze minutes d'audit suffisent pour le savoir.",
 };
 
 export const v3process = {
@@ -229,12 +243,36 @@ export const v3process = {
   eyebrow: "Le process",
   title: "De « on se parle » à « c'est en ligne », sans zone floue.",
   steps: [
-    { n: "01", name: "Audit", text: "15 minutes pour comprendre votre activité. Pas un argumentaire déguisé." },
-    { n: "02", name: "Proposition", text: "Un devis clair sous 48h. Un prix, pas une fourchette." },
-    { n: "03", name: "Conception", text: "Vous validez avant la moindre ligne de code." },
-    { n: "04", name: "Développement", text: "Des points d'étape réguliers. Jamais trois semaines de silence." },
-    { n: "05", name: "Livraison", text: "On configure votre espace ensemble, en direct." },
-    { n: "06", name: "Suivi", text: "Je reste disponible après la mise en ligne. Pas seulement pendant le projet." },
+    {
+      n: "01",
+      name: "Audit",
+      text: "15 minutes pour comprendre votre activité. Pas un argumentaire déguisé.",
+    },
+    {
+      n: "02",
+      name: "Proposition",
+      text: "Un devis clair sous 48h. Un prix, pas une fourchette.",
+    },
+    {
+      n: "03",
+      name: "Conception",
+      text: "Vous validez avant la moindre ligne de code.",
+    },
+    {
+      n: "04",
+      name: "Développement",
+      text: "Des points d'étape réguliers. Jamais trois semaines de silence.",
+    },
+    {
+      n: "05",
+      name: "Livraison",
+      text: "On configure votre espace ensemble, en direct.",
+    },
+    {
+      n: "06",
+      name: "Suivi",
+      text: "Je reste disponible après la mise en ligne. Pas seulement pendant le projet.",
+    },
   ],
 };
 
@@ -257,7 +295,11 @@ export const v3fondateur = {
   ],
   closing:
     "Chaque outil que je construis part de ces situations-là — vécues derrière un comptoir, pas lues dans un cahier des charges.",
-  badges: ["Restaurateur en activité", "Basé en Île-de-France", "Pensé pour être géré sans moi"],
+  badges: [
+    "Restaurateur en activité",
+    "Basé en Île-de-France",
+    "Pensé pour être géré sans moi",
+  ],
 };
 
 export const v3contact = {
@@ -265,7 +307,8 @@ export const v3contact = {
   eyebrow: "Contact",
   title: "On regarde votre commerce ensemble ?",
   subtitle: "Audit gratuit, sans engagement. Réponse sous 24h.",
-  intro: "Dites-m'en un peu sur votre commerce — le reste, on le voit de vive voix.",
+  intro:
+    "Dites-m'en un peu sur votre commerce — le reste, on le voit de vive voix.",
   email: "bonjour@nova-studio.fr",
   phone: "06 12 34 56 78",
   fields: {

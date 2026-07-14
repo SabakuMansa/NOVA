@@ -57,8 +57,16 @@ export default function DeliveryDemo() {
     // Réutilise la logique de démo existante (mock-provider) — aucun réseau.
     const job = await mockProvider.createDelivery({
       quoteId: "demo",
-      pickup: { street: "3 place du Marché", postalCode: "94100", city: "Saint-Maur" },
-      dropoff: { street: "10 avenue Foch", postalCode: "94100", city: "Saint-Maur" },
+      pickup: {
+        street: "3 place du Marché",
+        postalCode: "94100",
+        city: "Saint-Maur",
+      },
+      dropoff: {
+        street: "10 avenue Foch",
+        postalCode: "94100",
+        city: "Saint-Maur",
+      },
     });
     setOrderNo(`CMD-${String(new Date(job.createdAt).getTime()).slice(-4)}`);
     setStep("confirm");
@@ -132,7 +140,9 @@ export default function DeliveryDemo() {
               >
                 {step === "cart" && (
                   <div>
-                    <p className="font-display text-xl text-cafe">{demo.restaurant}</p>
+                    <p className="font-display text-xl text-cafe">
+                      {demo.restaurant}
+                    </p>
                     <p className="mt-1 font-mono text-[0.58rem] uppercase tracking-wide text-cafe/50">
                       Votre panier
                     </p>
@@ -143,7 +153,9 @@ export default function DeliveryDemo() {
                           className="flex items-baseline justify-between border-b border-cafe/10 pb-2.5 font-sans text-cafe/85"
                         >
                           <span>{it.name}</span>
-                          <span className="font-mono text-sm text-cafe">{it.price}</span>
+                          <span className="font-mono text-sm text-cafe">
+                            {it.price}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -168,7 +180,12 @@ export default function DeliveryDemo() {
                 {step === "confirm" && (
                   <div className="flex flex-col items-center py-6 text-center">
                     <span className="flex h-14 w-14 items-center justify-center rounded-full bg-sauge text-nappe">
-                      <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" aria-hidden>
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-7 w-7"
+                        fill="none"
+                        aria-hidden
+                      >
                         <path
                           d="m5 13 4 4L19 7"
                           stroke="currentColor"
@@ -184,7 +201,9 @@ export default function DeliveryDemo() {
                     <p className="mt-2 font-mono text-sm uppercase tracking-wide text-lie">
                       {orderNo}
                     </p>
-                    <p className="mt-1 font-sans text-sm text-cafe/70">{demo.etaLabel}</p>
+                    <p className="mt-1 font-sans text-sm text-cafe/70">
+                      {demo.etaLabel}
+                    </p>
                   </div>
                 )}
 
@@ -205,7 +224,12 @@ export default function DeliveryDemo() {
                               }`}
                             >
                               {done ? (
-                                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" aria-hidden>
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  className="h-3.5 w-3.5"
+                                  fill="none"
+                                  aria-hidden
+                                >
                                   <path
                                     d="m5 13 4 4L19 7"
                                     stroke="currentColor"
@@ -223,8 +247,8 @@ export default function DeliveryDemo() {
                                 active
                                   ? "font-medium text-cafe"
                                   : done
-                                  ? "text-cafe/80"
-                                  : "text-cafe/45"
+                                    ? "text-cafe/80"
+                                    : "text-cafe/45"
                               }`}
                             >
                               {label}
@@ -240,10 +264,16 @@ export default function DeliveryDemo() {
                         ref={trackRef}
                         className="relative h-10 rounded-full bg-nappe/70"
                       >
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm" aria-hidden>
+                        <span
+                          className="absolute left-3 top-1/2 -translate-y-1/2 text-sm"
+                          aria-hidden
+                        >
                           🍽️
                         </span>
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm" aria-hidden>
+                        <span
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-sm"
+                          aria-hidden
+                        >
                           🏠
                         </span>
                         <motion.span
@@ -255,9 +285,26 @@ export default function DeliveryDemo() {
                             ease: EASE,
                           }}
                         >
-                          <svg viewBox="0 0 24 24" className="h-4 w-4 text-cafe" fill="none" aria-hidden>
-                            <circle cx="6" cy="18" r="2.4" stroke="currentColor" strokeWidth="1.8" />
-                            <circle cx="17" cy="18" r="2.4" stroke="currentColor" strokeWidth="1.8" />
+                          <svg
+                            viewBox="0 0 24 24"
+                            className="h-4 w-4 text-cafe"
+                            fill="none"
+                            aria-hidden
+                          >
+                            <circle
+                              cx="6"
+                              cy="18"
+                              r="2.4"
+                              stroke="currentColor"
+                              strokeWidth="1.8"
+                            />
+                            <circle
+                              cx="17"
+                              cy="18"
+                              r="2.4"
+                              stroke="currentColor"
+                              strokeWidth="1.8"
+                            />
                             <path
                               d="M8 18h6l3-6h2M6 12h5l2 6"
                               stroke="currentColor"

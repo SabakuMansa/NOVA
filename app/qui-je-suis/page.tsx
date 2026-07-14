@@ -51,10 +51,15 @@ export default function QuiJeSuisPage() {
             <ul className="space-y-3.5">
               {v3fondateur.points.map((p, i) => (
                 <li key={i} className="v3-card flex items-start gap-3.5 p-4">
-                  <span className="font-mono text-sm font-bold text-corail" aria-hidden>
+                  <span
+                    className="font-mono text-sm font-bold text-corail"
+                    aria-hidden
+                  >
                     {">"}_
                   </span>
-                  <span className="font-sans leading-snug text-encre/85">{p}</span>
+                  <span className="font-sans leading-snug text-encre/85">
+                    {p}
+                  </span>
                 </li>
               ))}
             </ul>

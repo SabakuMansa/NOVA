@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     if (!body?.pickup || !body?.dropoff) {
       return NextResponse.json(
         { error: "Adresses de retrait et de dépôt requises." },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const quote = await getDeliveryProvider().getQuote(body);

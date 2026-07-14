@@ -40,7 +40,7 @@ function readCredentials(): UberCredentials {
     throw new Error(
       "Mode livraison 'live' demandé mais les credentials Uber Direct sont " +
         "absentes (UBER_DIRECT_CUSTOMER_ID / _CLIENT_ID / _CLIENT_SECRET). " +
-        "Renseignez-les dans .env.local — voir README-delivery.md."
+        "Renseignez-les dans .env.local — voir README-delivery.md.",
     );
   }
   return { customerId, clientId, clientSecret };
@@ -96,7 +96,10 @@ export function createUberDirectClient(): DeliveryProvider {
     if (!res.ok) {
       throw new Error(`Uber Direct: échec d'authentification (${res.status}).`);
     }
-    const json = (await res.json()) as { access_token: string; expires_in: number };
+    const json = (await res.json()) as {
+      access_token: string;
+      expires_in: number;
+    };
     cachedToken = {
       value: json.access_token,
       expiresAt: Date.now() + json.expires_in * 1000,
@@ -117,7 +120,9 @@ export function createUberDirectClient(): DeliveryProvider {
     });
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
-      throw new Error(`Uber Direct: ${res.status} sur ${path}. ${detail.slice(0, 200)}`);
+      throw new Error(
+        `Uber Direct: ${res.status} sur ${path}. ${detail.slice(0, 200)}`,
+      );
     }
     return res.json();
   }
@@ -132,7 +137,13 @@ export function createUberDirectClient(): DeliveryProvider {
           pickup_address: toUberAddress(pickup),
           dropoff_address: toUberAddress(dropoff),
         }),
-      })) as { id: string; fee: number; currency: string; dropoff_eta?: number; duration?: number };
+      })) as {
+        id: string;
+        fee: number;
+        currency: string;
+        dropoff_eta?: number;
+        duration?: number;
+      };
 
       return {
         id: data.id,
@@ -153,7 +164,12 @@ export function createUberDirectClient(): DeliveryProvider {
           dropoff_address: toUberAddress(input.dropoff),
           manifest_reference: input.orderReference,
         }),
-      })) as { id: string; status: string; tracking_url?: string; dropoff_eta?: number };
+      })) as {
+        id: string;
+        status: string;
+        tracking_url?: string;
+        dropoff_eta?: number;
+      };
 
       return {
         id: data.id,

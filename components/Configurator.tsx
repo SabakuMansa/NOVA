@@ -32,7 +32,10 @@ function PreviewChaleureux({
   commerce: CommerceType;
 }) {
   return (
-    <div className="p-6 sm:p-8" style={{ backgroundColor: combo.bg, color: combo.ink }}>
+    <div
+      className="p-6 sm:p-8"
+      style={{ backgroundColor: combo.bg, color: combo.ink }}
+    >
       <div className="flex items-center justify-between">
         <span className="font-display text-lg" style={{ color: combo.ink }}>
           {brandLabel[commerce]}
@@ -102,7 +105,10 @@ function PreviewEpure({
   commerce: CommerceType;
 }) {
   return (
-    <div className="p-8 sm:p-11" style={{ backgroundColor: combo.bg, color: combo.ink }}>
+    <div
+      className="p-8 sm:p-11"
+      style={{ backgroundColor: combo.bg, color: combo.ink }}
+    >
       <div className="flex items-center justify-between">
         <span
           className="font-mono text-[0.62rem] uppercase tracking-[0.3em]"
@@ -112,14 +118,21 @@ function PreviewEpure({
         </span>
         <span
           className="font-mono text-[0.58rem] uppercase tracking-wide"
-          style={{ color: combo.ink, opacity: 0.55, borderBottom: `1px solid ${combo.ink}` }}
+          style={{
+            color: combo.ink,
+            opacity: 0.55,
+            borderBottom: `1px solid ${combo.ink}`,
+          }}
         >
           Menu
         </span>
       </div>
 
       {/* hairline */}
-      <div className="mt-8 h-px w-full" style={{ backgroundColor: `${combo.ink}22` }} />
+      <div
+        className="mt-8 h-px w-full"
+        style={{ backgroundColor: `${combo.ink}22` }}
+      />
 
       <div className="mt-8 max-w-md">
         <p
@@ -142,7 +155,10 @@ function PreviewEpure({
         </p>
         <span
           className="mt-6 inline-flex items-center gap-1.5 pb-0.5 font-sans text-xs font-medium"
-          style={{ color: combo.accent, borderBottom: `1.5px solid ${combo.accent}` }}
+          style={{
+            color: combo.accent,
+            borderBottom: `1.5px solid ${combo.accent}`,
+          }}
         >
           {combo.cta} <span aria-hidden>→</span>
         </span>
@@ -184,11 +200,20 @@ function PreviewPremium({
         style={{ border: `1px solid ${combo.accent}55` }}
       >
         <div className="flex items-center justify-center gap-3">
-          <span className="h-px w-6" style={{ backgroundColor: `${combo.accent}88` }} />
-          <span className="font-display text-lg italic" style={{ color: combo.ink }}>
+          <span
+            className="h-px w-6"
+            style={{ backgroundColor: `${combo.accent}88` }}
+          />
+          <span
+            className="font-display text-lg italic"
+            style={{ color: combo.ink }}
+          >
             {brandLabel[commerce]}
           </span>
-          <span className="h-px w-6" style={{ backgroundColor: `${combo.accent}88` }} />
+          <span
+            className="h-px w-6"
+            style={{ backgroundColor: `${combo.accent}88` }}
+          />
         </div>
 
         <p
@@ -302,14 +327,17 @@ export default function Configurator() {
   const combo = previewCombos[commerce][style];
 
   return (
-    <section id={apercu.id} className="mx-auto max-w-content px-5 py-24 md:px-8 md:py-32">
+    <section
+      id={apercu.id}
+      className="mx-auto max-w-content px-5 py-24 md:px-8 md:py-32"
+    >
       <Reveal className="mx-auto max-w-2xl text-center">
         <p className="font-mono text-[0.68rem] uppercase tracking-eyebrow text-lie">
           {apercu.eyebrow}
         </p>
         <h2 className="mt-4 font-display text-4xl leading-tight text-cafe sm:text-5xl">
-          <span className="display-em text-lie">Voyez</span>, plutôt qu'on vous le
-          décrive.
+          <span className="display-em text-lie">Voyez</span>, plutôt qu'on vous
+          le décrive.
         </h2>
         <p className="mt-4 font-sans text-lg text-cafe/70">{apercu.subtitle}</p>
       </Reveal>
@@ -392,7 +420,10 @@ export default function Configurator() {
             className="group inline-flex items-center justify-center gap-2 rounded-full bg-lie px-6 py-3.5 font-sans text-sm font-medium text-nappe transition-all hover:-translate-y-0.5 hover:bg-cafe"
           >
             {apercu.cta.label}
-            <span aria-hidden className="transition-transform group-hover:translate-x-1">
+            <span
+              aria-hidden
+              className="transition-transform group-hover:translate-x-1"
+            >
               →
             </span>
           </a>

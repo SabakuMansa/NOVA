@@ -1,0 +1,6 @@
+node_modules
+.next
+app/_archive
+app/labo
+components/labo
+package-lock.json

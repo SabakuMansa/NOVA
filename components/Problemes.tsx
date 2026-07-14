@@ -11,7 +11,10 @@ export default function Problemes() {
           </p>
           <h2 className="mt-6 max-w-3xl font-display text-4xl leading-tight sm:text-5xl md:text-[3.4rem]">
             Le vrai coût d'un site qui{" "}
-            <span className="display-em text-moutarde">ne travaille pas pour vous</span>.
+            <span className="display-em text-moutarde">
+              ne travaille pas pour vous
+            </span>
+            .
           </h2>
           <p className="mt-5 max-w-2xl font-sans text-lg text-nappe/70">
             {problemes.subtitle}
@@ -25,25 +28,25 @@ export default function Problemes() {
               i === problemes.cards.length - 1 &&
               problemes.cards.length % 2 === 1;
             return (
-            <Reveal
-              key={card.tag}
-              delay={i * 0.12}
-              className={lastOdd ? "sm:col-span-2" : undefined}
-            >
-              <div className="group h-full rounded-2xl border border-nappe/12 bg-nappe/[0.03] p-7 transition-colors hover:border-moutarde/50 hover:bg-nappe/[0.06]">
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-sm text-moutarde">
-                    0{i + 1}
-                  </span>
-                  <span className="font-mono text-[0.62rem] uppercase tracking-eyebrow text-nappe/50">
-                    {card.tag}
-                  </span>
+              <Reveal
+                key={card.tag}
+                delay={i * 0.12}
+                className={lastOdd ? "sm:col-span-2" : undefined}
+              >
+                <div className="group h-full rounded-2xl border border-nappe/12 bg-nappe/[0.03] p-7 transition-colors hover:border-moutarde/50 hover:bg-nappe/[0.06]">
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-sm text-moutarde">
+                      0{i + 1}
+                    </span>
+                    <span className="font-mono text-[0.62rem] uppercase tracking-eyebrow text-nappe/50">
+                      {card.tag}
+                    </span>
+                  </div>
+                  <p className="mt-4 font-sans text-lg leading-snug text-nappe/90">
+                    {card.text}
+                  </p>
                 </div>
-                <p className="mt-4 font-sans text-lg leading-snug text-nappe/90">
-                  {card.text}
-                </p>
-              </div>
-            </Reveal>
+              </Reveal>
             );
           })}
         </div>

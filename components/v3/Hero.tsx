@@ -25,7 +25,8 @@ function NotifFeed() {
   }, [reduce]);
 
   const visible = Array.from({ length: 4 }, (_, i) => {
-    const idx = (count - 3 + i + v3hero.events.length * 100) % v3hero.events.length;
+    const idx =
+      (count - 3 + i + v3hero.events.length * 100) % v3hero.events.length;
     return { ...v3hero.events[idx], key: count - 3 + i };
   });
 
@@ -57,13 +58,19 @@ function NotifFeed() {
 
 export default function V3Hero() {
   return (
-    <section id="top" className="relative overflow-hidden bg-lait pt-28 md:pt-32">
+    <section
+      id="top"
+      className="relative overflow-hidden bg-lait pt-28 md:pt-32"
+    >
       <V3Backdrop />
 
       <div className="relative z-10 mx-auto grid max-w-content items-center gap-12 px-5 pb-20 md:px-8 md:pb-24 lg:grid-cols-[1.05fr_0.95fr]">
         <div>
           <p className="hero-rise inline-flex items-center gap-2 rounded-full border-2 border-encre bg-white px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-encre shadow-[2px_2px_0_#211D16]">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-teal" aria-hidden />
+            <span
+              className="h-2 w-2 animate-pulse rounded-full bg-teal"
+              aria-hidden
+            />
             {v3hero.eyebrow}
           </p>
 
@@ -109,11 +116,23 @@ export default function V3Hero() {
         </div>
 
         {/* Fenêtre « le site en service » */}
-        <div className="hero-slate v3-window mx-auto w-full max-w-md" style={{ transform: "rotate(1.2deg)" }}>
+        <div
+          className="hero-slate v3-window mx-auto w-full max-w-md"
+          style={{ transform: "rotate(1.2deg)" }}
+        >
           <div className="v3-window-bar">
-            <span className="h-3 w-3 rounded-full border-2 border-encre bg-corail" aria-hidden />
-            <span className="h-3 w-3 rounded-full border-2 border-encre bg-jaune" aria-hidden />
-            <span className="h-3 w-3 rounded-full border-2 border-encre bg-teal" aria-hidden />
+            <span
+              className="h-3 w-3 rounded-full border-2 border-encre bg-corail"
+              aria-hidden
+            />
+            <span
+              className="h-3 w-3 rounded-full border-2 border-encre bg-jaune"
+              aria-hidden
+            />
+            <span
+              className="h-3 w-3 rounded-full border-2 border-encre bg-teal"
+              aria-hidden
+            />
             <span className="ml-2 truncate font-mono text-[0.62rem] text-encre/60">
               {v3hero.terminalTitle}
             </span>

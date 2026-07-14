@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { scheduleReviewRequest, UnknownBusinessError } from "@/lib/reviews/scheduler";
+import {
+  scheduleReviewRequest,
+  UnknownBusinessError,
+} from "@/lib/reviews/scheduler";
 import type { CreateReviewJobInput } from "@/lib/reviews/types";
 
 /**
@@ -14,7 +17,7 @@ export async function POST(request: Request) {
     if (!body?.businessId || !body?.customerEmail || !body?.reservationAt) {
       return NextResponse.json(
         { error: "businessId, customerEmail et reservationAt sont requis." },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const job = await scheduleReviewRequest(body);

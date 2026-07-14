@@ -54,8 +54,8 @@ export default function SignatureBackdrop() {
       const ric: typeof requestIdleCallback =
         "requestIdleCallback" in window
           ? window.requestIdleCallback.bind(window)
-          : ((cb: IdleRequestCallback) =>
-              window.setTimeout(() => cb({} as IdleDeadline), 200)) as never;
+          : (((cb: IdleRequestCallback) =>
+              window.setTimeout(() => cb({} as IdleDeadline), 200)) as never);
       idleId = ric(() => setMode("webgl")) as unknown as number;
     };
     if (document.readyState === "complete") {
@@ -79,7 +79,7 @@ export default function SignatureBackdrop() {
     if (!el || mode !== "webgl") return;
     const io = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0 }
+      { threshold: 0 },
     );
     io.observe(el);
     return () => io.disconnect();

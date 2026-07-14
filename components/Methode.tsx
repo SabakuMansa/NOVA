@@ -5,26 +5,53 @@ const icons: Record<string, JSX.Element> = {
   Visibilité: (
     <>
       <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
-      <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path
+        d="m20 20-3.5-3.5"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </>
   ),
   Autonomie: (
     <>
-      <path d="M12 3v6m0 0 3-3m-3 3L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="4" y="11" width="16" height="9" rx="2" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M12 3v6m0 0 3-3m-3 3L9 6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <rect
+        x="4"
+        y="11"
+        width="16"
+        height="9"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
     </>
   ),
   Automatisation: (
     <>
       <circle cx="12" cy="12" r="3.5" stroke="currentColor" strokeWidth="2" />
-      <path d="M12 4v2m0 12v2m8-8h-2M6 12H4m12.5-5.5-1.4 1.4M8.9 15.1l-1.4 1.4m9-9-1.4 1.4M8.9 8.9 7.5 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path
+        d="M12 4v2m0 12v2m8-8h-2M6 12H4m12.5-5.5-1.4 1.4M8.9 15.1l-1.4 1.4m9-9-1.4 1.4M8.9 8.9 7.5 7.5"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </>
   ),
 };
 
 export default function Methode() {
   return (
-    <section id={methode.id} className="mx-auto max-w-content px-5 py-24 md:px-8 md:py-32">
+    <section
+      id={methode.id}
+      className="mx-auto max-w-content px-5 py-24 md:px-8 md:py-32"
+    >
       <Reveal>
         <p className="font-mono text-[0.68rem] uppercase tracking-eyebrow text-lie">
           {methode.eyebrow}
@@ -46,7 +73,12 @@ export default function Methode() {
                 {i + 1}
               </span>
               <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-cafe text-moutarde">
-                <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="h-6 w-6"
+                  aria-hidden
+                >
                   {icons[p.name]}
                 </svg>
               </span>

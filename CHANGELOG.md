@@ -5,6 +5,139 @@
 
 ---
 
+## [Nettoyage du code] Audit préalable — ce qui va être touché ou non
+
+**Avant toute modification.** Checkpoint Git : `HEAD` était déjà propre et
+commité (`b68c651`, rien à committer) — c'est le point de retour si besoin.
+
+### Ce qui sera supprimé
+
+- **Dépendance `gsap`** (`package.json`) : **zéro référence** trouvée nulle
+  part dans le projet, y compris dans les archives `_archive/` et le labo
+  (vérifié par grep exhaustif). Jamais utilisée depuis son ajout — supprimée.
+
+### Ce qui a l'air mort mais NE SERA PAS supprimé — conflit entre deux consignes
+
+Un audit complet (recherche systématique de chaque import, fichier par
+fichier) montre que la quasi-totalité des fichiers suivants sont
+**« orphelins » du point de vue du site en ligne**, mais **restent
+importés par les archives `_archive/v1` et `_archive/v2` protégées** :
+
+- `components/Approche.tsx`, `Carte.tsx`, `Configurator.tsx`, `Contact.tsx`,
+  `Footer.tsx`, `Hero.tsx`, `Methode.tsx`, `Motifs.tsx`, `Nav.tsx`,
+  `Problemes.tsx`, `Process.tsx`, `ScaleReveal.tsx`, `Temoignages.tsx`
+- `components/v2/Footer.tsx`, `Nav.tsx`, `PageHeader.tsx`, `V2Hero.tsx`
+- `components/signature/SignatureBackdrop.tsx`, `SignatureScene.tsx`,
+  `SignatureTitle.tsx`, `embers.glsl.ts`
+- `components/delivery/DeliveryDemo.tsx` (composant de démo obsolète,
+  remplacé par `DeliveryOptionSelector`/`DeliveryTracker` sur les vraies
+  pages `/demo/*`, mais toujours importé par `components/Carte.tsx` archivé)
+- `content/site.ts` : tous les exports **sauf `seo`** (`nav`, `hero`,
+  `approche`, `problemes`, `methode`, `carte`, `apercu`, `previewCombos`,
+  `process`, `contact`, `footer`, `temoignages`) — utilisés uniquement par
+  les composants ci-dessus.
+
+**Pourquoi je ne les supprime pas** : la consigne dit à la fois « repère et
+supprime le code mort » et « ne touche jamais aux dossiers d'archive ».
+Ces fichiers sont exactement à l'intersection des deux — ils sont morts
+*du point de vue du site*, mais vivants *du point de vue de l'archive*
+(`app/_archive/v1-onepage.tsx`, `app/_archive/v2/**`). Les supprimer ou les
+déplacer casserait la compilation de ces pages archivées, donc reviendrait
+à « toucher » l'archive par ricochet — ce qui est explicitement interdit.
+**Je laisse tout intact et je signale ce point plutôt que de trancher.**
+Si un jour les archives elles-mêmes sont supprimées, ces fichiers
+deviendront alors du vrai code mort, supprimable sans risque.
+
+### Console.log / console.error trouvés (hors archives/labo)
+
+- `lib/reviews/email-provider.ts:31` — `console.log` du mode démo
+  (`[reviews:demo] Email simulé → ...`), déjà marqué
+  `// eslint-disable-next-line no-console`. **Volontaire, conservé** — c'est
+  la seule preuve visible qu'un envoi a été simulé sans réseau.
+- `lib/reviews/scheduler.ts:135` — `console.error("[reviews:poller]", err)`
+  dans le filet de rattrapage du poller local de dev. **Volontaire,
+  conservé** — sans lui, une erreur du poller (process background sans UI)
+  disparaîtrait silencieusement.
+- Aucun autre `console.*` trouvé dans le code actif (`lib/delivery/*`,
+  toutes les routes API, tous les composants live).
+
+### Blocs de code commenté
+
+Recherche exhaustive (blocs `/* */` et lignes `//` ressemblant à du code
+désactivé) : **aucun trouvé**. Les seuls commentaires multi-lignes présents
+sont des séparateurs de section (prose), pas du code mort en commentaire.
+
+### Autres dépendances vérifiées (toutes légitimes, gardées)
+
+`react-dom`, `@types/*`, `postcss`, `typescript` : zéro `import` explicite
+trouvé par grep, mais ce sont des dépendances consommées implicitement par
+Next.js/le compilateur (peer dep de React, types ambiants, moteur de build)
+— pas du code mort, juste invisibles à un grep naïf. Vérifiées une par une
+avant de les exclure de la suppression, comme demandé.
+
+### Ce qui a été fait, dans l'ordre
+
+1. **`gsap` supprimé** de `package.json` (0 référence, `npm install` relancé,
+   `package-lock.json` mis à jour).
+2. **ESLint configuré** (`.eslintrc.json`, base `next/core-web-vitals` +
+   `@typescript-eslint/no-unused-vars`), volontairement scindé du périmètre
+   archives/labo (`ignorePatterns`). Résultat : **0 import et 0 variable
+   inutilisés** dans tout le code actif, y compris dans les fichiers
+   archive-only listés plus haut — rien à retirer sur ce point précis.
+   `react/no-unescaped-entities` désactivée : activée par défaut par
+   `next/core-web-vitals`, elle faisait échouer `next build` sur ~90
+   occurrences d'apostrophes non échappées dans du JSX pré-existant (dont
+   une majorité dans des fichiers archive-only) — corriger ce point aurait
+   nécessité de toucher des fichiers protégés ou d'élargir le chantier
+   très au-delà du nettoyage demandé ; désactivée pour garder un build
+   propre sans y toucher. **Signalé plutôt que tranché : dites-moi si vous
+   voulez qu'on les corrige quand même dans les fichiers live.**
+3. **Prettier configuré** (`.prettierrc.json`, `.prettierignore` — mêmes
+   exclusions archives/labo que ESLint) et appliqué sur tout le reste du
+   projet : 44 fichiers reformatés (retours à la ligne, virgules finales),
+   **zéro changement de contenu ou de comportement** — vérifié par `tsc`
+   propre et build identique (mêmes 19 routes, mêmes tailles de bundle)
+   avant/après. Note : le formatage a aussi touché les fichiers archive-only
+   situés hors de `app/_archive/`/`components/labo/` (ex. `components/Nav.tsx`,
+   `content/site.ts`) — volontaire, car ce sont des fichiers actifs du
+   dépôt au sens strict (pas dans le dossier archive protégé), et Prettier
+   ne change jamais la logique. Si vous préférez que je les exclue aussi,
+   je peux affiner `.prettierignore`.
+4. **Nommage et regroupement vérifiés** : déjà cohérents dans le code actif
+   (composants en PascalCase, modules `lib/` en kebab-case dans les deux
+   modules, routes en minuscules). Le seul écart apparent —
+   `app/api/reservations/` hors de `app/api/reviews/` — est volontaire et
+   déjà commenté dans le code (la réservation est un domaine à part qui ne
+   fait que déclencher le module avis) ; laissé tel quel.
+5. **`lib/delivery/` et `lib/reviews/` vérifiés** : structure inchangée,
+   aucun fichier déplacé, séparation `DELIVERY_MODE`/`EMAIL_MODE`/
+   `REVIEWS_STORE_MODE` intacte dans les deux.
+6. **`README.md` réécrit intégralement** — l'ancienne version décrivait
+   encore le site v1 (palette « terroir francilien », Configurator, La
+   Carte comme menu de restaurant) alors que le site actuel est la
+   direction v3. Nouvelle version : structure actuelle, les deux modules
+   documentés avec renvoi vers `README-delivery.md`/`README-reviews.md`,
+   labo et archives mentionnés sans détail (pas concernés par ce
+   nettoyage). `.env.example` vérifié : déjà complet et à jour, aucune
+   modification nécessaire.
+
+### Vérification finale
+
+- `tsc --noEmit` ✅, `npm run build` ✅ — **19 routes, tailles de bundle
+  identiques** à avant le nettoyage, 0 erreur, 0 warning.
+- Rendu visuel vérifié en preview : page d'accueil, `/qui-je-suis`,
+  `/demo/commande`, `/demo/livraison`, `/demo/avis`, `/labo` — tous
+  strictement identiques à avant (captures comparées).
+- **Module Relance avis Google** : cycle complet rejoué en mode démo
+  (réservation créée → `scheduled` → poller local → `simulated` avec
+  `sentAt`) — fonctionne à l'identique.
+- **Module Commande & Livraison** : `/api/delivery/quote` rappelé
+  directement — réponse `mode: "demo"` correcte, calcul de devis inchangé.
+- Console navigateur : 0 erreur sur toutes les pages visitées.
+- **Aucun push** — tout ce chantier reste local, comme toujours.
+
+---
+
 ## [NUIT 2026-07-12 · ÉTAPE 0] Bug « images manquantes dans le menu » — diagnostic
 
 **Préalable RTK** — hook **actif et configuré** (`rtk init --show` → Hook OK, RTK.md OK,

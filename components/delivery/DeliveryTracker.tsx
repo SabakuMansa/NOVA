@@ -12,7 +12,11 @@ import {
  * Interroge /api/delivery/status toutes les 2 s jusqu'à livraison.
  * Habillage : DA v3 (fenêtre sticker, pastilles teal).
  */
-export default function DeliveryTracker({ deliveryId }: { deliveryId: string }) {
+export default function DeliveryTracker({
+  deliveryId,
+}: {
+  deliveryId: string;
+}) {
   const [status, setStatus] = useState<DeliveryStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -24,7 +28,7 @@ export default function DeliveryTracker({ deliveryId }: { deliveryId: string }) 
       try {
         const res = await fetch(
           `/api/delivery/status?id=${encodeURIComponent(deliveryId)}`,
-          { cache: "no-store" }
+          { cache: "no-store" },
         );
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Suivi indisponible.");
@@ -34,7 +38,8 @@ export default function DeliveryTracker({ deliveryId }: { deliveryId: string }) 
           if (timer.current) clearInterval(timer.current);
         }
       } catch (e) {
-        if (active) setError(e instanceof Error ? e.message : "Suivi indisponible.");
+        if (active)
+          setError(e instanceof Error ? e.message : "Suivi indisponible.");
       }
     }
 
@@ -46,16 +51,23 @@ export default function DeliveryTracker({ deliveryId }: { deliveryId: string }) 
     };
   }, [deliveryId]);
 
-  const currentIndex = status
-    ? DELIVERY_TIMELINE.indexOf(status.status)
-    : -1;
+  const currentIndex = status ? DELIVERY_TIMELINE.indexOf(status.status) : -1;
 
   return (
     <div className="v3-window">
       <div className="v3-window-bar">
-        <span className="h-2.5 w-2.5 rounded-full border-2 border-encre bg-corail" aria-hidden />
-        <span className="h-2.5 w-2.5 rounded-full border-2 border-encre bg-jaune" aria-hidden />
-        <span className="h-2.5 w-2.5 rounded-full border-2 border-encre bg-teal" aria-hidden />
+        <span
+          className="h-2.5 w-2.5 rounded-full border-2 border-encre bg-corail"
+          aria-hidden
+        />
+        <span
+          className="h-2.5 w-2.5 rounded-full border-2 border-encre bg-jaune"
+          aria-hidden
+        />
+        <span
+          className="h-2.5 w-2.5 rounded-full border-2 border-encre bg-teal"
+          aria-hidden
+        />
         <span className="ml-2 font-mono text-[0.62rem] font-bold uppercase tracking-wide text-encre/70">
           Suivi de votre commande
         </span>
@@ -67,7 +79,11 @@ export default function DeliveryTracker({ deliveryId }: { deliveryId: string }) 
       </div>
 
       <div className="bg-white p-6 sm:p-7">
-        {error && <p className="mb-4 font-sans text-sm font-bold text-corail">{error}</p>}
+        {error && (
+          <p className="mb-4 font-sans text-sm font-bold text-corail">
+            {error}
+          </p>
+        )}
 
         <ol className="space-y-4">
           {DELIVERY_TIMELINE.map((step, i) => {
@@ -84,7 +100,12 @@ export default function DeliveryTracker({ deliveryId }: { deliveryId: string }) 
                   }`}
                 >
                   {done ? (
-                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4"
+                      fill="none"
+                      aria-hidden
+                    >
                       <path
                         d="m5 13 4 4L19 7"
                         stroke="currentColor"
@@ -102,8 +123,8 @@ export default function DeliveryTracker({ deliveryId }: { deliveryId: string }) 
                     active
                       ? "font-bold text-encre"
                       : done
-                      ? "text-encre/80"
-                      : "text-encre/40"
+                        ? "text-encre/80"
+                        : "text-encre/40"
                   }`}
                 >
                   {STATUS_LABELS[step]}

@@ -8,7 +8,7 @@ export async function GET(request: Request) {
     if (!id) {
       return NextResponse.json(
         { error: "Paramètre 'id' requis." },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const status = await getDeliveryProvider().getStatus(id);

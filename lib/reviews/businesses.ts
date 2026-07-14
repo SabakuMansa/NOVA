@@ -22,7 +22,7 @@ const BUSINESSES: Record<string, BusinessProfile> = {
       "https://search.google.com/local/writereview?placeid=EXEMPLE_PLACE_ID_A_REMPLACER",
     brand: {
       primary: "#FF6B4A", // corail
-      ink: "#211D16",     // encre
+      ink: "#211D16", // encre
       background: "#FBF7EF", // lait
       fontFamily:
         "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",

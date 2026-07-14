@@ -17,7 +17,10 @@ export default function Contact() {
     "w-full rounded-xl border border-cafe/20 bg-nappe px-4 py-3 font-sans text-cafe placeholder-cafe/40 transition-colors focus:border-lie focus:bg-white";
 
   return (
-    <section id={contact.id} className="mx-auto max-w-content px-5 py-24 md:px-8 md:py-32">
+    <section
+      id={contact.id}
+      className="mx-auto max-w-content px-5 py-24 md:px-8 md:py-32"
+    >
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         {/* Colonne accroche + coordonnées */}
         <Reveal>
@@ -73,11 +76,24 @@ export default function Contact() {
             {sent ? (
               <div className="flex min-h-[24rem] flex-col items-center justify-center text-center">
                 <span className="flex h-16 w-16 items-center justify-center rounded-full bg-sauge text-nappe">
-                  <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" aria-hidden>
-                    <path d="m5 13 4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-8 w-8"
+                    fill="none"
+                    aria-hidden
+                  >
+                    <path
+                      d="m5 13 4 4L19 7"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </span>
-                <h3 className="mt-6 font-display text-3xl text-cafe">Merci !</h3>
+                <h3 className="mt-6 font-display text-3xl text-cafe">
+                  Merci !
+                </h3>
                 <p className="mt-3 max-w-xs font-sans text-cafe/70">
                   Votre demande est bien notée. Je reviens vers vous sous 24h
                   pour convenir d'un créneau d'audit.
@@ -90,38 +106,74 @@ export default function Contact() {
                     <span className="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-wide text-cafe/60">
                       {contact.fields.name}
                     </span>
-                    <input type="text" name="name" required autoComplete="name" className={field} placeholder="Camille Dupont" />
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      autoComplete="name"
+                      className={field}
+                      placeholder="Camille Dupont"
+                    />
                   </label>
                   <label className="block">
                     <span className="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-wide text-cafe/60">
                       {contact.fields.business}
                     </span>
-                    <input type="text" name="business" required className={field} placeholder="Le Comptoir de Camille" />
+                    <input
+                      type="text"
+                      name="business"
+                      required
+                      className={field}
+                      placeholder="Le Comptoir de Camille"
+                    />
                   </label>
                   <label className="block">
                     <span className="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-wide text-cafe/60">
                       {contact.fields.city}
                     </span>
-                    <input type="text" name="city" className={field} placeholder="Saint-Maur-des-Fossés" />
+                    <input
+                      type="text"
+                      name="city"
+                      className={field}
+                      placeholder="Saint-Maur-des-Fossés"
+                    />
                   </label>
                   <label className="block">
                     <span className="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-wide text-cafe/60">
                       {contact.fields.phone}
                     </span>
-                    <input type="tel" name="phone" autoComplete="tel" className={field} placeholder="06 12 34 56 78" />
+                    <input
+                      type="tel"
+                      name="phone"
+                      autoComplete="tel"
+                      className={field}
+                      placeholder="06 12 34 56 78"
+                    />
                   </label>
                 </div>
                 <label className="block">
                   <span className="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-wide text-cafe/60">
                     {contact.fields.email}
                   </span>
-                  <input type="email" name="email" required autoComplete="email" className={field} placeholder="camille@moncommerce.fr" />
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    autoComplete="email"
+                    className={field}
+                    placeholder="camille@moncommerce.fr"
+                  />
                 </label>
                 <label className="block">
                   <span className="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-wide text-cafe/60">
                     {contact.fields.message}
                   </span>
-                  <textarea name="message" rows={4} className={`${field} resize-none`} placeholder="Mon site actuel date de 2015 et je perds des réservations…" />
+                  <textarea
+                    name="message"
+                    rows={4}
+                    className={`${field} resize-none`}
+                    placeholder="Mon site actuel date de 2015 et je perds des réservations…"
+                  />
                 </label>
                 <button
                   type="submit"

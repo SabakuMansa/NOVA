@@ -35,11 +35,7 @@ export interface DeliveryQuote {
 }
 
 export type DeliveryStatusValue =
-  | "pending"
-  | "preparing"
-  | "courier_en_route"
-  | "delivered"
-  | "canceled";
+  "pending" | "preparing" | "courier_en_route" | "delivered" | "canceled";
 
 /** Étapes affichées dans la timeline (ordre logique). */
 export const DELIVERY_TIMELINE: DeliveryStatusValue[] = [

@@ -12,7 +12,10 @@ import { getReviewStore } from "@/lib/reviews/store";
 export async function GET(request: Request) {
   const id = new URL(request.url).searchParams.get("id");
   if (!id) {
-    return NextResponse.json({ error: "Paramètre 'id' manquant." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Paramètre 'id' manquant." },
+      { status: 400 },
+    );
   }
 
   const store = getReviewStore();
@@ -25,5 +28,7 @@ export async function GET(request: Request) {
 <p>Vous ne recevrez plus ce type d'email pour cette réservation.</p>
 </body></html>`;
 
-  return new NextResponse(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+  return new NextResponse(html, {
+    headers: { "Content-Type": "text/html; charset=utf-8" },
+  });
 }
