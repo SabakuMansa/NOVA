@@ -1527,3 +1527,63 @@ qui rappelle justement de ne jamais les ajouter).
 - Console navigateur : 0 erreur sur `/`, `/exemples/autonome`,
   `/exemples/machine`, `/exemples/machine/espace-admin`.
 - **Aucun push** — en attente de relecture.
+
+## [Incident prod] Déploiements Vercel bloqués — cron toutes les 10 min incompatible avec le plan Hobby
+
+### Symptôme
+
+Après le push des deux entrées précédentes, le site en ligne
+(`nova-sigma-khaki.vercel.app`) ne reflétait toujours pas les changements
+— `/exemples/presence` (qui existait pourtant depuis des jours) répondait
+en 404, et le titre du Hero affiché ne correspondait même pas à la copie
+du repositionnement du 13/07. Le déploiement le plus récent visible sur
+Vercel datait d'avant le commit `b68c651` ("Module Relance avis Google"),
+alors que 14 commits avaient été poussés depuis.
+
+### Diagnostic
+
+- Repo GitHub bien connecté côté Vercel (`Settings → Git`), événements
+  `deployment_status`/`repository_dispatch` activés — l'intégration
+  paraissait saine.
+- Un **redeploy manuel** de l'ancien commit (`5ac67b6`) a réussi (Ready,
+  promu Production) — donc le projet Vercel lui-même n'était ni suspendu
+  ni bloqué par une limite de facturation.
+- Tenter un **Create Deployment** sur le commit actuel a révélé la vraie
+  cause : `vercel.json` déclare un cron `*/10 * * * *` (toutes les 10
+  minutes) pour `/api/reviews/run`, or le compte Vercel est sur le plan
+  **Hobby** (gratuit), qui limite les Cron Jobs à **une exécution par
+  jour**. Vercel rejette la validation de tout déploiement contenant une
+  config cron hors limite du plan — silencieusement pour les déploiements
+  automatiques déclenchés par push (aucune erreur visible dans la liste,
+  juste... rien ne se passe).
+- Ce risque était en fait déjà documenté dans `README-reviews.md` au
+  moment de la construction du module Relance avis (« ⚠️ Sur le plan
+  Hobby... Pro est nécessaire pour un cron toutes les 10 minutes ») mais
+  n'avait jamais été suivi d'effet avant ce premier vrai déploiement du
+  module.
+
+### Correction
+
+- `vercel.json` : `*/10 * * * *` → `0 9 * * *` (une fois par jour, 9h) —
+  compatible plan Hobby, débloque tous les déploiements (celui-ci et les
+  suivants, automatiques comme manuels).
+- `README-reviews.md` : section installation et arborescence mises à jour
+  pour refléter le rythme réel (1x/jour) et documenter explicitement la
+  conséquence (relance avis pouvant partir avec jusqu'à ~24h de décalage
+  par rapport à l'heure exacte prévue — acceptable pour ce cas d'usage,
+  pas pour un besoin de précision à la minute).
+- Décision actée avec l'utilisateur : rester sur le plan Hobby avec un
+  cron quotidien plutôt que passer sur Vercel Pro pour garder les 10
+  minutes.
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅, `vercel.json` validé comme JSON syntaxiquement correct.
+- `grep` : aucune autre référence au rythme "10 minutes" restante dans le
+  code ou la doc (`README-reviews.md`, `CHANGELOG.md` historique conservé
+  tel quel — c'est un journal, pas une doc vivante).
+- **Reste à faire côté utilisateur** : pousser ce commit, puis relancer un
+  `Create Deployment` (ou attendre le déploiement automatique si le
+  webhook se redéclenche correctement) pour vérifier que le déploiement
+  passe enfin et que le site live rattrape son retard.
+- **Aucun push** — en attente de confirmation utilisateur.

@@ -102,11 +102,18 @@ C'est le point le plus important à comprendre avant un vrai déploiement.
    SUPABASE_SERVICE_ROLE_KEY=...   # clé SERVICE ROLE, jamais la clé anon
    ```
 
-3. Configurer **Vercel Cron** (voir `vercel.json`, déjà prêt : appelle
-   `/api/reviews/run` toutes les 10 minutes). ⚠️ Sur le plan **Hobby**
+3. **Vercel Cron** (voir `vercel.json`, déjà prêt : appelle
+   `/api/reviews/run` une fois par jour à 9h). Sur le plan **Hobby**
    gratuit de Vercel, les Cron Jobs sont limités à **une exécution par
-   jour** — insuffisant pour une relance à quelques heures près. Un plan
-   **Pro** est nécessaire pour un cron toutes les 10 minutes.
+   jour** — c'est pour ça que le cron est réglé sur ce rythme, pas plus
+   fréquent : un déploiement avec une fréquence supérieure (ex. toutes les
+   10 minutes) est **rejeté au déploiement** par Vercel sur ce plan (vécu
+   en prod le 14/07 : tous les déploiements bloqués silencieusement tant
+   que ce n'était pas corrigé). Conséquence : une relance peut partir avec
+   jusqu'à ~24h de décalage par rapport à l'heure exacte prévue — acceptable
+   pour un email de relance avis, pas pour un cas nécessitant une précision
+   à la minute. Un plan **Pro** est nécessaire pour repasser à un cron plus
+   fréquent.
 
 Sans cette bascule, **rester en mode démo local est parfaitement sain** pour
 faire des démonstrations client — c'est justement ce que ce module permet de
@@ -143,7 +150,7 @@ app/api/
   reviews/status/route.ts      GET — liste des jobs (suivi commerçant)
   reviews/unsubscribe/route.ts GET — désinscription (lien depuis l'email)
 app/demo/avis/            Page sandbox : créer une réservation fictive + suivi live
-vercel.json               Config Vercel Cron → /api/reviews/run toutes les 10 min
+vercel.json               Config Vercel Cron → /api/reviews/run 1x/jour (9h, limite plan Hobby)
 ```
 
 ## Fonctionnalités
