@@ -1629,3 +1629,24 @@ réactivation facile plus tard.
 - Menu (mobile + desktop) vérifié : ne contient plus que "Le constat",
   "Les plans", "Qui suis-je" — aucun lien mort vers `#moteur`/`#process`.
 - Console navigateur : 0 erreur.
+
+## [Retrait de section] "Le constat" masquée de la homepage
+
+Même traitement que "Ce que ça fait"/"Le process" ci-dessus, appliqué à
+**V3Constat** (ancre `#constat`) : demandé juste après, avec push
+immédiat cette fois.
+
+- `app/page.tsx` : `<V3Constat />` commenté (plus importé), enchaînement
+  homepage désormais Hero → Verdict → Plans → Fondateur → Contact.
+- `content/v3.ts` : entrée "Le constat" (`/#constat`) commentée dans
+  `v3nav.links`.
+- Rien de supprimé : `V3Constat` reste exporté depuis `Sections.tsx`,
+  `v3constat` reste défini dans `content/v3.ts` avec son contenu (cartes
+  "Il est verrouillé" / "Il coûte sans compter").
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- Preview rechargée : `document.body.innerText` ne contient plus "Le
+  constat" nulle part sur la page.
+- Console navigateur : 0 erreur.

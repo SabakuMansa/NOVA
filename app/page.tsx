@@ -2,7 +2,8 @@ import V3Nav from "@/components/v3/Nav";
 import V3Hero from "@/components/v3/Hero";
 import SmoothScroll from "@/components/v2/SmoothScroll";
 import {
-  V3Constat,
+  // V3Constat retiré du site (section "Le constat") — composant conservé
+  // intact dans Sections.tsx, simplement plus importé ici.
   V3Contact,
   V3Fondateur,
   V3Footer,
@@ -21,7 +22,7 @@ export default function Home() {
       <main>
         <V3Hero />
         <V3Verdict />
-        <V3Constat />
+        {/* <V3Constat /> — retiré du site, code conservé */}
         {/* <V3Moteur /> — retiré du site, code conservé */}
         <V3Plans />
         {/* <V3Process /> — retiré du site, code conservé */}

@@ -18,7 +18,10 @@
 
 export const v3nav = {
   links: [
-    { label: "Le constat", href: "/#constat" },
+    // "Le constat" retiré du site (section V3Constat non affichée) — même
+    // traitement, contenu et composant conservés intacts (v3constat,
+    // V3Constat).
+    // { label: "Le constat", href: "/#constat" },
     // "Ce que ça fait" retiré du site (section V3Moteur non affichée sur
     // la page) — lien commenté pour ne pas pointer vers une ancre absente.
     // Contenu et composant conservés intacts (v3moteur, V3Moteur).
