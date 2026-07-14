@@ -176,6 +176,9 @@ export type V3Plan = {
   featured?: boolean;
   badge?: string;
   color: "teal" | "violet" | "corail";
+  /** Lien vers une page /exemples/* montrant CE plan précis en situation
+   *  (uniquement quand la démo existe — pas encore pour tous les plans). */
+  exampleHref?: string;
 };
 
 export const v3plans = {
@@ -197,6 +200,7 @@ export const v3plans = {
         "Mise en ligne rapide",
       ],
       color: "teal",
+      exampleHref: "/exemples/presence",
     },
     {
       name: "Autonome",

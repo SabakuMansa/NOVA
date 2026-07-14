@@ -314,6 +314,16 @@ export function V3Plans() {
                 >
                   Démarrer avec {p.name}
                 </a>
+                {p.exampleHref && (
+                  <Link
+                    href={p.exampleHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 block rounded-xl border-2 border-encre bg-lait px-5 py-2.5 text-center font-sans text-xs font-bold text-encre shadow-[2px_2px_0_#211D16] transition-transform hover:-translate-y-0.5"
+                  >
+                    Voir un exemple concret ↗
+                  </Link>
+                )}
               </div>
             </div>
           </Reveal>

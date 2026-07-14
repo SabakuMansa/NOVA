@@ -6,8 +6,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      // Démos sandbox + page labo : utiles en lien direct, jamais en SEO.
-      disallow: ["/demo", "/labo"],
+      // Démos sandbox, page labo, exemples de plans : utiles en lien direct,
+      // jamais en SEO (commerces fictifs, pas de contenu réel à indexer).
+      disallow: ["/demo", "/labo", "/exemples"],
     },
     sitemap: `${seo.siteUrl}/sitemap.xml`,
     host: seo.siteUrl,

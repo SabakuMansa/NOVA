@@ -1115,3 +1115,78 @@ poids du bundle) s'améliorent toutes, sans aucune régression ailleurs.
   identique ligne pour ligne), hack retiré immédiatement après.
 - **Aucun push** — en attente de relecture avant mise en ligne, et de votre
   décision sur l'effet glitch (clip-path) ci-dessus.
+
+---
+
+## [Pages exemples] "Maison Verdure" — démo concrète du plan Présence
+
+**Correction de prémisse avant de commencer** : la demande faisait référence
+à "La Carte" et à la carte "Vitrine Essentielle" — vocabulaire de l'ancienne
+DA (v1/v2, archivée). Sur le site actuel, la section s'appelle **« Les
+plans »** et l'offre équivalente (3-4 pages, mobile, fiche Google Business,
+formulaire de contact, mise en ligne rapide) s'appelle **« Présence »**
+(690€). La démo a été construite pour ce plan précis, à la route
+`/exemples/presence` plutôt que `/exemples/vitrine-essentielle`.
+
+**Images** : la première approche (photos Unsplash téléchargées localement)
+a été abandonnée en cours de route à la demande du client, remplacée par des
+blocs placeholder stylés (dégradé radial dans les couleurs de marque +
+icône emoji centrée) — plus rapide à produire, montre la structure sans
+nécessiter de vraies photos. Aucune image raster n'a été conservée dans le
+projet.
+
+### Ce qui a été construit
+
+- **Commerce fictif** : « Maison Verdure », boutique de plantes générique
+  (Saint-Maur-des-Fossés) — cohérent avec le repositionnement « tout
+  commerçant », pas spécifiquement restaurant.
+- **4 pages**, structure réutilisable pour les futures démos (`Site
+  Autonome`, `Croissance Digitale`, `Boutique en ligne`) :
+  - `app/exemples/presence/page.tsx` — Accueil
+  - `app/exemples/presence/presentation/page.tsx` — Présentation / À propos
+  - `app/exemples/presence/galerie/page.tsx` — Galerie (4 blocs placeholder)
+  - `app/exemples/presence/contact/page.tsx` — Contact (formulaire + fiche
+    Google Business + adresse/horaires)
+  - `app/exemples/presence/layout.tsx` — bandeau de contexte + nav + footer
+    partagés
+- **Composants réutilisables** (`components/exemples/`) : `PlaceholderImage`
+  (bloc image stylé), `ExempleNav` (nav du site fictif, distincte de
+  `V3Nav`), `ExempleFooter` (mention « hébergement inclus » en pied de page
+  uniquement — jamais une fonctionnalité), `ExempleBanner` (bandeau
+  « exemple concret », lien retour vers `/#plans`).
+- **Contenu** : `content/exemples/presence.ts`, avec un commentaire de tête
+  rappelant explicitement le périmètre strict à ne jamais dépasser.
+- **Bouton sur la carte « Présence »** (`content/v3.ts` → nouveau champ
+  `V3Plan.exampleHref`, rendu conditionnel dans `V3Plans` —
+  `components/v3/Sections.tsx`) : « Voir un exemple concret ↗ », en nouvel
+  onglet. N'apparaît QUE sur la carte Présence (vérifié : absent sur
+  Autonome/Machine, pas encore de démo pour ces plans).
+- **SEO** : `robots.ts` étend le `disallow` à `/exemples` (même traitement
+  que `/demo` et `/labo`) ; metadata `noindex, nofollow` sur le layout ;
+  absent du sitemap.
+
+### Périmètre strictement respecté (vérifié, pas juste écrit)
+
+`grep` exhaustif sur `content/exemples/`, `app/exemples/`,
+`components/exemples/` pour "espace admin", "autonomie", "automat*",
+"relance", "panier", "paiement", "e-commerce", "boutique en ligne",
+"réservation" : **0 occurrence dans le contenu réel** (les seules
+correspondances sont dans le commentaire de tête de `presence.ts`, qui
+rappelle justement de ne jamais les ajouter). Aucune mention "non
+disponible" nulle part — l'absence est silencieuse, comme demandé.
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅, build production **23 routes** ✅ (4 nouvelles pages
+  générées correctement).
+- Les 4 pages vérifiées visuellement en preview : Accueil (hero + placeholder
+  + carte fiche Google), Présentation (placeholder + 3 valeurs), Galerie (4
+  blocs colorés), Contact (adresse/horaires/note Google + formulaire).
+- Formulaire de contact testé bout en bout (état « Message envoyé ! »
+  fonctionnel, pattern optimistic déjà utilisé ailleurs sur le site).
+- Bouton "Voir un exemple concret" vérifié présent uniquement sur la carte
+  Présence, absent des autres, lien et cible (`target="_blank"`) corrects.
+- Rendu mobile (375px) vérifié : nav qui wrap proprement, aucun débordement
+  horizontal (`scrollWidth` = 375px exact).
+- Console navigateur : 0 erreur sur les 4 pages.
+- **Aucun push** — en attente de relecture.
