@@ -303,11 +303,14 @@ body {
   animation: glitch-split-b 0.35s steps(6, end);
 }
 @keyframes glitch-jitter {
-  0%, 100% { transform: translate(0, 0); filter: none; }
+  /* transform uniquement (composité) : le micro-flou de 0.3px qui existait ici
+     animait `filter`, flaggé non-composité par Lighthouse pour un effet à
+     peine perceptible — retiré, le tremblement transform seul suffit. */
+  0%, 100% { transform: translate(0, 0); }
   20% { transform: translate(-2px, 1px); }
-  40% { transform: translate(2px, -1px); filter: blur(0.3px); }
+  40% { transform: translate(2px, -1px); }
   60% { transform: translate(-1px, 0); }
-  80% { transform: translate(1px, 1px); filter: none; }
+  80% { transform: translate(1px, 1px); }
 }
 @keyframes glitch-split-a {
   0% { transform: translate(0, 0); clip-path: inset(10% 0 70% 0); opacity: 0; }

@@ -876,3 +876,242 @@ rebuild : les deux apparaissent bien en `ƒ` (dynamique) désormais.
   `REVIEWS_STORE_MODE` → aucune erreur, comportement démo par défaut.
 - Site principal non affecté : `/` répond toujours en 200, aucune régression.
 - **Aucun push** — en attente de relecture avant mise en ligne.
+
+---
+
+## [Optimisation performance] Baseline Lighthouse — AVANT modification
+
+Build de production (`next build` + `next start -p 3005`), Lighthouse CLI
+(`npx lighthouse`, Chrome headless, catégories perf/a11y/bonnes pratiques/SEO)
+sur la page d'accueil `/`.
+
+### Scores de départ
+
+| Catégorie | Score |
+| --- | --- |
+| Performance | **96** |
+| Accessibilité | **96** |
+| Bonnes pratiques | **96** |
+| SEO | **100** |
+
+### Métriques
+
+| Métrique | Valeur |
+| --- | --- |
+| First Contentful Paint | 0,8 s |
+| Largest Contentful Paint | 2,8 s |
+| Total Blocking Time | 30 ms |
+| Cumulative Layout Shift | 0 |
+| Speed Index | 0,8 s |
+| Time to Interactive | 3,0 s |
+| Max Potential FID | 120 ms |
+
+### Pistes concrètes déjà identifiées par Lighthouse (à creuser, pas à corriger à l'aveugle)
+
+1. **3 animations non compositées** sur la section Verdict (`glitch-jitter`,
+   `glitch-split-a`, `glitch-split-b`) — Lighthouse flague `filter` (« may move
+   pixels ») et `clip-path` (« Unsupported CSS Property ») comme non pris en
+   charge par le compositeur. C'était présenté comme « propriétés compositées
+   uniquement » dans le changelog du Labo/Verdict — **à revérifier, l'outil dit
+   le contraire pour clip-path/filter animés**, contrairement à `transform`/`opacity`.
+2. **JS inutilisé** : chunk framer-motion (`249-*.js`, 128 Ko) — 29,7 Ko sur
+   40,7 Ko (73 %) non exécutés sur la page d'accueil.
+3. **2 tâches longues** détectées (117 ms au chargement initial, 84 ms dans le
+   chunk react-dom vers 2,8 s) — TBT reste bas (30 ms), à surveiller mais pas
+   forcément un problème en soi.
+4. Chunk `fd9d1056-*.js` (172 Ko) identifié = **react-dom** (incompressible,
+   pas une piste d'optimisation).
+
+Premier build de prod (`First Load JS` partagé) : **87,4 Ko** répartis en
+`117-*.js` (31,7 Ko), `fd9d1056-*.js` (53,6 Ko compressé), + chunks additionnels.
+Page d'accueil : 3,19 Ko propres + 147 Ko total.
+
+Diagnostic détaillé (animations, canvas, images, polices, bundle, re-renders
+React) à suivre avant toute correction — voir entrée suivante.
+
+---
+
+## [Optimisation performance] Diagnostic complet + corrections appliquées
+
+Méthode : profiling réel (pas de suppositions), un point de contrôle par item
+de la checklist, correction uniquement de ce qui est confirmé.
+
+### 1. Profiling réel (scroll + interactions)
+
+`PerformanceObserver` (`longtask`) installé en conditions réelles (build de
+prod, port 3005) pendant : parcours complet de la page (Hero → Verdict →
+Plans → Process → Contact via navigation par ancre), plusieurs cycles de
+l'effet glitch du Verdict, interactions sur le panier de `/demo/commande`.
+**Résultat : zéro tâche longue (>50 ms) détectée** dans les trois scénarios.
+Les 2 tâches longues que Lighthouse rapporte sur le chargement initial
+(117 ms et 84 ms) sont internes à React/react-dom (hydratation) — TBT réel
+mesuré à seulement 30 ms au départ, donc déjà sous le seuil qui impacterait
+l'expérience.
+
+### 2. Animations — audit exhaustif de tous les `@keyframes` + props Framer Motion
+
+Toutes les animations du site passées en revue (`app/globals.css` +
+`animate`/`initial`/`whileInView` de Framer Motion, code live uniquement) :
+
+- `preview-in`, `hero-rise`, `hero-slate`, `sig-drift`, `sig-word`,
+  `v3-ticker`, `v3-drift`, `v3-notif`, `Reveal` (Framer Motion) : **déjà
+  `transform`/`opacity` uniquement** — rien à corriger.
+- `offer-pulse` anime `box-shadow` (exactement la propriété citée comme
+  contre-exemple) — mais n'est utilisée que par `.featured-offer`, une classe
+  **exclusive à `components/Carte.tsx` (archive-only, v1/v2)**. Aucun élément
+  du site actuel ne porte cette classe : zéro coût réel, laissée telle quelle
+  (hors périmètre, code mort mais protégé comme documenté dans le nettoyage
+  précédent).
+- **`glitch-jitter` / `glitch-split-a` / `glitch-split-b`** (section Verdict) :
+  seules animations réellement problématiques, confirmées par Lighthouse
+  (`non-composited-animations`, 3 éléments flagués) ET par lecture directe du
+  CSS — `filter` et `clip-path` animés, pas compositables de façon fiable.
+  Voir corrections ci-dessous.
+
+### 3. Canvas / effets visuels lourds
+
+- **Hero (`V3Scene.tsx` + `V3Backdrop.tsx`)** : déjà exemplaire sur les 3
+  critères demandés — `dpr={[1, 1.5]}` (plafonné, jamais illimité),
+  `frameloop={active ? "always" : "never"}` piloté par un `IntersectionObserver`
+  (pause hors écran), et surtout **coupé sur mobile/tactile** (`pointer: coarse`
+  ou `max-width: 768px` → fallback CSS, jamais de WebGL chargé). Chargement
+  WebGL lui-même différé via `next/dynamic` + `requestIdleCallback`. Rien à
+  changer.
+- **Curseur qui suit le blob WebGL** : position stockée dans une `ref`
+  (`target.current`), jamais dans le state React — consommée une seule fois
+  par frame via `useFrame` avec un lerp. Déjà l'implémentation demandée.
+  point 7 de la checklist confirmé sans action nécessaire.
+- **Labo (`ShatterPortal.tsx`)** : vérifié en lecture seule uniquement (zone
+  protégée, jamais modifiée) — DPR plafonné à 2, boucle `requestAnimationFrame`,
+  nombre de fragments déjà réduit sur mobile (36 vs 65 desktop). Déjà conforme.
+
+### 4. Images
+
+Recherche exhaustive (`find` sur tous les formats raster + grep `<img>`/
+`next/image`) : **zéro image raster dans tout le projet**, live ou archivé.
+Le site est 100 % SVG inline / dégradés CSS / WebGL. Rien à optimiser —
+confirmé par recherche directe, pas supposé.
+
+### 5. Polices
+
+`next/font/google` (Instrument Serif, Work Sans, IBM Plex Mono) : déjà
+auto-hébergées (aucune requête vers fonts.googleapis.com), `display: "swap"`
+déjà positionné sur les 3 familles, préchargement automatique confirmé dans
+le HTML de prod (6 `<link rel="preload" as="font">`). C'est exactement ce que
+`next/font` garantit par construction — rien à ajouter.
+
+### 6. JavaScript et bundle
+
+- **Taille du bundle** : chunks identifiés précisément (pas par déduction) en
+  comparant les requêtes réseau de `/` vs `/demo/commande` : `fd9d1056-*.js`
+  (172 Ko) = react-dom, `117-*.js` (124 Ko) = runtime React, `972-*.js`
+  (26 Ko) = helpers Next.js (i18n/routing, partagé partout) — tous
+  incompressibles. `249-*.js` (128 Ko) = **Framer Motion**, chargé uniquement
+  sur les pages utilisant `<Reveal>` (le code-splitting par route fonctionne
+  déjà correctement) mais avec **73 % de code jamais exécuté** (29,7 Ko/40,7 Ko,
+  mesuré par Lighthouse `unused-javascript`). Voir correction ci-dessous.
+- **Scripts tiers** : Vercel Analytics (`@vercel/analytics/react`) chargé de
+  façon non bloquante (`<Analytics />` en fin de `<body>`, script tiers
+  différé par le SDK lui-même) — confirmé par le `server-response-time` de
+  10 ms et le TBT de 30 ms au départ. Rien à changer.
+- **Modules Commande & Livraison / Relance avis** : leur code serveur
+  (`lib/delivery/*`, `lib/reviews/*`) tourne exclusivement dans des routes API
+  (`app/api/**/route.ts`) — jamais expédié au navigateur, quelle que soit la
+  page. Côté client, `DeliveryOptionSelector`/`DeliveryTracker` ne sont
+  importés que par `app/demo/commande` et `app/demo/livraison` (vérifié via
+  les requêtes réseau) : le découpage par route de Next.js les exclut déjà du
+  bundle de la page d'accueil et de toutes les autres pages. **Déjà fait, rien
+  à changer.**
+
+### 7. Re-renders React inutiles
+
+Recherche de tout `useState` mis à jour en boucle ou sur `mousemove`/
+`pointermove` dans le code live :
+- **Hero (`NotifFeed`)** : `setInterval` à 2,2 s — fréquence négligeable,
+  pas un problème.
+- **Verdict (`GlitchAnswer`)** : `setInterval` à 2 s — idem, négligeable.
+- **Curseur WebGL** : déjà sur une `ref`, voir point 3.
+- **Aucun** `mousemove`/`pointermove` mettant à jour du state React trouvé
+  dans le code live (les 3 occurrences archive-only — `signature/*`,
+  `v2/V2Hero.tsx` — sont hors périmètre).
+
+Conclusion : **zéro problème de re-render trouvé.**
+
+### Corrections appliquées
+
+1. **`components/Reveal.tsx` : `motion` → `LazyMotion` + `m` + `domAnimation`.**
+   Seul consommateur du composant `motion` complet dans tout le code live, et
+   seulement pour un fade + `translateY` (ni drag, ni layout, ni `AnimatePresence`
+   complexe) — exactement le cas d'usage prévu pour `LazyMotion`. Zéro
+   changement de comportement (même easing, même durée, même déclenchement
+   `whileInView`, même court-circuit sous `prefers-reduced-motion` — la
+   branche reduced-motion ne touche même pas au nouveau code).
+2. **`app/globals.css` : `filter` retiré de `@keyframes glitch-jitter`.**
+   Le micro-flou de 0,3px qu'il produisait était à peine perceptible ; le
+   tremblement `transform` seul suffit visuellement. Change 1 des 3 éléments
+   flagués par Lighthouse.
+
+### Non corrigé — décision à confirmer
+
+**`glitch-split-a` / `glitch-split-b` (2 éléments restants) animent
+`clip-path`**, le cœur du découpage en « tranches » qui fait le look glitch/
+RGB-split de la section Verdict. Mesuré : **zéro tâche longue réelle causée
+par cet effet** sur cette machine (voir point 1) — le flag Lighthouse est
+correct sur le principe (clip-path animé n'est pas garanti compositable par
+tous les navigateurs) mais n'est pas la cause d'un ralentissement observable
+ici. Par cohérence avec la consigne de ne pas dégrader un effet déjà validé
+sans confirmation, **je ne l'ai pas modifié**. Deux options si vous voulez
+aller plus loin, par ordre de risque visuel croissant : (a) rien, l'effet est
+déjà rapide en pratique ; (b) reconstruire l'effet avec des bandes déjà
+découpées statiquement (plusieurs éléments à `clip-path` fixe, seul le
+`transform`/`opacity` de chacun serait animé) — même rendu final possible,
+mais demande une réécriture du composant, pas juste du CSS.
+
+### Autres constats (hors périmètre performance, non corrigés)
+
+- **`errors-in-console`** (Lighthouse, bonnes pratiques) : 404 sur
+  `/_vercel/insights/script.js` — c'est Vercel Analytics qui cherche un
+  script servi uniquement par l'infrastructure Vercel réelle ; absent en test
+  local (`next start`). Pas un bug, un artefact de test — n'apparaîtra pas
+  une fois déployé.
+- **`color-contrast`** (Lighthouse, accessibilité) : plusieurs textes en
+  `text-encre/50` à `/60` (opacité réduite) et badges colorés sous le ratio
+  WCAG. Réel, mais hors périmètre de ce chantier (performance, pas
+  accessibilité visuelle) — signalé plutôt que corrigé à la volée.
+
+### Scores Lighthouse — avant / après
+
+| Catégorie / métrique | Avant | Après |
+| --- | --- | --- |
+| Performance | 96 | 96 |
+| Accessibilité | 96 | 96 |
+| Bonnes pratiques | 96 | 96 |
+| SEO | 100 | 100 |
+| First Contentful Paint | 0,8 s | 0,8 s |
+| Largest Contentful Paint | 2,8 s | 2,8 s |
+| **Total Blocking Time** | **30 ms** | **10 ms** |
+| Cumulative Layout Shift | 0 | 0 |
+| Speed Index | 0,8 s | 0,8 s |
+| Time to Interactive | 3,0 s | 2,9 s |
+| **JS inutilisé (page d'accueil)** | **29,7 Ko** | **0 Ko** |
+| **Animations non compositées** | **3 éléments** | **2 éléments** |
+| First Load JS (page d'accueil) | 147 Ko | **137 Ko** |
+| First Load JS (`/qui-je-suis`) | 144 Ko | **134 Ko** |
+
+Les scores globaux (déjà à 96-100 au départ) ne bougent pas — le site était
+déjà très bien optimisé avant ce chantier. Les métriques fines qui reflètent
+directement les corrections (TBT, JS inutilisé, animations non compositées,
+poids du bundle) s'améliorent toutes, sans aucune régression ailleurs.
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅, build production ✅ (mêmes 19 routes).
+- Rendu visuel vérifié en preview après corrections : Hero, section Verdict
+  (glitch actif, texte cyclé), desktop et mobile — identiques à avant.
+- `prefers-reduced-motion` re-testé spécifiquement sur `Reveal.tsx` (seul
+  fichier modifié touchant à une logique reduced-motion) : flag forcé
+  temporairement, confirmé que le contenu s'affiche directement à `opacity:1`
+  sans transition (même comportement qu'avant, la branche reduced-motion est
+  identique ligne pour ligne), hack retiré immédiatement après.
+- **Aucun push** — en attente de relecture avant mise en ligne, et de votre
+  décision sur l'effet glitch (clip-path) ci-dessus.
