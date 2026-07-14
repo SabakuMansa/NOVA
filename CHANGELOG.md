@@ -1587,3 +1587,45 @@ alors que 14 commits avaient été poussés depuis.
   webhook se redéclenche correctement) pour vérifier que le déploiement
   passe enfin et que le site live rattrape son retard.
 - **Aucun push** — en attente de confirmation utilisateur.
+- **Suivi** : poussé (`8da6300`), déploiement Vercel repassé au vert
+  automatiquement — `/exemples/autonome` et `/exemples/machine` vérifiés
+  en 200 avec `age: 0` (réponse fraîche, plus de cache périmé). Confirme
+  que le webhook GitHub → Vercel fonctionnait bien depuis le début ; seule
+  la validation du cron bloquait. Aucune reconnexion Git nécessaire.
+
+## [Retrait de sections] "Ce que ça fait" et "Le process" masquées de la homepage
+
+### Demande
+
+Retirer les sections **"Ce que ça fait"** (V3Moteur, ancre `#moteur`) et
+**"Le process"** (V3Process, ancre `#process`) de la homepage — sans
+supprimer le code : composants et contenu conservés intacts pour une
+réactivation facile plus tard.
+
+### Ce qui a changé
+
+- `app/page.tsx` : `<V3Moteur />` et `<V3Process />` retirés du rendu
+  (lignes commentées, pas supprimées), imports correspondants commentés
+  dans `Sections.tsx`. Nouvel enchaînement : Hero → Verdict → Constat →
+  Plans → Fondateur → Contact.
+- `content/v3.ts` : les entrées de nav "Ce que ça fait" (`/#moteur`) et
+  "Le process" (`/#process`) commentées dans `v3nav.links`, pour ne pas
+  laisser de lien mort vers une ancre qui n'existe plus sur la page.
+- **Rien de supprimé** : `V3Moteur`/`V3Process` restent exportés depuis
+  `components/v3/Sections.tsx`, `v3moteur`/`v3process` restent définis
+  dans `content/v3.ts` avec tout leur contenu (bento cards, étapes du
+  process) — il suffit de décommenter les 4 lignes concernées pour tout
+  réafficher.
+- `content/site.ts` (ancien contenu v1/v2, alimente uniquement
+  `app/_archive/*`) non touché — ses propres liens `#process` restent
+  valides dans l'archive, hors sujet ici.
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- Page d'accueil vérifiée en preview : plus aucune trace des deux
+  sections, enchaînement Constat → Plans → Fondateur confirmé par
+  snapshot d'accessibilité.
+- Menu (mobile + desktop) vérifié : ne contient plus que "Le constat",
+  "Les plans", "Qui suis-je" — aucun lien mort vers `#moteur`/`#process`.
+- Console navigateur : 0 erreur.

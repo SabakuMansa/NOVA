@@ -19,9 +19,15 @@
 export const v3nav = {
   links: [
     { label: "Le constat", href: "/#constat" },
-    { label: "Ce que ça fait", href: "/#moteur" },
+    // "Ce que ça fait" retiré du site (section V3Moteur non affichée sur
+    // la page) — lien commenté pour ne pas pointer vers une ancre absente.
+    // Contenu et composant conservés intacts (v3moteur, V3Moteur).
+    // { label: "Ce que ça fait", href: "/#moteur" },
     { label: "Les plans", href: "/#plans" },
-    { label: "Le process", href: "/#process" },
+    // "Le process" retiré du site (section V3Process non affichée) — même
+    // traitement, contenu et composant conservés intacts (v3process,
+    // V3Process).
+    // { label: "Le process", href: "/#process" },
     { label: "Qui suis-je", href: "/qui-je-suis" },
   ],
   cta: { label: "Audit gratuit", href: "/#contact" },
