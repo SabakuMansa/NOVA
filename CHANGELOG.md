@@ -1326,3 +1326,84 @@ jamais les ajouter).
   Autonome (2 occurrences exactement), absent de Machine.
 - Console navigateur : 0 erreur sur les 6 pages.
 - **Aucun push** — en attente de relecture.
+
+## [Pages exemples] "Au Poil" — démo concrète du plan Machine
+
+### Objectif
+
+Troisième page de la série `/exemples/*`, montrant ce que le plan
+**Machine** (dès 1990€) ajoute par-dessus Autonome : des automatisations
+visibles (relance avis Google, notifications) et un tableau de bord
+simple — en mockup, sans connexion réelle.
+
+### Note de vocabulaire
+
+La demande initiale nommait cette offre "Croissance Digitale" — ce nom
+n'existe pas dans `content/v3.ts` ; le plan qui correspond exactement à la
+description (automatisations, tableau de bord, dès 1990€) s'appelle
+**Machine**. L'URL demandée (`/exemples/croissance-digitale`) a été
+conservée telle quelle, mais le bandeau et le pied de page de la démo
+affichent "Plan Machine" pour rester cohérents avec le site réel (même
+traitement que "Vitrine Essentielle" → "Présence" précédemment).
+
+### Contrainte de méthode (rappelée par l'utilisateur, respectée)
+
+Réutiliser tel quel le squelette de `/exemples/site-autonome` (layout,
+nav, footer, `PlaceholderImage`, structure de l'espace admin par onglets)
+plutôt que reconstruire une architecture — aucun nouveau composant partagé
+créé.
+
+### Ce qui a été construit
+
+- **Commerce fictif** : « Au Poil », toilettage canin (Vincennes) —
+  encore un autre type de commerce que les deux démos précédentes
+  (boutique de plantes, salon de coiffure), toujours générique.
+- **6 pages**, structure et style identiques à `/exemples/site-autonome`
+  (Accueil, Prestations, Galerie, À propos, Contact, Espace admin).
+- **Espace admin étendu** (`app/exemples/croissance-digitale/espace-
+  admin/page.tsx`) : reprend les 4 onglets du plan Autonome (Horaires /
+  Textes / Prestations & tarifs / Photos), **plus 2 onglets spécifiques
+  au plan Machine** — la différence clé à mettre en valeur :
+  - **Automatisations** — liste de notifications simulées façon celles
+    déjà utilisées dans le flux du Hero (`v3hero.events`, même forme
+    `icon/text/tag`), ex. « Avis Google 5★ reçu — relance de remerciement
+    envoyée automatiquement ». Réutilise la classe d'animation `v3-notif`
+    déjà définie dans `globals.css`, aucune nouvelle animation créée.
+  - **Tableau de bord** — 3 cartes de statistiques factices mais
+    réalistes (visiteurs du mois, avis Google générés, taux de réponse
+    aux demandes), rendues avec `v3-card`, déjà utilisé partout ailleurs.
+  - Le rendu conditionnel de la zone de contenu a été étendu (`tab.fields`
+    → formulaire déjà existant / `tab.notifications` → nouvelle liste /
+    `tab.stats` → nouvelle grille / sinon → note photo déjà existante) :
+    extension du switch déjà en place, pas de nouvelle architecture.
+- **Contenu** : `content/exemples/croissance-digitale.ts`, même en-tête
+  de commentaire rappelant le périmètre strict (aucun e-commerce).
+- **Bouton sur la carte « Machine »** (`content/v3.ts` → `exampleHref:
+  "/exemples/croissance-digitale"` sur `v3plans.plans[2]`) : rendu par le
+  même bloc conditionnel générique déjà en place. Vérifié : les 3 cartes
+  (Présence, Autonome, Machine) ont désormais chacune leur lien, dans
+  l'ordre.
+
+### Périmètre strictement respecté (vérifié, pas juste écrit)
+
+`grep` exhaustif sur `content/exemples/croissance-digitale.ts` et
+`app/exemples/croissance-digitale/` pour "panier", "paiement",
+"e-commerce"/"ecommerce", "stripe", "checkout", "commande", "boutique en
+ligne" : **0 occurrence dans le contenu réel** (seule correspondance : le
+commentaire de tête de `croissance-digitale.ts`, qui rappelle justement de
+ne jamais les ajouter).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- Les 6 pages vérifiées visuellement en preview (Accueil, Prestations,
+  Espace admin) : aucune erreur console.
+- Onglets "Automatisations" et "Tableau de bord" testés en interaction
+  réelle : changement d'onglet fonctionnel, styles actif/inactif corrects
+  (vérifiés via `preview_inspect` — `background-color: rgb(255, 107, 74)`
+  uniquement sur l'onglet actif, l'aspect délavé à l'écran n'étant qu'un
+  artefact de compression JPEG du screenshot, pas un bug réel).
+- Bouton "Voir un exemple concret" vérifié présent sur les 3 cartes
+  (Présence, Autonome, Machine), dans le bon ordre, avec la bonne cible
+  chacune.
+- **Aucun push** — en attente de relecture.

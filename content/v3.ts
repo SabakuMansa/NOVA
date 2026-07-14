@@ -230,6 +230,7 @@ export const v3plans = {
         "Accompagnement renforcé",
       ],
       color: "corail",
+      exampleHref: "/exemples/croissance-digitale",
     },
   ] as V3Plan[],
   addon: {
