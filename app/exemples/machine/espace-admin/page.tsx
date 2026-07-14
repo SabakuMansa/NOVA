@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { croissanceDigitaleDemo } from "@/content/exemples/croissance-digitale";
+import NotifFeed from "@/components/v3/NotifFeed";
+import { machineDemo } from "@/content/exemples/machine";
 
-export default function CroissanceDigitaleEspaceAdminPage() {
-  const { espaceAdmin } = croissanceDigitaleDemo;
+export default function MachineEspaceAdminPage() {
+  const { espaceAdmin } = machineDemo;
   const [activeTab, setActiveTab] = useState(espaceAdmin.tabs[0].id);
   const [justSaved, setJustSaved] = useState(false);
   const field =
@@ -55,7 +56,7 @@ export default function CroissanceDigitaleEspaceAdminPage() {
             aria-hidden
           />
           <span className="ml-2 font-mono text-[0.62rem] text-encre/60">
-            espace-personnel · {croissanceDigitaleDemo.business.name}
+            espace-personnel · {machineDemo.business.name}
           </span>
         </div>
 
@@ -102,46 +103,38 @@ export default function CroissanceDigitaleEspaceAdminPage() {
                 )}
               </form>
             ) : tab.notifications ? (
-              <div className="space-y-3">
-                <p className="mb-1 font-sans text-sm text-encre/60">
+              <div>
+                <p className="mb-3 font-sans text-sm text-encre/60">
                   Ce qui s&apos;est passé automatiquement, sans action de
                   votre part :
                 </p>
-                {tab.notifications.map((n, i) => (
-                  <div
-                    key={i}
-                    className="v3-notif flex items-center gap-3 rounded-xl border-2 border-encre bg-white p-4"
-                  >
-                    <span className="text-xl" aria-hidden>
-                      {n.icon}
-                    </span>
-                    <p className="flex-1 font-sans text-sm text-encre">
-                      {n.text}
-                    </p>
-                    <span className="rounded-full border-2 border-encre bg-jaune/40 px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-wide text-encre">
-                      {n.tag}
-                    </span>
-                  </div>
-                ))}
+                <NotifFeed events={tab.notifications} intervalMs={2600} />
               </div>
             ) : tab.stats ? (
-              <div className="grid gap-4 sm:grid-cols-3">
-                {tab.stats.map((s) => (
-                  <div
-                    key={s.label}
-                    className="v3-card flex flex-col gap-2 p-5"
-                  >
-                    <span className="text-2xl" aria-hidden>
-                      {s.icon}
-                    </span>
-                    <span className="font-sans text-2xl font-extrabold text-encre">
-                      {s.value}
-                    </span>
-                    <span className="font-sans text-xs text-encre/60">
-                      {s.label}
-                    </span>
-                  </div>
-                ))}
+              <div>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  {tab.stats.map((s) => (
+                    <div
+                      key={s.label}
+                      className="v3-card flex flex-col gap-2 p-5"
+                    >
+                      <span className="text-2xl" aria-hidden>
+                        {s.icon}
+                      </span>
+                      <span className="font-sans text-2xl font-extrabold text-encre">
+                        {s.value}
+                      </span>
+                      <span className="font-sans text-xs text-encre/60">
+                        {s.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                {tab.statsNote && (
+                  <p className="mt-4 font-mono text-[0.62rem] uppercase tracking-wide text-encre/45">
+                    {tab.statsNote}
+                  </p>
+                )}
               </div>
             ) : (
               <div className="flex min-h-[12rem] flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-encre/30 p-8 text-center">

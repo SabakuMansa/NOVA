@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { croissanceDigitaleDemo } from "@/content/exemples/croissance-digitale";
+import { autonomeDemo } from "@/content/exemples/autonome";
 
-export default function CroissanceDigitaleContactPage() {
-  const { contact, business } = croissanceDigitaleDemo;
+export default function AutonomeContactPage() {
+  const { contact, business } = autonomeDemo;
   const [sent, setSent] = useState(false);
   const field =
     "w-full rounded-xl border-2 border-encre bg-white px-4 py-3 font-sans text-encre placeholder-encre/35 focus:outline-none";
@@ -14,7 +14,7 @@ export default function CroissanceDigitaleContactPage() {
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <div>
           <p className="inline-flex items-center gap-2 rounded-full border-2 border-encre bg-white px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-encre shadow-[2px_2px_0_#211D16]">
-            <span className="h-2 w-2 rounded-full bg-corail" aria-hidden />
+            <span className="h-2 w-2 rounded-full bg-violet" aria-hidden />
             {contact.eyebrow}
           </p>
           <h1 className="mt-6 font-sans text-4xl font-extrabold tracking-tight sm:text-5xl">
@@ -119,7 +119,7 @@ export default function CroissanceDigitaleContactPage() {
               />
               <button
                 type="submit"
-                className="w-full rounded-xl border-2 border-encre bg-corail px-6 py-3.5 font-sans text-base font-bold text-white shadow-[4px_4px_0_#211D16] transition-transform hover:-translate-y-0.5"
+                className="w-full rounded-xl border-2 border-encre bg-violet px-6 py-3.5 font-sans text-base font-bold text-white shadow-[4px_4px_0_#211D16] transition-transform hover:-translate-y-0.5"
               >
                 {contact.submit}
               </button>

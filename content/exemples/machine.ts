@@ -1,20 +1,60 @@
 /**
  * Contenu du site fictif "Au Poil" — exemple concret du plan
  * **Machine** (dès 1990€, voir `v3plans` dans content/v3.ts).
- * Nommé "Croissance Digitale" dans la demande initiale — ce nom n'existe
- * pas dans le contenu actuel, il s'agit bien du plan "Machine" (dès 1990€,
- * corail, "automatisations : relances d'avis, notifications", "tableau de
- * bord simple"). L'URL de la route suit toutefois le nom demandé.
  *
- * Périmètre STRICTEMENT limité à ce que couvre ce plan : tout ce qui est
- * dans Autonome (site complet, espace admin, contact/rendez-vous, SEO
- * local), PLUS automatisations visibles (relance avis Google, tableau de
- * bord simple), en mockup visuel — pas de vraie connexion backend. Ne
- * JAMAIS ajouter ici : e-commerce / panier / paiement (→ module Boutique
- * en ligne).
+ * Différenciateur avec Autonome : ici le commerçant n'agit plus, le
+ * système agit à sa place. Seules des automatisations réellement
+ * livrables aujourd'hui (stack Resend + Supabase) sont mises en scène :
+ * relance avis Google post-réservation, confirmation automatique de
+ * réservation, réponse automatique à une demande de contact, tableau de
+ * bord basé sur des données réellement collectées par le site (jamais une
+ * fausse synchronisation Google). Ne JAMAIS ajouter ici : le module
+ * Uber Direct/livraison (vendu séparément), un nombre d'avis Google
+ * synchronisé (non branché techniquement), un filtrage des avis par
+ * satisfaction (illégal, review gating), ou e-commerce / panier /
+ * paiement (→ module Boutique en ligne).
  */
 
-export const croissanceDigitaleDemo = {
+// Événements des automatisations réellement livrables aujourd'hui (Resend +
+// Supabase) : relance avis post-réservation, confirmation auto de
+// réservation, réponse auto à une demande de contact. Partagé entre le flux
+// de l'accueil et l'onglet "Automatisations" de l'espace admin — 6 entrées
+// pour que les 4 lignes visibles de NotifFeed ne se répètent jamais dans la
+// même fenêtre.
+const automationEvents = [
+  {
+    icon: "⭐",
+    text: "Relance avis envoyée à Camille D. — 2 min après son rendez-vous",
+    tag: "avis",
+  },
+  {
+    icon: "✅",
+    text: "Réservation confirmée automatiquement pour Julien M.",
+    tag: "résa",
+  },
+  {
+    icon: "📩",
+    text: "Réponse automatique envoyée à une demande de contact",
+    tag: "contact",
+  },
+  {
+    icon: "⭐",
+    text: "Relance avis envoyée à Sophie B. — 2 min après son rendez-vous",
+    tag: "avis",
+  },
+  {
+    icon: "✅",
+    text: "Réservation confirmée automatiquement pour Nadia K.",
+    tag: "résa",
+  },
+  {
+    icon: "📩",
+    text: "Accusé de réception envoyé à une nouvelle demande de contact",
+    tag: "contact",
+  },
+];
+
+export const machineDemo = {
   business: {
     name: "Au Poil",
     tagline: "Toilettage canin, en douceur",
@@ -25,12 +65,12 @@ export const croissanceDigitaleDemo = {
   },
 
   nav: [
-    { label: "Accueil", href: "/exemples/croissance-digitale" },
-    { label: "Prestations", href: "/exemples/croissance-digitale/prestations" },
-    { label: "Galerie", href: "/exemples/croissance-digitale/galerie" },
-    { label: "À propos", href: "/exemples/croissance-digitale/a-propos" },
-    { label: "Contact", href: "/exemples/croissance-digitale/contact" },
-    { label: "Espace admin", href: "/exemples/croissance-digitale/espace-admin" },
+    { label: "Accueil", href: "/exemples/machine" },
+    { label: "Prestations", href: "/exemples/machine/prestations" },
+    { label: "Galerie", href: "/exemples/machine/galerie" },
+    { label: "À propos", href: "/exemples/machine/a-propos" },
+    { label: "Contact", href: "/exemples/machine/contact" },
+    { label: "Espace admin", href: "/exemples/machine/espace-admin" },
   ],
 
   accueil: {
@@ -44,7 +84,17 @@ export const croissanceDigitaleDemo = {
       { icon: "🕒", text: "Horaires toujours à jour" },
       { icon: "📍", text: "En plein centre-ville de Vincennes" },
     ],
+    // Ce qui distingue ce plan d'Autonome : ici, c'est le système qui agit.
+    // Affiché en évidence sur l'accueil, à côté du flux d'activité, pour
+    // que le contraste avec /exemples/autonome saute aux yeux.
+    philosophy:
+      "Ici, vous ne faites rien — le site travaille pendant que vous êtes ailleurs.",
   },
+
+  // Flux d'activité qui se remplit tout seul, sans clic — la mise en scène
+  // centrale de cette page. Utilise le même composant NotifFeed que le
+  // Hero du site principal (components/v3/NotifFeed.tsx).
+  liveFeed: automationEvents,
 
   prestations: {
     eyebrow: "Prestations",
@@ -98,7 +148,7 @@ export const croissanceDigitaleDemo = {
   contact: {
     eyebrow: "Rendez-vous",
     title: "Réservez votre créneau",
-    subtitle: "Dites-nous ce que vous souhaitez, on confirme rapidement.",
+    subtitle: "Confirmation automatique et immédiate — sans attendre personne.",
     fields: {
       name: "Votre nom",
       email: "Email",
@@ -106,6 +156,9 @@ export const croissanceDigitaleDemo = {
       message: "Un horaire qui vous arrange ?",
     },
     submit: "Envoyer ma demande",
+    successTitle: "Confirmée automatiquement !",
+    successText:
+      "Vous recevez une confirmation immédiate par email — personne n'a eu besoin de la valider à la main.",
   },
 
   // Espace admin — mockup VISUEL uniquement, sans connexion réelle. Reprend
@@ -119,7 +172,29 @@ export const croissanceDigitaleDemo = {
       "Le même espace personnel que le plan Autonome — avec en plus les automatisations qui travaillent pour vous.",
     disclaimer:
       "Aperçu à titre de démonstration — cet espace n'est pas connecté à un vrai compte, rien n'est enregistré.",
+    // Automatisations et Tableau de bord en premier, volontairement : sur
+    // ce plan, c'est ce qu'il y a de plus important à montrer. Les onglets
+    // manuels (horaires/textes/tarifs/photos, hérités du plan Autonome)
+    // restent disponibles mais ne sont plus la vitrine de la page.
     tabs: [
+      {
+        id: "automatisations",
+        label: "Automatisations",
+        icon: "🔔",
+        notifications: automationEvents,
+      },
+      {
+        id: "tableau-de-bord",
+        label: "Tableau de bord",
+        icon: "📊",
+        stats: [
+          { icon: "📅", label: "Réservations confirmées automatiquement", value: "42" },
+          { icon: "⭐", label: "Relances avis envoyées", value: "37" },
+          { icon: "✅", label: "Taux de réponse aux demandes", value: "96 %" },
+        ],
+        statsNote:
+          "Données collectées par le site — pas une synchronisation avec votre fiche Google Business.",
+      },
       {
         id: "horaires",
         label: "Horaires",
@@ -155,38 +230,6 @@ export const croissanceDigitaleDemo = {
         label: "Photos",
         icon: "🖼️",
         note: "Glissez une nouvelle image pour remplacer une photo du site — aucune compétence technique requise.",
-      },
-      {
-        id: "automatisations",
-        label: "Automatisations",
-        icon: "🔔",
-        notifications: [
-          {
-            icon: "⭐",
-            text: "Avis Google 5★ reçu — relance de remerciement envoyée automatiquement",
-            tag: "avis",
-          },
-          {
-            icon: "📩",
-            text: "Relance envoyée à un client 3 jours après son rendez-vous",
-            tag: "avis",
-          },
-          {
-            icon: "🔔",
-            text: "Nouvelle demande de rendez-vous — notification envoyée au gérant",
-            tag: "rdv",
-          },
-        ],
-      },
-      {
-        id: "tableau-de-bord",
-        label: "Tableau de bord",
-        icon: "📊",
-        stats: [
-          { icon: "👀", label: "Visiteurs ce mois-ci", value: "1 284" },
-          { icon: "⭐", label: "Avis Google générés", value: "18" },
-          { icon: "✅", label: "Taux de réponse aux demandes", value: "96 %" },
-        ],
       },
     ],
     saveLabel: "Enregistrer les modifications",

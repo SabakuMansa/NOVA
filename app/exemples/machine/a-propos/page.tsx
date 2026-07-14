@@ -1,8 +1,8 @@
 import PlaceholderImage from "@/components/exemples/PlaceholderImage";
-import { croissanceDigitaleDemo } from "@/content/exemples/croissance-digitale";
+import { machineDemo } from "@/content/exemples/machine";
 
-export default function CroissanceDigitaleAProposPage() {
-  const { aPropos } = croissanceDigitaleDemo;
+export default function MachineAProposPage() {
+  const { aPropos } = machineDemo;
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { siteAutonomeDemo } from "@/content/exemples/site-autonome";
+import { autonomeDemo } from "@/content/exemples/autonome";
 
-export default function SiteAutonomeEspaceAdminPage() {
-  const { espaceAdmin } = siteAutonomeDemo;
+export default function AutonomeEspaceAdminPage() {
+  const { espaceAdmin } = autonomeDemo;
   const [activeTab, setActiveTab] = useState(espaceAdmin.tabs[0].id);
   const [justSaved, setJustSaved] = useState(false);
   const field =
@@ -55,7 +55,7 @@ export default function SiteAutonomeEspaceAdminPage() {
             aria-hidden
           />
           <span className="ml-2 font-mono text-[0.62rem] text-encre/60">
-            espace-personnel · {siteAutonomeDemo.business.name}
+            espace-personnel · {autonomeDemo.business.name}
           </span>
         </div>
 

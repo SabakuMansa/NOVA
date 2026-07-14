@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { siteAutonomeDemo } from "@/content/exemples/site-autonome";
+import { machineDemo } from "@/content/exemples/machine";
 
-export default function SiteAutonomeContactPage() {
-  const { contact, business } = siteAutonomeDemo;
+export default function MachineContactPage() {
+  const { contact, business } = machineDemo;
   const [sent, setSent] = useState(false);
   const field =
     "w-full rounded-xl border-2 border-encre bg-white px-4 py-3 font-sans text-encre placeholder-encre/35 focus:outline-none";
@@ -14,7 +14,7 @@ export default function SiteAutonomeContactPage() {
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <div>
           <p className="inline-flex items-center gap-2 rounded-full border-2 border-encre bg-white px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-encre shadow-[2px_2px_0_#211D16]">
-            <span className="h-2 w-2 rounded-full bg-violet" aria-hidden />
+            <span className="h-2 w-2 rounded-full bg-corail" aria-hidden />
             {contact.eyebrow}
           </p>
           <h1 className="mt-6 font-sans text-4xl font-extrabold tracking-tight sm:text-5xl">
@@ -80,10 +80,10 @@ export default function SiteAutonomeContactPage() {
                 ✓
               </span>
               <h2 className="mt-4 font-sans text-xl font-extrabold text-encre">
-                Demande envoyée !
+                {contact.successTitle}
               </h2>
               <p className="mt-2 max-w-xs font-sans text-sm text-encre/70">
-                Le salon revient vers vous rapidement pour confirmer.
+                {contact.successText}
               </p>
             </div>
           ) : (
@@ -119,7 +119,7 @@ export default function SiteAutonomeContactPage() {
               />
               <button
                 type="submit"
-                className="w-full rounded-xl border-2 border-encre bg-violet px-6 py-3.5 font-sans text-base font-bold text-white shadow-[4px_4px_0_#211D16] transition-transform hover:-translate-y-0.5"
+                className="w-full rounded-xl border-2 border-encre bg-corail px-6 py-3.5 font-sans text-base font-bold text-white shadow-[4px_4px_0_#211D16] transition-transform hover:-translate-y-0.5"
               >
                 {contact.submit}
               </button>

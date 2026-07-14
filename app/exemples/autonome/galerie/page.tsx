@@ -1,8 +1,8 @@
 import PlaceholderImage from "@/components/exemples/PlaceholderImage";
-import { croissanceDigitaleDemo } from "@/content/exemples/croissance-digitale";
+import { autonomeDemo } from "@/content/exemples/autonome";
 
-export default function CroissanceDigitaleGaleriePage() {
-  const { galerie } = croissanceDigitaleDemo;
+export default function AutonomeGaleriePage() {
+  const { galerie } = autonomeDemo;
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">

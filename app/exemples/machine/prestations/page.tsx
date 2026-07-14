@@ -1,7 +1,7 @@
-import { siteAutonomeDemo } from "@/content/exemples/site-autonome";
+import { machineDemo } from "@/content/exemples/machine";
 
-export default function SiteAutonomePrestationsPage() {
-  const { prestations } = siteAutonomeDemo;
+export default function MachinePrestationsPage() {
+  const { prestations } = machineDemo;
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
@@ -28,7 +28,7 @@ export default function SiteAutonomePrestationsPage() {
               </p>
               <p className="font-sans text-sm text-encre/60">{s.duration}</p>
             </div>
-            <span className="font-sans text-lg font-extrabold text-violet">
+            <span className="font-sans text-lg font-extrabold text-corail">
               {s.price}
             </span>
           </div>

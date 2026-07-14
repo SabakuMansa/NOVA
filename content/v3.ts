@@ -216,7 +216,7 @@ export const v3plans = {
       featured: true,
       badge: "Le plus choisi",
       color: "violet",
-      exampleHref: "/exemples/site-autonome",
+      exampleHref: "/exemples/autonome",
     },
     {
       name: "Machine",
@@ -230,7 +230,7 @@ export const v3plans = {
         "Accompagnement renforcé",
       ],
       color: "corail",
-      exampleHref: "/exemples/croissance-digitale",
+      exampleHref: "/exemples/machine",
     },
   ] as V3Plan[],
   addon: {

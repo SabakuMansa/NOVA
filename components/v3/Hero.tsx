@@ -1,60 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useReducedMotion } from "framer-motion";
 import { v3hero } from "@/content/v3";
 import V3Backdrop from "./V3Backdrop";
-
-const TAG_COLORS: Record<string, string> = {
-  résa: "bg-violet/15 text-violet",
-  avis: "bg-jaune/25 text-encre",
-  commande: "bg-corail/15 text-corail",
-  admin: "bg-teal/15 text-teal",
-};
-
-/** Flux d'événements simulé : une notif toutes les 2,2 s, 4 visibles max.
- *  Reduced-motion : liste statique, aucune rotation. */
-function NotifFeed() {
-  const reduce = useReducedMotion();
-  const [count, setCount] = useState(3);
-
-  useEffect(() => {
-    if (reduce) return;
-    const t = setInterval(() => setCount((c) => c + 1), 2200);
-    return () => clearInterval(t);
-  }, [reduce]);
-
-  const visible = Array.from({ length: 4 }, (_, i) => {
-    const idx =
-      (count - 3 + i + v3hero.events.length * 100) % v3hero.events.length;
-    return { ...v3hero.events[idx], key: count - 3 + i };
-  });
-
-  return (
-    <ul className="space-y-2.5" aria-live="off">
-      {visible.map((e) => (
-        <li
-          key={e.key}
-          className={`${reduce ? "" : "v3-notif"} flex items-center gap-3 rounded-xl border-2 border-encre/10 bg-lait px-3.5 py-2.5`}
-        >
-          <span className="text-lg" aria-hidden>
-            {e.icon}
-          </span>
-          <span className="min-w-0 flex-1 truncate font-sans text-[0.83rem] text-encre/85">
-            {e.text}
-          </span>
-          <span
-            className={`shrink-0 rounded-md px-2 py-0.5 font-mono text-[0.58rem] uppercase ${
-              TAG_COLORS[e.tag] || "bg-encre/10 text-encre"
-            }`}
-          >
-            {e.tag}
-          </span>
-        </li>
-      ))}
-    </ul>
-  );
-}
+import NotifFeed from "./NotifFeed";
 
 export default function V3Hero() {
   return (
@@ -141,7 +89,7 @@ export default function V3Hero() {
             </span>
           </div>
           <div className="p-4 sm:p-5">
-            <NotifFeed />
+            <NotifFeed events={v3hero.events} />
             <p className="mt-4 border-t-2 border-dashed border-encre/10 pt-3 font-mono text-[0.6rem] uppercase tracking-wide text-encre/45">
               Pendant ce temps, vous êtes avec vos clients.
             </p>

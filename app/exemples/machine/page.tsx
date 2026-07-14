@@ -1,9 +1,9 @@
 import Link from "next/link";
-import PlaceholderImage from "@/components/exemples/PlaceholderImage";
-import { croissanceDigitaleDemo } from "@/content/exemples/croissance-digitale";
+import NotifFeed from "@/components/v3/NotifFeed";
+import { machineDemo } from "@/content/exemples/machine";
 
-export default function CroissanceDigitaleAccueilPage() {
-  const { accueil, business } = croissanceDigitaleDemo;
+export default function MachineAccueilPage() {
+  const { accueil, business, liveFeed } = machineDemo;
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
@@ -20,7 +20,7 @@ export default function CroissanceDigitaleAccueilPage() {
             {accueil.subtitle}
           </p>
           <Link
-            href="/exemples/croissance-digitale/contact"
+            href="/exemples/machine/contact"
             className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-encre bg-corail px-6 py-3.5 font-sans text-base font-bold text-white shadow-[4px_4px_0_#211D16] transition-transform hover:-translate-y-0.5"
           >
             {accueil.cta} →
@@ -38,13 +38,44 @@ export default function CroissanceDigitaleAccueilPage() {
               </li>
             ))}
           </ul>
+
+          <p className="mt-8 inline-flex items-center gap-2 rounded-xl border-2 border-encre bg-corail/10 px-4 py-3 font-sans text-sm font-bold text-encre">
+            <span aria-hidden>🔔</span>
+            {accueil.philosophy}
+          </p>
         </div>
-        <PlaceholderImage
-          icon="🐩"
-          label="Photo du salon"
-          color="corail"
-          className="aspect-[4/3] w-full"
-        />
+
+        {/* Flux d'activité qui se remplit tout seul, sans clic — la mise en
+            scène centrale du plan Machine (contraste avec la photo statique
+            mise en avant sur /exemples/autonome). */}
+        <div className="v3-window mx-auto w-full max-w-md">
+          <div className="v3-window-bar">
+            <span
+              className="h-3 w-3 rounded-full border-2 border-encre bg-corail"
+              aria-hidden
+            />
+            <span
+              className="h-3 w-3 rounded-full border-2 border-encre bg-jaune"
+              aria-hidden
+            />
+            <span
+              className="h-3 w-3 rounded-full border-2 border-encre bg-teal"
+              aria-hidden
+            />
+            <span className="ml-2 truncate font-mono text-[0.62rem] text-encre/60">
+              {business.name} — activité
+            </span>
+            <span className="ml-auto rounded-md bg-teal px-2 py-0.5 font-mono text-[0.55rem] font-bold uppercase text-white">
+              live
+            </span>
+          </div>
+          <div className="p-4 sm:p-5">
+            <NotifFeed events={liveFeed} />
+            <p className="mt-4 border-t-2 border-dashed border-encre/10 pt-3 font-mono text-[0.6rem] uppercase tracking-wide text-encre/45">
+              Pendant ce temps, personne au salon n&apos;a rien fait.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Fiche Google Business mise en avant — mention, pas un vrai back-office. */}

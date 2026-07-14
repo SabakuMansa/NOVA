@@ -9,7 +9,7 @@
  * ou e-commerce / panier / paiement (→ module Boutique en ligne).
  */
 
-export const siteAutonomeDemo = {
+export const autonomeDemo = {
   business: {
     name: "Salon Marguerite",
     tagline: "Coiffure & soins, dans une ambiance chaleureuse",
@@ -20,12 +20,12 @@ export const siteAutonomeDemo = {
   },
 
   nav: [
-    { label: "Accueil", href: "/exemples/site-autonome" },
-    { label: "Prestations", href: "/exemples/site-autonome/prestations" },
-    { label: "Galerie", href: "/exemples/site-autonome/galerie" },
-    { label: "À propos", href: "/exemples/site-autonome/a-propos" },
-    { label: "Contact", href: "/exemples/site-autonome/contact" },
-    { label: "Espace admin", href: "/exemples/site-autonome/espace-admin" },
+    { label: "Accueil", href: "/exemples/autonome" },
+    { label: "Prestations", href: "/exemples/autonome/prestations" },
+    { label: "Galerie", href: "/exemples/autonome/galerie" },
+    { label: "À propos", href: "/exemples/autonome/a-propos" },
+    { label: "Contact", href: "/exemples/autonome/contact" },
+    { label: "Espace admin", href: "/exemples/autonome/espace-admin" },
   ],
 
   accueil: {
@@ -39,6 +39,11 @@ export const siteAutonomeDemo = {
       { icon: "🕒", text: "Horaires toujours à jour" },
       { icon: "📍", text: "En plein centre-ville de Suresnes" },
     ],
+    // Ce qui distingue ce plan de Machine : ici, c'est le commerçant qui
+    // agit. Affiché en évidence sur l'accueil pour que le contraste avec
+    // /exemples/machine saute aux yeux dès le premier écran.
+    philosophy:
+      "Ici, c'est vous qui décidez et qui modifiez — en 2 minutes, sans coder.",
   },
 
   prestations: {

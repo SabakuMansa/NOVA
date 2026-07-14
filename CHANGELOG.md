@@ -1407,3 +1407,123 @@ ne jamais les ajouter).
   (Présence, Autonome, Machine), dans le bon ordre, avec la bonne cible
   chacune.
 - **Aucun push** — en attente de relecture.
+
+## [Cohérence des routes exemples] Renommage + différenciation réaliste Autonome/Machine
+
+### Partie 1 — Renommage des routes de démo
+
+Les routes `/exemples/*` gardaient les anciens noms d'offres alors que le
+contenu affiché (`content/v3.ts`) utilise déjà les noms actuels depuis un
+moment — incohérence entre le bouton "voir un exemple concret" sur chaque
+carte et l'URL de destination.
+
+- `git mv app/exemples/site-autonome app/exemples/autonome` +
+  `content/exemples/site-autonome.ts` → `content/exemples/autonome.ts`
+- `git mv app/exemples/croissance-digitale app/exemples/machine` +
+  `content/exemples/croissance-digitale.ts` → `content/exemples/machine.ts`
+- Renommage en cascade de tout ce qui référençait l'ancien nom (imports,
+  exports `siteAutonomeDemo`→`autonomeDemo`, `croissanceDigitaleDemo`→
+  `machineDemo`, noms de composants, hrefs de nav internes) — fait par
+  substitution ciblée sur les seuls fichiers concernés, puis vérifié par
+  `grep` qu'aucune trace de l'ancien nom ne subsiste.
+- `content/v3.ts` : `exampleHref` des plans Autonome et Machine mis à jour
+  vers `/exemples/autonome` et `/exemples/machine`. Présence n'a pas
+  bougé (déjà `/exemples/presence`).
+- `next.config.mjs` : redirections 307 ajoutées pour les 3 anciennes URLs
+  (`/exemples/vitrine-essentielle`, `/exemples/site-autonome`,
+  `/exemples/croissance-digitale`, avec leurs `:path*`) vers les nouvelles
+  — testées une par une via `curl -I`, toutes redirigent proprement, aucune
+  404 sèche.
+- `content/site.ts` (les anciens noms "Vitrine Essentielle" / "Site
+  Autonome" / "Croissance Digitale" y figurent aussi) **volontairement pas
+  touché** : ce fichier alimente uniquement `app/_archive/*` (v1/v2
+  archivés, hors routing public), pas le site live — vérifié en confirmant
+  que `<Carte>` (le composant qui affiche ces noms) n'est rendu que dans
+  `app/_archive/`.
+
+### Partie 2 — Différenciation Autonome / Machine
+
+Le distinguo demandé : Autonome = le commerçant agit lui-même ; Machine =
+le système agit à sa place. Avec une contrainte stricte — ne mettre en
+scène sur `/exemples/machine` que des automatisations réellement
+livrables aujourd'hui (Resend + Supabase) : relance avis Google
+post-réservation, confirmation automatique de réservation, réponse
+automatique à un formulaire de contact, tableau de bord basé sur des
+données du site (jamais une fausse synchronisation Google). Explicitement
+exclu : module Uber Direct/livraison, nombre d'avis Google synchronisé,
+filtrage des avis par satisfaction (review gating, illégal).
+
+- **`components/v3/NotifFeed.tsx`** (nouveau, extrait de `V3Hero`) : le
+  flux de notifications qui se remplit tout seul (`setInterval` 2,2s, 4
+  lignes visibles, respecte `prefers-reduced-motion`) vivait uniquement
+  dans `components/v3/Hero.tsx`. Extrait en composant partagé paramétrable
+  (`events`, `tagColors`, `intervalMs`) pour être réellement réutilisé —
+  pas recréé — sur la page Machine. `Hero.tsx` importe maintenant ce même
+  composant, comportement visuel strictement identique (vérifié : 0 erreur
+  console sur `/`, capture d'écran du Hero inchangée).
+- **`/exemples/autonome`** : ajout d'un encart "🖐️ Ici, c'est vous qui
+  décidez et qui modifiez — en 2 minutes, sans coder." bien visible sur
+  l'accueil, sous la liste des points forts. Confirmé par grep : zéro
+  élément d'automatisation (notification, compteur) sur cette page — elle
+  n'en a jamais eu.
+- **`/exemples/machine`** : refonte du contenu autour des 3 automatisations
+  autorisées uniquement :
+  - Accueil : le placeholder photo est remplacé par un **flux d'activité
+    live** (`v3-window` + `NotifFeed`, identique dans l'esprit à celui du
+    Hero principal) qui empile automatiquement "Relance avis envoyée à
+    Camille D. — 2 min après son rendez-vous", "Réservation confirmée
+    automatiquement pour Julien M.", "Réponse automatique envoyée à une
+    demande de contact", etc. — sans aucun clic du visiteur. Encart "🔔 Ici,
+    vous ne faites rien — le site travaille pendant que vous êtes
+    ailleurs." juste en dessous des points forts.
+  - Espace admin : les onglets **Automatisations** et **Tableau de bord**
+    passent en premier (avant Horaires/Textes/Tarifs/Photos, hérités du
+    plan Autonome mais volontairement relégués) — l'onglet actif par
+    défaut est désormais Automatisations. La liste de notifications de cet
+    onglet utilise elle aussi `NotifFeed` (avant : cartes statiques) pour
+    renforcer l'effet "ça tourne tout seul".
+  - Tableau de bord : les statistiques ont changé pour rester honnêtes —
+    retiré "Visiteurs ce mois-ci" et "Avis Google générés" (sonnait comme
+    une vraie synchronisation Google, non branchée techniquement),
+    remplacé par "Réservations confirmées automatiquement" (42), "Relances
+    avis envoyées" (37), "Taux de réponse aux demandes" (96%) — avec une
+    légende explicite : "Données collectées par le site — pas une
+    synchronisation avec votre fiche Google Business."
+  - Contact : le message de confirmation après envoi change de "Le salon
+    revient vers vous rapidement pour confirmer." (sous-entend une action
+    humaine) à "Confirmée automatiquement !" / "Vous recevez une
+    confirmation immédiate par email — personne n'a eu besoin de la
+    valider à la main." — démontre l'automatisation #2 au moment même de
+    l'interaction, pas seulement dans l'espace admin.
+  - `automationEvents` factorisé une seule fois dans
+    `content/exemples/machine.ts` et réutilisé à la fois par le flux de
+    l'accueil et l'onglet admin (6 entrées, pour que les 4 lignes visibles
+    de `NotifFeed` ne se répètent jamais dans la même fenêtre).
+
+### Périmètre strictement respecté (vérifié, pas juste écrit)
+
+`grep` exhaustif sur `content/exemples/machine.ts` et
+`app/exemples/machine/` pour "uber", "livraison", "coursier", "panier",
+"paiement", "e-commerce"/"ecommerce", "stripe", "checkout", "avis générés",
+"avis reçu", "nombre d'avis", "filtr" : **0 occurrence dans le contenu
+réel** (seules correspondances : le commentaire de tête de `machine.ts`,
+qui rappelle justement de ne jamais les ajouter).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅ après le renommage complet et la refonte de contenu.
+- Redirections testées via `curl -I` : `/exemples/site-autonome` → 307 →
+  `/exemples/autonome`, `/exemples/site-autonome/contact` → 307 →
+  `/exemples/autonome/contact`, `/exemples/croissance-digitale` → 307 →
+  `/exemples/machine`, `/exemples/vitrine-essentielle` → 307 →
+  `/exemples/presence`. Nouvelles URLs → 200 directement.
+- Les 3 boutons "Voir un exemple concret" (`/#plans`) vérifiés un par un :
+  pointent respectivement vers `/exemples/presence`, `/exemples/autonome`,
+  `/exemples/machine`.
+- `/exemples/autonome` puis `/exemples/machine` comparées côte à côte :
+  contraste immédiat dès le premier écran (photo statique + encart "vous
+  décidez" vs flux d'activité qui s'anime tout seul + encart "vous ne
+  faites rien").
+- Console navigateur : 0 erreur sur `/`, `/exemples/autonome`,
+  `/exemples/machine`, `/exemples/machine/espace-admin`.
+- **Aucun push** — en attente de relecture.

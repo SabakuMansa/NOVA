@@ -1,8 +1,8 @@
 import PlaceholderImage from "@/components/exemples/PlaceholderImage";
-import { siteAutonomeDemo } from "@/content/exemples/site-autonome";
+import { machineDemo } from "@/content/exemples/machine";
 
-export default function SiteAutonomeGaleriePage() {
-  const { galerie } = siteAutonomeDemo;
+export default function MachineGaleriePage() {
+  const { galerie } = machineDemo;
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">

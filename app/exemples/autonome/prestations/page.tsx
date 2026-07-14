@@ -1,7 +1,7 @@
-import { croissanceDigitaleDemo } from "@/content/exemples/croissance-digitale";
+import { autonomeDemo } from "@/content/exemples/autonome";
 
-export default function CroissanceDigitalePrestationsPage() {
-  const { prestations } = croissanceDigitaleDemo;
+export default function AutonomePrestationsPage() {
+  const { prestations } = autonomeDemo;
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
@@ -28,7 +28,7 @@ export default function CroissanceDigitalePrestationsPage() {
               </p>
               <p className="font-sans text-sm text-encre/60">{s.duration}</p>
             </div>
-            <span className="font-sans text-lg font-extrabold text-corail">
+            <span className="font-sans text-lg font-extrabold text-violet">
               {s.price}
             </span>
           </div>

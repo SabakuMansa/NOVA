@@ -1,9 +1,9 @@
 import Link from "next/link";
 import PlaceholderImage from "@/components/exemples/PlaceholderImage";
-import { siteAutonomeDemo } from "@/content/exemples/site-autonome";
+import { autonomeDemo } from "@/content/exemples/autonome";
 
-export default function SiteAutonomeAccueilPage() {
-  const { accueil, business } = siteAutonomeDemo;
+export default function AutonomeAccueilPage() {
+  const { accueil, business } = autonomeDemo;
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
@@ -20,7 +20,7 @@ export default function SiteAutonomeAccueilPage() {
             {accueil.subtitle}
           </p>
           <Link
-            href="/exemples/site-autonome/contact"
+            href="/exemples/autonome/contact"
             className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-encre bg-violet px-6 py-3.5 font-sans text-base font-bold text-white shadow-[4px_4px_0_#211D16] transition-transform hover:-translate-y-0.5"
           >
             {accueil.cta} →
@@ -38,6 +38,11 @@ export default function SiteAutonomeAccueilPage() {
               </li>
             ))}
           </ul>
+
+          <p className="mt-8 inline-flex items-center gap-2 rounded-xl border-2 border-encre bg-violet/10 px-4 py-3 font-sans text-sm font-bold text-encre">
+            <span aria-hidden>🖐️</span>
+            {accueil.philosophy}
+          </p>
         </div>
         <PlaceholderImage
           icon="💈"
