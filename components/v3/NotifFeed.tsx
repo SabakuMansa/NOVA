@@ -21,10 +21,16 @@ export default function NotifFeed({
   events,
   tagColors = DEFAULT_TAG_COLORS,
   intervalMs = 2200,
+  itemClassName = "border-encre/10 bg-lait",
+  textClassName = "text-encre/85",
 }: {
   events: NotifEvent[];
   tagColors?: Record<string, string>;
   intervalMs?: number;
+  /** Surcharge optionnelle du style de la carte — défaut inchangé pour tous
+   *  les appelants existants (Hero clair, démo Machine). */
+  itemClassName?: string;
+  textClassName?: string;
 }) {
   const reduce = useReducedMotion();
   const [count, setCount] = useState(3);
@@ -45,12 +51,14 @@ export default function NotifFeed({
       {visible.map((e) => (
         <li
           key={e.key}
-          className={`${reduce ? "" : "v3-notif"} flex items-center gap-3 rounded-xl border-2 border-encre/10 bg-lait px-3.5 py-2.5`}
+          className={`${reduce ? "" : "v3-notif"} flex items-center gap-3 rounded-xl border-2 px-3.5 py-2.5 ${itemClassName}`}
         >
           <span className="text-lg" aria-hidden>
             {e.icon}
           </span>
-          <span className="min-w-0 flex-1 truncate font-sans text-[0.83rem] text-encre/85">
+          <span
+            className={`min-w-0 flex-1 truncate font-sans text-[0.83rem] ${textClassName}`}
+          >
             {e.text}
           </span>
           <span

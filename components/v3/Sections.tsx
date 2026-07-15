@@ -45,7 +45,7 @@ function Eyebrow({
 }) {
   return (
     <p
-      className={`inline-flex items-center gap-2 rounded-full border-2 border-encre bg-white px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-encre shadow-[2px_2px_0_#211D16]`}
+      className={`inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]`}
     >
       <span className={`h-2 w-2 rounded-full ${DOT[color]}`} aria-hidden />
       {children}
@@ -108,7 +108,7 @@ function GlitchAnswer({ items }: { items: string[] }) {
   }, [reduce, items.length]);
 
   const textClass =
-    "font-sans text-3xl font-extrabold tracking-tight text-jaune sm:text-5xl md:text-6xl";
+    "font-sans text-3xl font-extrabold tracking-tight text-arcade-gold sm:text-5xl md:text-6xl";
 
   if (reduce) {
     return <p className={textClass}>{items[0]}</p>;
@@ -129,10 +129,10 @@ export function V3Verdict() {
   return (
     <section
       id={v3verdict.id}
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-encre px-5 py-24 text-center md:px-8"
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-arcade-bg px-5 py-24 text-center md:px-8"
     >
       <Reveal>
-        <h2 className="mx-auto max-w-4xl font-sans text-4xl font-extrabold leading-[1.05] tracking-tight text-lait sm:text-6xl md:text-7xl">
+        <h2 className="mx-auto max-w-4xl font-sans text-4xl font-extrabold leading-[1.05] tracking-tight text-arcade-cream sm:text-6xl md:text-7xl">
           {v3verdict.question}
         </h2>
       </Reveal>
@@ -148,38 +148,40 @@ export function V3Constat() {
   return (
     <section
       id={v3constat.id}
-      className="mx-auto max-w-content px-5 py-20 md:px-8 md:py-28"
+      className="border-t border-arcade-border bg-arcade-bg-alt"
     >
-      <Reveal>
-        <Eyebrow color="corail">{v3constat.eyebrow}</Eyebrow>
-        <h2 className="mt-5 max-w-2xl font-sans text-3xl font-extrabold tracking-tight text-encre sm:text-4xl md:text-5xl">
-          {v3constat.title}
-        </h2>
-        <p className="mt-4 max-w-xl font-sans text-lg text-encre/70">
-          {v3constat.subtitle}
-        </p>
-      </Reveal>
-      <div className="mt-12 grid max-w-2xl gap-5 sm:grid-cols-2">
-        {v3constat.cards.map((c, i) => (
-          <Reveal key={c.title} delay={i * 0.08}>
-            <div className="v3-card v3-card-hover h-full p-6">
-              <div className="flex items-center gap-3">
-                <span
-                  className={`flex h-11 w-11 items-center justify-center rounded-xl border-2 border-encre text-xl ${SOFT[c.color]}`}
-                  aria-hidden
-                >
-                  {c.emoji}
-                </span>
-                <h3 className="font-sans text-xl font-extrabold text-encre">
-                  {c.title}
-                </h3>
+      <div className="mx-auto max-w-content px-5 py-20 md:px-8 md:py-28">
+        <Reveal>
+          <Eyebrow color="corail">{v3constat.eyebrow}</Eyebrow>
+          <h2 className="mt-5 max-w-2xl font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl md:text-5xl">
+            {v3constat.title}
+          </h2>
+          <p className="mt-4 max-w-xl font-sans text-lg text-arcade-tan">
+            {v3constat.subtitle}
+          </p>
+        </Reveal>
+        <div className="mt-12 grid max-w-2xl gap-5 sm:grid-cols-2">
+          {v3constat.cards.map((c, i) => (
+            <Reveal key={c.title} delay={i * 0.08}>
+              <div className="h-full rounded-xl border border-arcade-border bg-arcade-card p-6 transition-colors hover:border-arcade-border-thick">
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`flex h-11 w-11 items-center justify-center rounded-xl border-2 border-arcade-border-thick text-xl ${SOFT[c.color]}`}
+                    aria-hidden
+                  >
+                    {c.emoji}
+                  </span>
+                  <h3 className="font-sans text-xl font-extrabold text-arcade-cream">
+                    {c.title}
+                  </h3>
+                </div>
+                <p className="mt-3.5 font-sans leading-relaxed text-arcade-tan">
+                  {c.text}
+                </p>
               </div>
-              <p className="mt-3.5 font-sans leading-relaxed text-encre/75">
-                {c.text}
-              </p>
-            </div>
-          </Reveal>
-        ))}
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -188,11 +190,14 @@ export function V3Constat() {
 /* ---------------------------------------------------------------- Moteur */
 export function V3Moteur() {
   return (
-    <section id={v3moteur.id} className="border-y-2 border-encre bg-white">
+    <section
+      id={v3moteur.id}
+      className="border-y border-arcade-border bg-arcade-bg"
+    >
       <div className="mx-auto max-w-content px-5 py-20 md:px-8 md:py-28">
         <Reveal>
           <Eyebrow color="teal">{v3moteur.eyebrow}</Eyebrow>
-          <h2 className="mt-5 max-w-2xl font-sans text-3xl font-extrabold tracking-tight text-encre sm:text-4xl md:text-5xl">
+          <h2 className="mt-5 max-w-2xl font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl md:text-5xl">
             {v3moteur.title}
           </h2>
         </Reveal>
@@ -206,25 +211,25 @@ export function V3Moteur() {
                 className={b.size === "large" ? "md:col-span-2" : ""}
               >
                 <div
-                  className={`v3-card v3-card-hover h-full p-6 sm:p-7 ${SOFT[b.color]}`}
+                  className={`h-full rounded-xl border border-arcade-border bg-arcade-card p-6 transition-colors hover:border-arcade-border-thick sm:p-7`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <span
-                      className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-encre bg-white text-2xl"
+                      className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-arcade-border-thick bg-arcade-bg text-2xl"
                       aria-hidden
                     >
                       {b.icon}
                     </span>
                     <span
-                      className={`rounded-full border-2 border-encre bg-white px-2.5 py-1 font-mono text-[0.58rem] font-bold uppercase ${TEXT[b.color]}`}
+                      className={`rounded-full border-2 border-arcade-border-thick bg-arcade-bg px-2.5 py-1 font-mono text-[0.58rem] font-bold uppercase ${TEXT[b.color]}`}
                     >
                       {b.chip}
                     </span>
                   </div>
-                  <h3 className="mt-4 font-sans text-2xl font-extrabold text-encre">
+                  <h3 className="mt-4 font-sans text-2xl font-extrabold text-arcade-cream">
                     {b.title}
                   </h3>
-                  <p className="mt-2.5 max-w-lg font-sans leading-relaxed text-encre/75">
+                  <p className="mt-2.5 max-w-lg font-sans leading-relaxed text-arcade-tan">
                     {b.text}
                   </p>
                 </div>
@@ -237,7 +242,18 @@ export function V3Moteur() {
 }
 
 /* ----------------------------------------------------------------- Plans */
+// Découpe "dès 1990€" → { prefix: "dès", amount: "1990€" } pour ne jamais
+// mettre "dès" en emphase visuelle (toujours plus petit / atténué que le
+// montant, jamais en gras/pixel) — contrainte explicite de la maquette.
+function splitPrice(price: string): { prefix: string | null; amount: string } {
+  const match = price.match(/^(dès)\s+(.+)$/i);
+  if (!match) return { prefix: null, amount: price };
+  return { prefix: match[1], amount: match[2] };
+}
+
 export function V3Plans() {
+  const credit = String(v3plans.plans.length).padStart(2, "0");
+
   return (
     <section
       id={v3plans.id}
@@ -245,95 +261,114 @@ export function V3Plans() {
     >
       <Reveal className="text-center">
         <Eyebrow color="violet">{v3plans.eyebrow}</Eyebrow>
-        <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-tight text-encre sm:text-4xl md:text-5xl">
+        <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl md:text-5xl">
           {v3plans.title}
         </h2>
-        <p className="mx-auto mt-4 max-w-xl font-sans text-lg text-encre/70">
+        <p className="mx-auto mt-4 max-w-xl font-sans text-lg text-arcade-tan">
           {v3plans.subtitle}
         </p>
       </Reveal>
 
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 sm:items-start xl:grid-cols-4">
-        {v3plans.plans.map((p, i) => (
-          <Reveal key={p.name} delay={i * 0.08}>
-            <div
-              className={`v3-window ${p.featured ? "xl:-mt-3 xl:mb-3" : ""}`}
-            >
-              <div
-                className={`v3-window-bar ${p.featured ? "!bg-violet" : ""}`}
-              >
-                <span
-                  className={`h-2.5 w-2.5 rounded-full ${DOT[p.color]}`}
-                  aria-hidden
-                />
-                <span
-                  className={`font-mono text-[0.62rem] font-bold uppercase tracking-wide ${p.featured ? "text-white" : "text-encre/70"}`}
-                >
-                  plan/{p.name.toLowerCase()}
-                </span>
-                {p.badge && (
-                  <span className="ml-auto rounded-md border-2 border-encre bg-jaune px-2 py-0.5 font-mono text-[0.55rem] font-bold uppercase text-encre">
-                    {p.badge}
-                  </span>
-                )}
-              </div>
-              <div className="p-6">
-                <h3 className="font-sans text-2xl font-extrabold text-encre">
-                  {p.name}
-                </h3>
-                <p className="mt-1 font-sans text-sm italic text-encre/65">
-                  {p.pitch}
-                </p>
-                <p className="mt-4 font-mono text-3xl font-bold text-encre">
-                  {p.price}
-                  <span className="ml-2 align-middle font-sans text-sm font-medium text-encre/60">
-                    {p.monthly}
-                  </span>
-                </p>
-                <ul className="mt-5 space-y-2.5">
-                  {p.features.map((f) => (
-                    <li
-                      key={f}
-                      className="flex items-start gap-2.5 font-sans text-sm text-encre/80"
-                    >
-                      <span
-                        className={`mt-0.5 font-bold ${TEXT[p.color]}`}
-                        aria-hidden
-                      >
-                        ✓
-                      </span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href="#contact"
-                  className={`mt-6 block rounded-xl border-2 border-encre px-5 py-3 text-center font-sans text-sm font-bold shadow-[3px_3px_0_#211D16] transition-transform hover:-translate-y-0.5 ${
-                    p.featured ? "bg-corail text-white" : "bg-white text-encre"
+      {/* Panneau façon borne d'arcade — même traitement que le Hero. */}
+      <div className="mt-12 overflow-hidden rounded-[18px] border border-arcade-border bg-arcade-bg shadow-[0_30px_70px_rgba(0,0,0,0.55)]">
+        <div className="flex items-center justify-between border-b-2 border-arcade-border px-6 py-3.5 font-pixel text-[0.55rem] text-arcade-gold sm:px-8 sm:text-[0.6rem]">
+          <span className="text-arcade-orange">1P</span>
+          <span className="hidden sm:inline">SELECT YOUR PLAN</span>
+          <span className="text-arcade-orange">
+            CREDIT <span className="text-arcade-cream">{credit}</span>
+          </span>
+        </div>
+
+        <div className="grid gap-4 p-6 sm:grid-cols-2 sm:p-8 xl:grid-cols-4">
+          {v3plans.plans.map((p, i) => {
+            const { prefix, amount } = splitPrice(p.price);
+            return (
+              <Reveal key={p.name} delay={i * 0.08}>
+                <div
+                  className={`relative flex flex-col gap-3.5 rounded-md border-[3px] p-5 ${
+                    p.featured
+                      ? "border-arcade-orange bg-arcade-card-featured shadow-[0_0_22px_rgba(255,122,0,0.22)]"
+                      : "border-arcade-border-thick bg-arcade-card"
                   }`}
                 >
-                  Démarrer avec {p.name}
-                </a>
-                {p.exampleHref && (
-                  <Link
-                    href={p.exampleHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 block rounded-xl border-2 border-encre bg-lait px-5 py-2.5 text-center font-sans text-xs font-bold text-encre shadow-[2px_2px_0_#211D16] transition-transform hover:-translate-y-0.5"
+                  {p.badge && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-sm bg-arcade-gold px-2 py-1 font-pixel text-[0.45rem] text-arcade-bg">
+                      {p.badge}
+                    </span>
+                  )}
+
+                  <p className="font-terminal text-lg leading-none text-arcade-taupe">
+                    › {p.pitch}
+                  </p>
+                  <h3 className="font-pixel text-sm leading-snug text-arcade-cream">
+                    {p.name}
+                  </h3>
+                  <p className="font-pixel text-lg text-arcade-gold">
+                    {prefix && (
+                      <span className="mr-1.5 font-terminal text-base font-normal text-arcade-taupe">
+                        {prefix}
+                      </span>
+                    )}
+                    {amount}
+                  </p>
+                  <p className="-mt-2 font-terminal text-lg text-arcade-taupe">
+                    {p.monthly}
+                  </p>
+
+                  <div
+                    className="h-1"
+                    style={{
+                      background:
+                        "repeating-linear-gradient(90deg, #FF7A00 0 6px, transparent 6px 10px)",
+                    }}
+                    aria-hidden
+                  />
+
+                  <ul className="flex flex-col gap-2.5 font-mono text-xs text-arcade-tan">
+                    {p.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2">
+                        <span
+                          className={`font-bold ${TEXT[p.color]}`}
+                          aria-hidden
+                        >
+                          ✓
+                        </span>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href="#contact"
+                    className={`mt-auto block rounded border-2 py-3 text-center font-pixel text-[0.55rem] transition-transform hover:-translate-y-0.5 ${
+                      p.featured
+                        ? "border-arcade-border-thick bg-arcade-orange text-arcade-bg shadow-[3px_3px_0_#FFD23F]"
+                        : "border-arcade-border-thick text-arcade-cream"
+                    }`}
                   >
-                    Voir un exemple concret ↗
-                  </Link>
-                )}
-              </div>
-            </div>
-          </Reveal>
-        ))}
+                    Démarrer avec {p.name}
+                  </a>
+                  {p.exampleHref && (
+                    <Link
+                      href={p.exampleHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block rounded border border-arcade-border-thick py-2 text-center font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe transition-colors hover:border-arcade-orange hover:text-arcade-gold"
+                    >
+                      Voir un exemple concret ↗
+                    </Link>
+                  )}
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
       </div>
 
       {/* Module Commande & Livraison (v3plans.addon) volontairement masqué :
           pas prioritaire pour le moment. Données conservées dans content/v3.ts. */}
       <Reveal className="mx-auto mt-10 max-w-2xl text-center">
-        <p className="font-sans text-sm italic text-encre/60">
+        <p className="font-sans text-sm italic text-arcade-taupe">
           {v3plans.footnote}
         </p>
       </Reveal>
@@ -344,14 +379,17 @@ export function V3Plans() {
 /* --------------------------------------------------------------- Process */
 export function V3Process() {
   return (
-    <section id={v3process.id} className="border-y-2 border-encre bg-encre">
+    <section
+      id={v3process.id}
+      className="border-y border-arcade-border bg-arcade-bg-alt"
+    >
       <div className="mx-auto max-w-content px-5 py-20 md:px-8 md:py-28">
         <Reveal>
-          <p className="inline-flex items-center gap-2 rounded-full border-2 border-lait/30 px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-lait">
-            <span className="h-2 w-2 rounded-full bg-jaune" aria-hidden />
+          <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe">
+            <span className="h-2 w-2 rounded-full bg-arcade-gold" aria-hidden />
             {v3process.eyebrow}
           </p>
-          <h2 className="mt-5 max-w-2xl font-sans text-3xl font-extrabold tracking-tight text-lait sm:text-4xl md:text-5xl">
+          <h2 className="mt-5 max-w-2xl font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl md:text-5xl">
             {v3process.title}
           </h2>
         </Reveal>
@@ -359,14 +397,14 @@ export function V3Process() {
           {v3process.steps.map((s, i) => (
             <Reveal as="li" key={s.n} delay={i * 0.06}>
               <div className="flex items-center gap-3">
-                <span className="rounded-lg border-2 border-jaune px-2.5 py-1 font-mono text-sm font-bold text-jaune">
+                <span className="rounded-lg border-2 border-arcade-gold px-2.5 py-1 font-mono text-sm font-bold text-arcade-gold">
                   {s.n}
                 </span>
-                <h3 className="font-sans text-xl font-extrabold text-lait">
+                <h3 className="font-sans text-xl font-extrabold text-arcade-cream">
                   {s.name}
                 </h3>
               </div>
-              <p className="mt-2.5 font-sans leading-relaxed text-lait/65">
+              <p className="mt-2.5 font-sans leading-relaxed text-arcade-tan">
                 {s.text}
               </p>
             </Reveal>
@@ -387,14 +425,14 @@ export function V3Fondateur() {
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:items-center">
         <Reveal>
           <Eyebrow color="jaune">{v3fondateur.eyebrow}</Eyebrow>
-          <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-tight text-encre sm:text-4xl">
+          <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl">
             {v3fondateur.title}
           </h2>
           <div className="mt-6 flex flex-wrap gap-2">
             {v3fondateur.badges.map((b) => (
               <span
                 key={b}
-                className="rounded-full border-2 border-encre bg-white px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-wide text-encre shadow-[2px_2px_0_#211D16]"
+                className="rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]"
               >
                 {b}
               </span>
@@ -402,12 +440,12 @@ export function V3Fondateur() {
           </div>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="font-sans text-lg leading-relaxed text-encre/80">
+          <p className="font-sans text-lg leading-relaxed text-arcade-tan">
             {v3fondateur.teaser}
           </p>
           <Link
             href={v3fondateur.ctaHref}
-            className="mt-5 inline-flex items-center gap-2 font-sans text-sm font-bold text-violet underline underline-offset-4 hover:text-encre"
+            className="mt-5 inline-flex items-center gap-2 font-sans text-sm font-bold text-arcade-gold underline underline-offset-4 hover:text-arcade-cream"
           >
             {v3fondateur.ctaLabel} →
           </Link>
@@ -421,43 +459,46 @@ export function V3Fondateur() {
 export function V3Contact() {
   const [sent, setSent] = useState(false);
   const field =
-    "w-full rounded-xl border-2 border-encre bg-white px-4 py-3 font-sans text-encre placeholder-encre/35 focus:bg-lait";
+    "w-full rounded-xl border-2 border-arcade-border-thick bg-arcade-bg px-4 py-3 font-sans text-arcade-cream placeholder-arcade-taupe/60 focus:bg-arcade-card";
 
   return (
-    <section id={v3contact.id} className="border-t-2 border-encre bg-violet/10">
+    <section
+      id={v3contact.id}
+      className="border-t border-arcade-border bg-arcade-bg-alt"
+    >
       <div className="mx-auto max-w-content px-5 py-20 md:px-8 md:py-28">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <Reveal>
             <Eyebrow color="violet">{v3contact.eyebrow}</Eyebrow>
-            <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-tight text-encre sm:text-4xl md:text-5xl">
+            <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl md:text-5xl">
               {v3contact.title}
             </h2>
-            <p className="mt-4 font-sans text-lg text-encre/70">
+            <p className="mt-4 font-sans text-lg text-arcade-tan">
               {v3contact.subtitle}
             </p>
-            <p className="mt-6 font-display text-xl italic text-encre/75">
+            <p className="mt-6 font-display text-xl italic text-arcade-tan">
               {v3contact.intro}
             </p>
             <div className="mt-8 space-y-3">
               <a
                 href={`mailto:${v3contact.email}`}
-                className="v3-card v3-card-hover flex items-center gap-3 p-4"
+                className="flex items-center gap-3 rounded-xl border border-arcade-border bg-arcade-card p-4 transition-colors hover:border-arcade-border-thick"
               >
                 <span className="text-xl" aria-hidden>
                   ✉️
                 </span>
-                <span className="font-sans font-medium text-encre">
+                <span className="font-sans font-medium text-arcade-cream">
                   {v3contact.email}
                 </span>
               </a>
               <a
                 href={`tel:${v3contact.phone.replace(/\s/g, "")}`}
-                className="v3-card v3-card-hover flex items-center gap-3 p-4"
+                className="flex items-center gap-3 rounded-xl border border-arcade-border bg-arcade-card p-4 transition-colors hover:border-arcade-border-thick"
               >
                 <span className="text-xl" aria-hidden>
                   📞
                 </span>
-                <span className="font-sans font-medium text-encre">
+                <span className="font-sans font-medium text-arcade-cream">
                   {v3contact.phone}
                 </span>
               </a>
@@ -465,36 +506,36 @@ export function V3Contact() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="v3-window">
-              <div className="v3-window-bar">
+            <div className="overflow-hidden rounded-2xl border-2 border-arcade-border-thick bg-arcade-card">
+              <div className="flex items-center gap-2 border-b-2 border-arcade-border-thick bg-arcade-bg px-3.5 py-2.5">
                 <span
-                  className="h-3 w-3 rounded-full border-2 border-encre bg-corail"
+                  className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-orange"
                   aria-hidden
                 />
                 <span
-                  className="h-3 w-3 rounded-full border-2 border-encre bg-jaune"
+                  className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-gold"
                   aria-hidden
                 />
                 <span
-                  className="h-3 w-3 rounded-full border-2 border-encre bg-teal"
+                  className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-tan"
                   aria-hidden
                 />
-                <span className="ml-2 font-mono text-[0.62rem] text-encre/60">
+                <span className="ml-2 font-mono text-[0.62rem] text-arcade-taupe">
                   audit-gratuit.form
                 </span>
               </div>
               {sent ? (
                 <div className="flex min-h-[22rem] flex-col items-center justify-center p-8 text-center">
                   <span
-                    className="flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-encre bg-teal text-3xl text-white"
+                    className="flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-arcade-border-thick bg-arcade-gold text-3xl text-arcade-bg"
                     aria-hidden
                   >
                     ✓
                   </span>
-                  <h3 className="mt-5 font-sans text-2xl font-extrabold text-encre">
+                  <h3 className="mt-5 font-sans text-2xl font-extrabold text-arcade-cream">
                     Bien reçu !
                   </h3>
-                  <p className="mt-2 max-w-xs font-sans text-encre/70">
+                  <p className="mt-2 max-w-xs font-sans text-arcade-tan">
                     Votre demande est notée. Je reviens vers vous sous 24h pour
                     caler l'audit.
                   </p>
@@ -544,7 +585,7 @@ export function V3Contact() {
                   />
                   <button
                     type="submit"
-                    className="w-full rounded-xl border-2 border-encre bg-corail px-6 py-4 font-sans text-base font-bold text-white shadow-[4px_4px_0_#211D16] transition-transform hover:-translate-y-0.5"
+                    className="w-full rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-6 py-4 font-sans text-base font-bold text-arcade-bg shadow-[4px_4px_0_#000000] transition-transform hover:-translate-y-0.5"
                   >
                     {v3contact.submit}
                   </button>
@@ -561,22 +602,22 @@ export function V3Contact() {
 /* ---------------------------------------------------------------- Footer */
 export function V3Footer() {
   return (
-    <footer className="border-t-2 border-encre bg-encre">
+    <footer className="border-t border-arcade-border bg-arcade-bg">
       <div className="mx-auto flex max-w-content flex-col gap-6 px-5 py-12 md:px-8 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-lait/60 bg-jaune font-sans text-sm font-extrabold text-encre">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-arcade-border-thick bg-arcade-gold font-sans text-sm font-extrabold text-arcade-bg">
               N
             </span>
-            <span className="font-sans text-lg font-extrabold tracking-tight text-lait">
-              NOVA<span className="text-jaune">.studio</span>
+            <span className="font-sans text-lg font-extrabold tracking-tight text-arcade-cream">
+              NOVA<span className="text-arcade-orange">.studio</span>
             </span>
           </div>
-          <p className="mt-3 max-w-sm font-sans text-sm leading-relaxed text-lait/60">
+          <p className="mt-3 max-w-sm font-sans text-sm leading-relaxed text-arcade-taupe">
             {v3footer.blurb}
           </p>
         </div>
-        <div className="font-mono text-[0.65rem] uppercase tracking-wide text-lait/50">
+        <div className="font-mono text-[0.65rem] uppercase tracking-wide text-arcade-muted">
           <p>{v3footer.tagline}</p>
           <p className="mt-1.5">{v3footer.copyright}</p>
         </div>

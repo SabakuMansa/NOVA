@@ -1766,3 +1766,158 @@ pertinent" autorisée, module non mis en avant).
   exact, aucun débordement horizontal, chips de catégorie qui wrappent
   proprement.
 - Console navigateur : 0 erreur sur les 5 pages testées.
+
+## [Import maquette] Direction visuelle "arcade" — Claude Design du 15/07
+
+### Source
+
+Maquette importée via l'outil `DesignSync` (claude.ai/design, projet "NOVA
+Studio Visual Identity", fichier `NOVA Studio - Site.dc.html`, lu en
+lecture seule via `get_file`). Référence **visuelle uniquement** —
+palette sombre marron/orange/or, typographie pixel arcade, style "borne
+d'arcade" pour le Hero et "La Carte".
+
+### Décision de périmètre (tranchée avant d'implémenter, expliquée à l'utilisateur)
+
+La maquette montre deux sections sans équivalent dans le contenu réel du
+site : **"Crédibilité"** (3 souvenirs vécus derrière un comptoir) et
+**"Démonstration interactive"** (simulateur de statut de commande). Ni
+l'une ni l'autre n'ont de texte réel correspondant dans `content/v3.ts`
+— les construire aurait signifié inventer du contenu, ce que la consigne
+interdit explicitement ("ne recopie pas le texte de la maquette tel
+quel"). Décision : **ces deux sections ne sont pas construites**. Les 9
+sections restantes, qui ont toutes un contenu réel existant, sont
+restylées : Hero, Verdict, Constat, Méthode (Moteur), La Carte (Plans),
+Process, Qui suis-je (Fondateur), Contact, Footer.
+
+Corollaire : Constat/Méthode/Process, retirés de la homepage la veille
+(14/07, sur demande explicite), sont **restaurés** — la maquette et la
+consigne elle-même les nomment explicitement dans la liste des sections
+à restyler avec le texte réel.
+
+### Palette + typographie — isolées du reste du site
+
+- `tailwind.config.ts` : 12 nouveaux tokens `arcade-*` (bg/bg-alt/card/
+  card-featured/border/border-thick/orange/gold/cream/tan/taupe/muted),
+  additifs — `lait`/`encre`/`corail`/`violet`/`teal`/`jaune`/`rose`
+  (thème clair v3 déjà en place) restent inchangés et continuent
+  d'alimenter `/exemples/*`, `/labo` et les archives.
+- `app/layout.tsx` : deux polices `next/font/google` ajoutées (`Press
+  Start 2P`, `VT323`), exposées via `font-pixel`/`font-terminal` dans
+  Tailwind — appliquées **uniquement** dans `components/v3/Hero.tsx` et
+  la section Plans de `Sections.tsx`. Aucune autre page n'utilise ces
+  classes.
+- **Bug de police découvert et corrigé** : Press Start 2P n'a pas de
+  glyphe correct pour les majuscules accentuées (`Î` de "Île-de-France")
+  — testé avec le subset `latin-ext` ajouté puis retiré (aucun effet, le
+  glyphe est absent/cassé indépendamment du subset). L'eyebrow du Hero
+  utilise donc `font-mono` (IBM Plex Mono, déjà fiable partout ailleurs
+  sur le site) plutôt que `font-pixel` — seul ce label est concerné, le
+  H1/CTA/chrome restent en pixel (aucun autre texte réel du site ne
+  contient de majuscule accentuée dans un contexte pixel : noms de plans
+  gardés en casse naturelle "Présence", pas "PRÉSENCE", précisément pour
+  éviter le même problème avec le É).
+- `app/globals.css` : nouveau bloc `arcade-blink` (curseur clignotant
+  "INSERT COIN") — le bloc `prefers-reduced-motion` déjà global en tête
+  de fichier (`*, *::before, *::after { animation-duration: 0.001ms
+  !important }`) neutralise automatiquement cette animation comme toutes
+  les autres du site, sans code spécifique à ajouter.
+
+### Composants partagés — étendus, jamais modifiés dans leur comportement par défaut
+
+`.v3-card` et `.v3-window` (classes CSS globales) sont utilisées dans 15
+et 7 fichiers de `/exemples/*` respectivement — **jamais touchées**.
+Toutes les nouvelles cartes/fenêtres de la homepage sont construites en
+classes Tailwind directes (`border border-arcade-border bg-arcade-card`,
+etc.), pas via ces classes partagées.
+
+`components/v3/NotifFeed.tsx` (utilisé par le Hero **et** par
+`/exemples/machine`) a reçu deux props optionnelles (`itemClassName`,
+`textClassName`) avec des valeurs par défaut strictement identiques au
+comportement actuel — le Hero passe des couleurs arcade explicites, tous
+les autres appels (Machine, y compris ses deux usages dans l'espace
+admin) restent inchangés car ils n'passent pas ces props.
+
+### Hero — traitement arcade complet
+
+Panneau "borne d'arcade" (coins arrondis, ombre portée, bordure) avec
+bandeau décoratif "1P 00042 / INSERT COIN / HI 99999" (chrome pur, aucune
+vraie donnée représentée). `V3Backdrop` (aurore WebGL) n'est plus rendu
+ici — composant conservé intact, simplement plus importé (même
+traitement que les sections retirées puis restaurées). Titre réel
+(`v3hero.titleA/Em/B`) en `font-pixel`, `titleEm` seul en accent or
+(structure d'emphase du contenu réel préservée, pas celle — plus large —
+de la maquette). Sous-titre réel en `font-terminal`. CTA réels
+("Réserver un audit gratuit (15 min)", "Voir les plans") stylés en
+boutons pixel — jamais remplacés par "PRESS START"/"voir la démo" de la
+maquette. Fenêtre "site en service" (NotifFeed) reskinnée en sombre.
+
+### La Carte — traitement arcade complet
+
+Même panneau que le Hero, bandeau "1P / SELECT YOUR PLAN / CREDIT 04"
+(`04` calculé depuis `v3plans.plans.length`, jamais codé en dur — reste
+juste si un plan est ajouté/retiré). Les 4 cartes réelles (Présence,
+Autonome, Machine, Boutique) : nom en casse naturelle, badge réel ("Le
+plus choisi", pas "★ PLAYER'S CHOICE"), bouton réel ("Démarrer avec
+{nom}", pas "SELECT"). Carte "Autonome" (featured) : bordure orange +
+glow **sur le conteneur** (`box-shadow`, jamais sur du texte). Fonction
+`splitPrice()` ajoutée pour isoler "dès" du montant — rendu
+systématiquement plus petit, police différente (terminal, pas pixel),
+couleur atténuée par rapport au prix, jamais en gras ni en emphase
+(contrainte explicite respectée sur les 2 occurrences réelles : Machine
+"dès 1990€", Boutique "dès 3200€").
+
+### Sections sobres — palette seule, typographie standard inchangée
+
+Constat, Méthode, Process, Qui suis-je, Contact, Footer : recolorées vers
+la palette arcade (fonds alternés `arcade-bg`/`arcade-bg-alt` pour le
+rythme visuel), structure/typographie standard préservée à l'identique
+(`font-sans`/`font-mono` existants, aucune police pixel). Verdict
+(déjà en fond sombre `bg-encre` avant la refonte) simplement retinté —
+les deux couleurs du glitch RGB-split (`#ff6b4a`/`#0ea88b`, définies dans
+`globals.css`) sont volontairement laissées inchangées : ce sont deux
+teintes choisies pour leur contraste chromatique chaud/froid, pas pour
+matcher une palette, et les remplacer par des teintes arcade (toutes
+chaudes) aurait cassé la lisibilité de l'effet.
+
+### Périmètre respecté (vérifié, pas juste écrit)
+
+- `git status --short app/exemples/ app/labo app/_archive` → **aucune
+  ligne** : zéro fichier modifié dans les répertoires protégés.
+- `/exemples/presence`, `/exemples/autonome/espace-admin`,
+  `/exemples/machine` revérifiés visuellement en preview après tous les
+  changements : thème clair intact, `.v3-card`/`.v3-window` intacts,
+  `NotifFeed` toujours rendu avec ses couleurs par défaut (cream/encre).
+- `/labo` revérifié : thème sombre indépendant intact, 0 erreur console.
+- `/_archive/*` : confirmé non routable (convention Next.js, dossier
+  préfixé `_`), 404 personnalisée servie — comportement inchangé.
+- `grep` sur tout le diff pour `filter:`/`blur(`/`text-shadow` :
+  **0 occurrence** — seul glow du design est un `box-shadow` sur le
+  conteneur de la carte Autonome, jamais sur du texte.
+- Mot "dès" : vérifié visuellement + par inspection DOM
+  (`getComputedStyle`) sur les 2 occurrences réelles — toujours plus
+  petit (16px vs 18px), police différente, couleur atténuée, jamais gras.
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅ à chaque étape.
+- Bug de compilation Next.js rencontré pendant les tests ("Unexpected
+  token `section`") : erreur HMR obsolète (le fichier était
+  syntaxiquement valide, confirmé par `tsc` juste avant) — résolu par un
+  redémarrage propre du serveur de preview, pas une vraie erreur de code.
+- Parcours complet vérifié en preview : Hero, Verdict, Constat, Méthode,
+  La Carte (4 cartes), Process, Qui suis-je, Contact, Footer — tous
+  recolorés, contenu réel intact partout.
+- Rendu mobile (375px) vérifié sur Hero et La Carte : aucun débordement
+  horizontal, bandeau décoratif qui collapse proprement ("INSERT COIN"
+  et "SELECT YOUR PLAN" masqués sous `sm:`, "1P"/"HI"/"CREDIT" toujours
+  visibles).
+- `prefers-reduced-motion` : garanti structurellement par le bloc global
+  déjà existant en tête de `globals.css` (même mécanisme déjà validé
+  pour toutes les animations du site pendant l'audit de performance du
+  14/07) — couvre `arcade-blink` sans code additionnel.
+- Console navigateur : 0 erreur sur `/` (desktop et mobile),
+  `/exemples/presence`, `/exemples/autonome/espace-admin`,
+  `/exemples/machine`, `/labo`.
+- **Tout reste local** — aucun `git push`, aucune interaction avec un
+  remote, aucun déploiement déclenché.

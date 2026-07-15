@@ -29,11 +29,31 @@ const config: Config = {
         teal: "#0EA88B",
         jaune: "#FFC53D",
         rose: "#F272BA",
+        // Palette "arcade" — import maquette Claude Design du 15/07, réservée
+        // à la homepage (voir components/v3/Sections.tsx). N'affecte jamais
+        // /exemples/*, /labo, ni les archives : ces pages continuent d'utiliser
+        // lait/encre/corail/violet/teal/jaune ci-dessus, inchangés.
+        "arcade-bg": "#17130D", // fond principal (page, panneaux Hero/Carte)
+        "arcade-bg-alt": "#0E0B07", // fond alterné (sections sobres)
+        "arcade-card": "#1F1912", // carte élevée
+        "arcade-card-featured": "#241D14", // carte plan mis en avant
+        "arcade-border": "#2C241A", // bordure discrète
+        "arcade-border-thick": "#3A2F1E", // bordure carte plan / bouton
+        "arcade-orange": "#FF7A00", // accent primaire
+        "arcade-gold": "#FFD23F", // accent secondaire
+        "arcade-cream": "#F3EBDD", // texte primaire
+        "arcade-tan": "#C9BEAA", // texte secondaire
+        "arcade-taupe": "#A99C88", // texte tertiaire / eyebrow
+        "arcade-muted": "#6F6555", // texte quaternaire, très discret
       },
       fontFamily: {
         display: ["var(--font-instrument)", "Georgia", "serif"],
         sans: ["var(--font-worksans)", "system-ui", "sans-serif"],
         mono: ["var(--font-plexmono)", "ui-monospace", "monospace"],
+        // Réservées au Hero + à "La Carte" (voir règle de style maquette) —
+        // jamais utilisées ailleurs sur le site.
+        pixel: ["var(--font-pressstart)", "monospace"],
+        terminal: ["var(--font-vt323)", "monospace"],
       },
       letterSpacing: {
         eyebrow: "0.22em",

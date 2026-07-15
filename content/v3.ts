@@ -17,20 +17,13 @@
  */
 
 export const v3nav = {
+  // Constat/Moteur/Process restaurés dans la nav (import maquette arcade du
+  // 15/07 — sections de nouveau rendues sur la page, voir app/page.tsx).
   links: [
-    // "Le constat" retiré du site (section V3Constat non affichée) — même
-    // traitement, contenu et composant conservés intacts (v3constat,
-    // V3Constat).
-    // { label: "Le constat", href: "/#constat" },
-    // "Ce que ça fait" retiré du site (section V3Moteur non affichée sur
-    // la page) — lien commenté pour ne pas pointer vers une ancre absente.
-    // Contenu et composant conservés intacts (v3moteur, V3Moteur).
-    // { label: "Ce que ça fait", href: "/#moteur" },
+    { label: "Le constat", href: "/#constat" },
+    { label: "Ce que ça fait", href: "/#moteur" },
     { label: "Les plans", href: "/#plans" },
-    // "Le process" retiré du site (section V3Process non affichée) — même
-    // traitement, contenu et composant conservés intacts (v3process,
-    // V3Process).
-    // { label: "Le process", href: "/#process" },
+    { label: "Le process", href: "/#process" },
     { label: "Qui suis-je", href: "/qui-je-suis" },
   ],
   cta: { label: "Audit gratuit", href: "/#contact" },

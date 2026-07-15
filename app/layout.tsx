@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Work_Sans, IBM_Plex_Mono } from "next/font/google";
+import {
+  Instrument_Serif,
+  Work_Sans,
+  IBM_Plex_Mono,
+  Press_Start_2P,
+  VT323,
+} from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { seo } from "@/content/site";
 import JsonLd from "@/components/JsonLd";
@@ -23,6 +29,25 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600"],
   subsets: ["latin"],
   variable: "--font-plexmono",
+  display: "swap",
+});
+
+// Réservées à la homepage (Hero + "La Carte" uniquement — voir Sections.tsx).
+// Chargées ici comme les autres polices next/font (auto-hébergées, swap),
+// mais leur classe utilitaire (font-pixel / font-terminal) n'est appliquée
+// nulle part ailleurs : /exemples/*, /labo et les archives restent en
+// font-sans standard.
+const pressStart2P = Press_Start_2P({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-pressstart",
+  display: "swap",
+});
+
+const vt323 = VT323({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-vt323",
   display: "swap",
 });
 
@@ -81,7 +106,7 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${instrument.variable} ${workSans.variable} ${plexMono.variable}`}
+      className={`${instrument.variable} ${workSans.variable} ${plexMono.variable} ${pressStart2P.variable} ${vt323.variable}`}
     >
       <body className="font-sans antialiased">
         {children}

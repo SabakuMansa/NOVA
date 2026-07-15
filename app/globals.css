@@ -343,3 +343,20 @@ body {
     content: none;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * Arcade — import maquette Claude Design du 15/07, homepage seulement *
+ * (Hero + "La Carte" en style pixel complet, reste du site en palette *
+ * seule). Le bloc reduced-motion global tout en haut de ce fichier    *
+ * (*, *::before, *::after { animation-duration: 0.001ms !important }) *
+ * neutralise déjà ces animations sous prefers-reduced-motion — pas    *
+ * besoin d'override spécifique ici, juste ne jamais utiliser de       *
+ * filtre blur/glow sur du texte (interdit explicitement).             *
+ * ------------------------------------------------------------------ */
+@keyframes arcade-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.arcade-blink {
+  animation: arcade-blink 1s step-end infinite;
+}

@@ -1,98 +1,138 @@
 "use client";
 
 import { v3hero } from "@/content/v3";
-import V3Backdrop from "./V3Backdrop";
 import NotifFeed from "./NotifFeed";
 
+// Couleurs de tags spécifiques au Hero arcade — n'affecte pas les autres
+// appelants de NotifFeed (défauts inchangés dans NotifFeed.tsx).
+const HERO_TAG_COLORS: Record<string, string> = {
+  résa: "bg-arcade-orange/15 text-arcade-orange",
+  avis: "bg-arcade-gold/20 text-arcade-gold",
+  commande: "bg-arcade-tan/15 text-arcade-tan",
+  admin: "bg-arcade-orange/15 text-arcade-orange",
+  contact: "bg-arcade-tan/15 text-arcade-tan",
+};
+
+/**
+ * Hero arcade — import maquette Claude Design du 15/07. Cadre "borne
+ * d'arcade" (bandeau 1P/HI SCORE décoratif, police pixel) réservé à ce
+ * composant + V3Plans, par consigne explicite. V3Backdrop (aurore WebGL)
+ * n'est plus rendu ici : le nouveau Hero est un panneau sombre uni, pas un
+ * fond animé de blobs colorés — composant conservé intact, simplement plus
+ * importé (même traitement que les sections retirées de la homepage).
+ */
 export default function V3Hero() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden bg-lait pt-28 md:pt-32"
+      className="relative overflow-hidden bg-arcade-bg pt-28 md:pt-32"
     >
-      <V3Backdrop />
-
-      <div className="relative z-10 mx-auto grid max-w-content items-center gap-12 px-5 pb-20 md:px-8 md:pb-24 lg:grid-cols-[1.05fr_0.95fr]">
-        <div>
-          <p className="hero-rise inline-flex items-center gap-2 rounded-full border-2 border-encre bg-white px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-encre shadow-[2px_2px_0_#211D16]">
-            <span
-              className="h-2 w-2 animate-pulse rounded-full bg-teal"
-              aria-hidden
-            />
-            {v3hero.eyebrow}
-          </p>
-
-          <h1
-            className="hero-rise mt-6 font-sans text-[2.5rem] font-extrabold leading-[1.06] tracking-tight text-encre sm:text-5xl md:text-6xl"
-            style={{ animationDelay: "0.08s" }}
-          >
-            {v3hero.titleA}{" "}
-            <span className="relative inline-block whitespace-nowrap">
-              <span className="relative z-10 px-1">{v3hero.titleEm}</span>
-              <span
-                aria-hidden
-                className="absolute inset-x-0 bottom-1 top-1 -rotate-1 rounded-md bg-jaune"
-              />
+      <div className="relative z-10 mx-auto max-w-content px-5 pb-14 md:px-8 md:pb-20">
+        <div className="overflow-hidden rounded-[18px] border border-arcade-border shadow-[0_30px_70px_rgba(0,0,0,0.55)]">
+          {/* Bandeau "borne d'arcade" — chrome décoratif uniquement, aucune
+              donnée réelle représentée (pas de vrais scores/stats). */}
+          <div className="flex items-center justify-between border-b-2 border-arcade-border bg-arcade-bg px-6 py-3.5 font-pixel text-[0.55rem] text-arcade-gold sm:px-8 sm:text-[0.6rem]">
+            <span className="text-arcade-orange">
+              1P <span className="text-arcade-cream">00042</span>
             </span>
-            {v3hero.titleB}
-          </h1>
-
-          <p
-            className="hero-rise mt-7 max-w-xl font-sans text-lg leading-relaxed text-encre/75"
-            style={{ animationDelay: "0.16s" }}
-          >
-            {v3hero.subtitle}
-          </p>
+            <span className="arcade-blink hidden sm:inline">INSERT COIN</span>
+            <span className="text-arcade-orange">
+              HI <span className="text-arcade-cream">99999</span>
+            </span>
+          </div>
 
           <div
-            className="hero-rise mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
-            style={{ animationDelay: "0.24s" }}
+            className="grid items-center gap-12 px-6 py-14 sm:px-10 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:px-14"
+            style={{
+              background:
+                "radial-gradient(120% 130% at 50% 20%, #2A1C08 0%, #17130D 60%)",
+            }}
           >
-            <a
-              href={v3hero.ctaPrimary.href}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-encre bg-corail px-6 py-3.5 font-sans text-base font-bold text-white shadow-[4px_4px_0_#211D16] transition-transform hover:-translate-y-0.5"
-            >
-              {v3hero.ctaPrimary.label} →
-            </a>
-            <a
-              href={v3hero.ctaSecondary.href}
-              className="inline-flex items-center justify-center rounded-xl border-2 border-encre bg-white px-6 py-3.5 font-sans text-base font-bold text-encre shadow-[4px_4px_0_#211D16] transition-transform hover:-translate-y-0.5"
-            >
-              {v3hero.ctaSecondary.label}
-            </a>
-          </div>
-        </div>
+            <div>
+              {/* font-mono (pas font-pixel) : Press Start 2P n'a pas de
+                  glyphe correct pour les majuscules accentuées (Î) —
+                  vérifié visuellement, glyphe cassé. Le label reste dans
+                  l'esprit arcade via la carte/bordure/couleur. */}
+              <p className="hero-rise inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe">
+                <span
+                  className="h-2 w-2 animate-pulse rounded-full bg-arcade-orange"
+                  aria-hidden
+                />
+                {v3hero.eyebrow}
+              </p>
 
-        {/* Fenêtre « le site en service » */}
-        <div
-          className="hero-slate v3-window mx-auto w-full max-w-md"
-          style={{ transform: "rotate(1.2deg)" }}
-        >
-          <div className="v3-window-bar">
-            <span
-              className="h-3 w-3 rounded-full border-2 border-encre bg-corail"
-              aria-hidden
-            />
-            <span
-              className="h-3 w-3 rounded-full border-2 border-encre bg-jaune"
-              aria-hidden
-            />
-            <span
-              className="h-3 w-3 rounded-full border-2 border-encre bg-teal"
-              aria-hidden
-            />
-            <span className="ml-2 truncate font-mono text-[0.62rem] text-encre/60">
-              {v3hero.terminalTitle}
-            </span>
-            <span className="ml-auto rounded-md bg-teal px-2 py-0.5 font-mono text-[0.55rem] font-bold uppercase text-white">
-              live
-            </span>
-          </div>
-          <div className="p-4 sm:p-5">
-            <NotifFeed events={v3hero.events} />
-            <p className="mt-4 border-t-2 border-dashed border-encre/10 pt-3 font-mono text-[0.6rem] uppercase tracking-wide text-encre/45">
-              Pendant ce temps, vous êtes avec vos clients.
-            </p>
+              <h1
+                className="hero-rise mt-7 font-pixel text-[0.95rem] leading-[1.75] text-arcade-cream sm:text-[1.15rem] md:text-[1.3rem]"
+                style={{ animationDelay: "0.08s" }}
+              >
+                {v3hero.titleA}{" "}
+                <span className="text-arcade-gold">{v3hero.titleEm}</span>
+                {v3hero.titleB}
+              </h1>
+
+              <p
+                className="hero-rise mt-7 max-w-xl font-terminal text-[1.3rem] leading-snug text-arcade-tan sm:text-[1.45rem]"
+                style={{ animationDelay: "0.16s" }}
+              >
+                {v3hero.subtitle}
+              </p>
+
+              <div
+                className="hero-rise mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
+                style={{ animationDelay: "0.24s" }}
+              >
+                <a
+                  href={v3hero.ctaPrimary.href}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-arcade-border-thick bg-arcade-orange px-6 py-4 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[5px_5px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
+                >
+                  {v3hero.ctaPrimary.label}
+                </a>
+                <a
+                  href={v3hero.ctaSecondary.href}
+                  className="inline-flex items-center justify-center rounded-lg border-2 border-arcade-border-thick bg-transparent px-6 py-4 font-terminal text-xl text-arcade-cream transition-colors hover:border-arcade-orange hover:text-arcade-gold"
+                >
+                  {v3hero.ctaSecondary.label}
+                </a>
+              </div>
+            </div>
+
+            {/* Fenêtre « le site en service » */}
+            <div
+              className="hero-slate mx-auto w-full max-w-md overflow-hidden rounded-2xl border-2 border-arcade-border-thick bg-arcade-card shadow-[6px_6px_0_#000000]"
+              style={{ transform: "rotate(1.2deg)" }}
+            >
+              <div className="flex items-center gap-2 border-b-2 border-arcade-border-thick bg-arcade-bg px-3.5 py-2.5">
+                <span
+                  className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-orange"
+                  aria-hidden
+                />
+                <span
+                  className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-gold"
+                  aria-hidden
+                />
+                <span
+                  className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-tan"
+                  aria-hidden
+                />
+                <span className="ml-2 truncate font-mono text-[0.62rem] text-arcade-taupe">
+                  {v3hero.terminalTitle}
+                </span>
+                <span className="ml-auto rounded-md bg-arcade-orange px-2 py-0.5 font-mono text-[0.55rem] font-bold uppercase text-arcade-bg">
+                  live
+                </span>
+              </div>
+              <div className="p-4 sm:p-5">
+                <NotifFeed
+                  events={v3hero.events}
+                  tagColors={HERO_TAG_COLORS}
+                  itemClassName="border-arcade-border bg-arcade-bg"
+                  textClassName="text-arcade-cream/90"
+                />
+                <p className="mt-4 border-t-2 border-dashed border-arcade-border pt-3 font-mono text-[0.6rem] uppercase tracking-wide text-arcade-muted">
+                  Pendant ce temps, vous êtes avec vos clients.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

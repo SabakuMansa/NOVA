@@ -17,7 +17,9 @@ export default function V3Nav() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        compact ? "bg-lait/90 backdrop-blur-md" : "bg-transparent"
+        compact
+          ? "border-b border-arcade-border bg-arcade-bg/90 backdrop-blur-md"
+          : "bg-transparent"
       }`}
     >
       <nav
@@ -27,11 +29,11 @@ export default function V3Nav() {
         aria-label="Navigation principale"
       >
         <a href="/" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-encre bg-jaune font-sans text-sm font-extrabold text-encre shadow-[2px_2px_0_#211D16]">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-arcade-border-thick bg-arcade-gold font-sans text-sm font-extrabold text-arcade-bg shadow-[2px_2px_0_#2C241A]">
             N
           </span>
-          <span className="font-sans text-lg font-extrabold tracking-tight text-encre">
-            NOVA<span className="text-violet">.studio</span>
+          <span className="font-sans text-lg font-extrabold tracking-tight text-arcade-cream">
+            NOVA<span className="text-arcade-orange">.studio</span>
           </span>
         </a>
 
@@ -40,7 +42,7 @@ export default function V3Nav() {
             <a
               key={l.href}
               href={l.href}
-              className="font-sans text-sm font-medium text-encre/70 transition-colors hover:text-encre"
+              className="font-sans text-sm font-medium text-arcade-taupe transition-colors hover:text-arcade-cream"
             >
               {l.label}
             </a>
@@ -50,30 +52,30 @@ export default function V3Nav() {
         <div className="flex items-center gap-3">
           <a
             href={v3nav.cta.href}
-            className="hidden rounded-xl border-2 border-encre bg-corail px-4 py-2 font-sans text-sm font-bold text-white shadow-[3px_3px_0_#211D16] transition-transform hover:-translate-y-0.5 sm:inline-block"
+            className="hidden rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-4 py-2 font-sans text-sm font-bold text-arcade-bg shadow-[3px_3px_0_#2C241A] transition-transform hover:-translate-y-0.5 sm:inline-block"
           >
             {v3nav.cta.label}
           </a>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-encre bg-white shadow-[2px_2px_0_#211D16] lg:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-arcade-border-thick bg-arcade-card shadow-[2px_2px_0_#2C241A] lg:hidden"
             aria-expanded={open}
             aria-label="Ouvrir le menu"
           >
             <span className="relative block h-3 w-4">
               <span
-                className={`absolute left-0 h-0.5 w-4 bg-encre transition-all ${
+                className={`absolute left-0 h-0.5 w-4 bg-arcade-cream transition-all ${
                   open ? "top-1.5 rotate-45" : "top-0"
                 }`}
               />
               <span
-                className={`absolute left-0 top-1.5 h-0.5 w-4 bg-encre transition-opacity ${
+                className={`absolute left-0 top-1.5 h-0.5 w-4 bg-arcade-cream transition-opacity ${
                   open ? "opacity-0" : "opacity-100"
                 }`}
               />
               <span
-                className={`absolute left-0 h-0.5 w-4 bg-encre transition-all ${
+                className={`absolute left-0 h-0.5 w-4 bg-arcade-cream transition-all ${
                   open ? "top-1.5 -rotate-45" : "top-3"
                 }`}
               />
@@ -83,14 +85,14 @@ export default function V3Nav() {
       </nav>
 
       {open && (
-        <div className="border-t-2 border-encre bg-lait lg:hidden">
+        <div className="border-t-2 border-arcade-border bg-arcade-bg lg:hidden">
           <div className="mx-auto flex max-w-content flex-col gap-1 px-5 py-4">
             {v3nav.links.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2.5 font-sans text-base font-medium text-encre/80 hover:bg-white"
+                className="rounded-lg px-3 py-2.5 font-sans text-base font-medium text-arcade-tan hover:bg-arcade-card"
               >
                 {l.label}
               </a>
@@ -98,7 +100,7 @@ export default function V3Nav() {
             <a
               href={v3nav.cta.href}
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-xl border-2 border-encre bg-corail px-5 py-3 text-center font-sans text-sm font-bold text-white shadow-[3px_3px_0_#211D16]"
+              className="mt-2 rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-5 py-3 text-center font-sans text-sm font-bold text-arcade-bg shadow-[3px_3px_0_#2C241A]"
             >
               {v3nav.cta.label}
             </a>

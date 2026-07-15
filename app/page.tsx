@@ -2,30 +2,31 @@ import V3Nav from "@/components/v3/Nav";
 import V3Hero from "@/components/v3/Hero";
 import SmoothScroll from "@/components/v2/SmoothScroll";
 import {
-  // V3Constat retiré du site (section "Le constat") — composant conservé
-  // intact dans Sections.tsx, simplement plus importé ici.
+  V3Constat,
   V3Contact,
   V3Fondateur,
   V3Footer,
-  // V3Moteur retiré du site (section "Ce que ça fait") — composant
-  // conservé intact dans Sections.tsx, simplement plus importé ici.
+  V3Moteur,
   V3Plans,
-  // V3Process retiré du site (section "Le process") — même traitement.
+  V3Process,
   V3Verdict,
 } from "@/components/v3/Sections";
 
+// Import maquette Claude Design "arcade" du 15/07 : Constat/Moteur/Process
+// redeviennent visibles (retirés temporairement le 14/07, code jamais
+// supprimé) — la maquette et la règle de style les nomment explicitement.
 export default function Home() {
   return (
-    <div className="bg-lait text-encre">
+    <div className="bg-arcade-bg text-arcade-cream">
       <SmoothScroll />
       <V3Nav />
       <main>
         <V3Hero />
         <V3Verdict />
-        {/* <V3Constat /> — retiré du site, code conservé */}
-        {/* <V3Moteur /> — retiré du site, code conservé */}
+        <V3Constat />
+        <V3Moteur />
         <V3Plans />
-        {/* <V3Process /> — retiré du site, code conservé */}
+        <V3Process />
         <V3Fondateur />
         <V3Contact />
       </main>
