@@ -184,7 +184,7 @@ export type V3Plan = {
   features: string[];
   featured?: boolean;
   badge?: string;
-  color: "teal" | "violet" | "corail";
+  color: "teal" | "violet" | "corail" | "jaune";
   /** Lien vers une page /exemples/* montrant CE plan précis en situation
    *  (uniquement quand la démo existe — pas encore pour tous les plans). */
   exampleHref?: string;
@@ -240,6 +240,21 @@ export const v3plans = {
       ],
       color: "corail",
       exampleHref: "/exemples/machine",
+    },
+    {
+      name: "Boutique",
+      price: "dès 3200€",
+      monthly: "+ 129€/mois",
+      pitch: "Votre boutique, ouverte partout, tout le temps.",
+      features: [
+        "Tout le plan Autonome",
+        "Catalogue produits organisé par catégorie",
+        "Fiches produits enrichies (description, prix, média)",
+        "Panier + paiement en ligne sécurisé (Stripe)",
+        "Tableau de suivi des commandes",
+      ],
+      color: "jaune",
+      exampleHref: "/exemples/boutique",
     },
   ] as V3Plan[],
   addon: {

@@ -253,11 +253,11 @@ export function V3Plans() {
         </p>
       </Reveal>
 
-      <div className="mt-12 grid gap-6 md:grid-cols-3 md:items-start">
+      <div className="mt-12 grid gap-6 sm:grid-cols-2 sm:items-start xl:grid-cols-4">
         {v3plans.plans.map((p, i) => (
           <Reveal key={p.name} delay={i * 0.08}>
             <div
-              className={`v3-window ${p.featured ? "md:-mt-3 md:mb-3" : ""}`}
+              className={`v3-window ${p.featured ? "xl:-mt-3 xl:mb-3" : ""}`}
             >
               <div
                 className={`v3-window-bar ${p.featured ? "!bg-violet" : ""}`}

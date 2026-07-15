@@ -1650,3 +1650,119 @@ immédiat cette fois.
 - Preview rechargée : `document.body.innerText` ne contient plus "Le
   constat" nulle part sur la page.
 - Console navigateur : 0 erreur.
+
+## [4e offre] Plan "Boutique" (e-commerce) + démo /exemples/boutique
+
+### Objectif
+
+Ajouter une 4e carte dans "Les plans" pour l'offre e-commerce, et sa page
+de démo — sur le modèle des 3 précédentes, avec le vrai travail nouveau
+concentré sur le parcours panier + paiement Stripe (mode test).
+
+### Carte "Boutique"
+
+- `content/v3.ts` : `V3Plan.color` élargi à `"jaune"` (4e couleur déjà
+  utilisée ailleurs sur le site — `DOT`/`TEXT` dans `Sections.tsx` la
+  supportaient déjà, aucune nouvelle palette à créer). Nouvelle entrée
+  `v3plans.plans[3]` : dès 3200€ + 129€/mois, cohérent avec la
+  progression 690→1490→1990→3200 (one-shot) et 25→45→95→129 (mensuel).
+  Fonctionnalités : tout Autonome + catalogue + fiches produits enrichies
+  + panier/paiement Stripe + suivi de commandes. `exampleHref:
+  "/exemples/boutique"`.
+- `components/v3/Sections.tsx` : grille des plans passée de
+  `md:grid-cols-3` à `sm:grid-cols-2 xl:grid-cols-4` pour accueillir la
+  4e carte (1 colonne mobile, 2 en tablette, 4 en desktop large) ; le
+  décalage vertical de la carte "mise en avant" (Autonome) recalé de
+  `md:` à `xl:` pour rester cohérent avec le nouveau point de rupture à
+  4 colonnes.
+
+### Démo `/exemples/boutique` — "Le Petit Atelier" (savonnerie artisanale)
+
+Structure reprise à l'identique du pattern déjà en place (`ExempleBanner`,
+`ExempleNav`, `ExempleFooter`, `PlaceholderImage`) — mais périmètre de
+pages adapté à ce que cette offre démontre concrètement (catalogue,
+panier, paiement), pas le même jeu de pages que les 3 démos précédentes :
+
+- `app/exemples/boutique/page.tsx` — Accueil
+- `app/exemples/boutique/catalogue/page.tsx` — grille de 6 produits
+  fictifs (savons/bougies/soins), filtre par catégorie, ajout rapide au
+  panier
+- `app/exemples/boutique/produit/[slug]/page.tsx` — fiche produit (Server
+  Component + `notFound()` sur slug inconnu, `generateStaticParams` pour
+  les 6 produits), sélecteur de quantité + ajout au panier dans un
+  sous-composant client co-localisé (`AddToCartButton.tsx`)
+- `app/exemples/boutique/panier/page.tsx` — lignes modifiables
+  (quantité/suppression), total en temps réel, bouton de paiement
+- `app/exemples/boutique/confirmation/page.tsx` — confirmation simple
+  après paiement réussi (réel ou simulé)
+- `content/exemples/boutique.ts` — business fictif, nav, contenu de
+  chaque page, catalogue de 6 produits (`BoutiqueProduct[]`)
+
+### Panier — `components/exemples/CartContext.tsx` (nouveau)
+
+Seul vrai bout d'infrastructure nouveau de cette page : Context React +
+persistance `localStorage` (clé `nova-exemples-boutique-cart`, dédiée à
+cette démo, aucune collision possible avec un autre module). Expose
+`addItem`/`removeItem`/`updateQty`/`clear`/`count`/`total`. Le layout
+`/exemples/boutique` enveloppe toutes ses pages dans `<CartProvider>`.
+
+### Paiement Stripe (mode test) — `app/api/checkout/route.ts` (nouveau)
+
+Réplique fidèlement le pattern déjà validé et en prod sur le projet
+**Oncle Wang** (`~/Projects/ONCLE/src/app/api/checkout/route.ts`, lu pour
+référence uniquement — rien écrit dans ce projet, confirmé par `pwd`
+avant tout code) :
+
+- `PAYMENT_MODE=test|live` (défaut `test`), `STRIPE_SECRET_KEY` — tous
+  deux en `.env.local` uniquement, jamais commités.
+- Sans clé configurée : réponse `{ demo: true, total }`, le panier
+  bascule sur la confirmation simulée — la démo reste montrable sans
+  compte Stripe.
+- Garde-fou : `PAYMENT_MODE=live` avec une clé `sk_test_…` est refusé
+  (500).
+- **Prix toujours recalculés côté serveur** depuis `boutiqueDemo.products`
+  — jamais depuis ce que le client envoie dans la requête.
+- `.env.example` complété avec la section "Module Boutique", même
+  formatage que les sections Delivery/Reviews déjà présentes.
+
+### Périmètre strictement respecté (vérifié, pas juste écrit)
+
+`grep` sur `content/exemples/boutique.ts`, `app/exemples/boutique/` et
+`app/api/checkout/` pour "uber"/"livraison" : une seule occurrence hors
+commentaire de tête — `"🚚 Livraison partout en France"` dans les points
+forts de l'accueil, qui désigne l'expédition postale nationale standard
+d'un site e-commerce, pas le module de livraison locale Uber Direct
+(vendu séparément) — conforme à la consigne ("mention informative si
+pertinent" autorisée, module non mis en avant).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- **Clés Stripe** : `grep` de `sk_test_`/`sk_live_` sur tout le code —
+  aucune occurrence réelle (seuls un commentaire de doc et une comparaison
+  de préfixe `.startsWith("sk_test_")`). Aucun fichier `.env.local`
+  présent. `.env*.local` confirmé dans `.gitignore` (`git check-ignore
+  -v` positif).
+- **Carte Boutique** : les 4 cartes vérifiées côte à côte en preview
+  (1400px) — cohérentes visuellement, mêmes composants, couleur jaune
+  correctement appliquée (badge, coche, dot).
+- **Bouton "voir un exemple concret"** : les 4 plans ont chacun leur lien
+  (`/exemples/presence`, `/exemples/autonome`, `/exemples/machine`,
+  `/exemples/boutique`), dans l'ordre.
+- **Parcours d'achat complet testé en mode test**, bout en bout via
+  l'outil navigateur : catalogue → ajout rapide → fiche produit
+  (sélecteur de quantité, +1 → 2, confirmé dans `localStorage`) → panier
+  (quantité/suppression fonctionnelles, total recalculé en direct) →
+  "Passer au paiement" → `POST /api/checkout` → `200 { demo: true, total:
+  18 }` (recalcul serveur exact) → redirection confirmation → panier vidé
+  après coup (`localStorage` vérifié vide).
+- Un faux positif rencontré pendant le test : deux clics synchrones tirés
+  dans le même appel JS (incrémenter la quantité puis ajouter au panier)
+  contournaient le cycle de rendu React et capturaient une closure
+  obsolète (quantité restée à 1). Reproduit un clic réel séparé
+  (`dispatchEvent` dans un appel distinct) : comportement correct
+  (1 → 2). Artefact du script de test, pas un bug du composant.
+- Rendu mobile (375px) vérifié sur le catalogue : `scrollWidth` = 375px
+  exact, aucun débordement horizontal, chips de catégorie qui wrappent
+  proprement.
+- Console navigateur : 0 erreur sur les 5 pages testées.
