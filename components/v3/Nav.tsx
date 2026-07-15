@@ -29,10 +29,10 @@ export default function V3Nav() {
         aria-label="Navigation principale"
       >
         <a href="/" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-arcade-border-thick bg-arcade-gold font-sans text-sm font-extrabold text-arcade-bg shadow-[2px_2px_0_#2C241A]">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-arcade-border-thick bg-arcade-gold font-pixel text-xs text-arcade-bg shadow-[2px_2px_0_#2C241A]">
             N
           </span>
-          <span className="font-sans text-lg font-extrabold tracking-tight text-arcade-cream">
+          <span className="font-pixel text-xs tracking-tight text-arcade-cream">
             NOVA<span className="text-arcade-orange">.studio</span>
           </span>
         </a>
@@ -42,7 +42,7 @@ export default function V3Nav() {
             <a
               key={l.href}
               href={l.href}
-              className="font-sans text-sm font-medium text-arcade-taupe transition-colors hover:text-arcade-cream"
+              className="font-pixel text-[0.6rem] text-arcade-taupe transition-colors hover:text-arcade-cream"
             >
               {l.label}
             </a>
@@ -52,7 +52,7 @@ export default function V3Nav() {
         <div className="flex items-center gap-3">
           <a
             href={v3nav.cta.href}
-            className="hidden rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-4 py-2 font-sans text-sm font-bold text-arcade-bg shadow-[3px_3px_0_#2C241A] transition-transform hover:-translate-y-0.5 sm:inline-block"
+            className="hidden rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-4 py-2.5 font-pixel text-[0.6rem] text-arcade-bg shadow-[3px_3px_0_#2C241A] transition-transform hover:-translate-y-0.5 sm:inline-block"
           >
             {v3nav.cta.label}
           </a>
@@ -92,7 +92,7 @@ export default function V3Nav() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2.5 font-sans text-base font-medium text-arcade-tan hover:bg-arcade-card"
+                className="rounded-lg px-3 py-3 font-pixel text-[0.65rem] text-arcade-tan hover:bg-arcade-card"
               >
                 {l.label}
               </a>
@@ -100,7 +100,7 @@ export default function V3Nav() {
             <a
               href={v3nav.cta.href}
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-5 py-3 text-center font-sans text-sm font-bold text-arcade-bg shadow-[3px_3px_0_#2C241A]"
+              className="mt-2 rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-5 py-3.5 text-center font-pixel text-[0.65rem] text-arcade-bg shadow-[3px_3px_0_#2C241A]"
             >
               {v3nav.cta.label}
             </a>

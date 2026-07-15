@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useReducedMotion } from "framer-motion";
 import Reveal from "@/components/Reveal";
@@ -45,7 +45,7 @@ function Eyebrow({
 }) {
   return (
     <p
-      className={`inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]`}
+      className={`inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-2 font-pixel text-[0.55rem] tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]`}
     >
       <span className={`h-2 w-2 rounded-full ${DOT[color]}`} aria-hidden />
       {children}
@@ -80,47 +80,34 @@ export function V3Ticker() {
 }
 
 /* --------------------------------------------------------------- Verdict */
-const VERDICT_CYCLE_MS = 2000;
-const VERDICT_GLITCH_MS = 350;
+const VERDICT_CYCLE_MS = 1800;
 
-/** Réponse qui défile en boucle avec effet glitch/RGB-split au changement.
- *  reduced-motion : answers[0] affichée seule, sans animation ni pseudo-éléments. */
-function GlitchAnswer({ items }: { items: string[] }) {
+/** Réponse qui défile en boucle — fade + léger mouvement uniquement
+ *  (transform/opacity), jamais de saut brutal ni de rebond (courbe
+ *  d'accélération sans dépassement). reduced-motion : answers[0] affichée
+ *  seule, aucun cycle, aucune animation. */
+function CyclingAnswer({ items }: { items: string[] }) {
   const reduce = useReducedMotion();
   const [i, setI] = useState(0);
-  const [glitching, setGlitching] = useState(false);
-  const glitchTimeout = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     if (reduce) return;
     const interval = setInterval(() => {
       setI((v) => (v + 1) % items.length);
-      setGlitching(true);
-      glitchTimeout.current = setTimeout(
-        () => setGlitching(false),
-        VERDICT_GLITCH_MS,
-      );
     }, VERDICT_CYCLE_MS);
-    return () => {
-      clearInterval(interval);
-      if (glitchTimeout.current) clearTimeout(glitchTimeout.current);
-    };
+    return () => clearInterval(interval);
   }, [reduce, items.length]);
 
   const textClass =
-    "font-sans text-3xl font-extrabold tracking-tight text-arcade-gold sm:text-5xl md:text-6xl";
+    "font-pixel leading-relaxed text-arcade-gold text-xl sm:text-3xl md:text-4xl";
 
   if (reduce) {
     return <p className={textClass}>{items[0]}</p>;
   }
 
-  const current = items[i];
   return (
-    <p
-      data-text={current}
-      className={`glitch-answer ${glitching ? "is-glitching" : ""} ${textClass}`}
-    >
-      {current}
+    <p key={i} className={`arcade-answer-in ${textClass}`}>
+      {items[i]}
     </p>
   );
 }
@@ -132,12 +119,12 @@ export function V3Verdict() {
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-arcade-bg px-5 py-24 text-center md:px-8"
     >
       <Reveal>
-        <h2 className="mx-auto max-w-4xl font-sans text-4xl font-extrabold leading-[1.05] tracking-tight text-arcade-cream sm:text-6xl md:text-7xl">
+        <h2 className="mx-auto max-w-3xl font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
           {v3verdict.question}
         </h2>
       </Reveal>
       <div className="mt-10 md:mt-14">
-        <GlitchAnswer items={v3verdict.answers} />
+        <CyclingAnswer items={v3verdict.answers} />
       </div>
     </section>
   );
@@ -153,10 +140,10 @@ export function V3Constat() {
       <div className="mx-auto max-w-content px-5 py-20 md:px-8 md:py-28">
         <Reveal>
           <Eyebrow color="corail">{v3constat.eyebrow}</Eyebrow>
-          <h2 className="mt-5 max-w-2xl font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl md:text-5xl">
+          <h2 className="mt-5 max-w-2xl font-pixel text-base leading-relaxed tracking-tight text-arcade-cream sm:text-xl md:text-2xl">
             {v3constat.title}
           </h2>
-          <p className="mt-4 max-w-xl font-sans text-lg text-arcade-tan">
+          <p className="mt-4 max-w-xl font-terminal text-xl text-arcade-tan">
             {v3constat.subtitle}
           </p>
         </Reveal>
@@ -171,11 +158,11 @@ export function V3Constat() {
                   >
                     {c.emoji}
                   </span>
-                  <h3 className="font-sans text-xl font-extrabold text-arcade-cream">
+                  <h3 className="font-pixel text-sm leading-snug text-arcade-cream">
                     {c.title}
                   </h3>
                 </div>
-                <p className="mt-3.5 font-sans leading-relaxed text-arcade-tan">
+                <p className="mt-3.5 font-terminal text-lg leading-relaxed text-arcade-tan">
                   {c.text}
                 </p>
               </div>
@@ -197,7 +184,7 @@ export function V3Moteur() {
       <div className="mx-auto max-w-content px-5 py-20 md:px-8 md:py-28">
         <Reveal>
           <Eyebrow color="teal">{v3moteur.eyebrow}</Eyebrow>
-          <h2 className="mt-5 max-w-2xl font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl md:text-5xl">
+          <h2 className="mt-5 max-w-2xl font-pixel text-base leading-relaxed tracking-tight text-arcade-cream sm:text-xl md:text-2xl">
             {v3moteur.title}
           </h2>
         </Reveal>
@@ -226,10 +213,10 @@ export function V3Moteur() {
                       {b.chip}
                     </span>
                   </div>
-                  <h3 className="mt-4 font-sans text-2xl font-extrabold text-arcade-cream">
+                  <h3 className="mt-4 font-pixel text-base leading-snug text-arcade-cream">
                     {b.title}
                   </h3>
-                  <p className="mt-2.5 max-w-lg font-sans leading-relaxed text-arcade-tan">
+                  <p className="mt-2.5 max-w-lg font-terminal text-lg leading-relaxed text-arcade-tan">
                     {b.text}
                   </p>
                 </div>
@@ -261,10 +248,10 @@ export function V3Plans() {
     >
       <Reveal className="text-center">
         <Eyebrow color="violet">{v3plans.eyebrow}</Eyebrow>
-        <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl md:text-5xl">
+        <h2 className="mx-auto mt-5 max-w-2xl font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
           {v3plans.title}
         </h2>
-        <p className="mx-auto mt-4 max-w-xl font-sans text-lg text-arcade-tan">
+        <p className="mx-auto mt-4 max-w-xl font-terminal text-xl text-arcade-tan">
           {v3plans.subtitle}
         </p>
       </Reveal>
@@ -368,7 +355,7 @@ export function V3Plans() {
       {/* Module Commande & Livraison (v3plans.addon) volontairement masqué :
           pas prioritaire pour le moment. Données conservées dans content/v3.ts. */}
       <Reveal className="mx-auto mt-10 max-w-2xl text-center">
-        <p className="font-sans text-sm italic text-arcade-taupe">
+        <p className="font-terminal text-lg text-arcade-taupe">
           {v3plans.footnote}
         </p>
       </Reveal>
@@ -385,11 +372,11 @@ export function V3Process() {
     >
       <div className="mx-auto max-w-content px-5 py-20 md:px-8 md:py-28">
         <Reveal>
-          <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe">
+          <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-2 font-pixel text-[0.55rem] tracking-wide text-arcade-taupe">
             <span className="h-2 w-2 rounded-full bg-arcade-gold" aria-hidden />
             {v3process.eyebrow}
           </p>
-          <h2 className="mt-5 max-w-2xl font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl md:text-5xl">
+          <h2 className="mt-5 max-w-2xl font-pixel text-base leading-relaxed tracking-tight text-arcade-cream sm:text-xl md:text-2xl">
             {v3process.title}
           </h2>
         </Reveal>
@@ -400,11 +387,11 @@ export function V3Process() {
                 <span className="rounded-lg border-2 border-arcade-gold px-2.5 py-1 font-mono text-sm font-bold text-arcade-gold">
                   {s.n}
                 </span>
-                <h3 className="font-sans text-xl font-extrabold text-arcade-cream">
+                <h3 className="font-pixel text-sm leading-snug text-arcade-cream">
                   {s.name}
                 </h3>
               </div>
-              <p className="mt-2.5 font-sans leading-relaxed text-arcade-tan">
+              <p className="mt-2.5 font-terminal text-lg leading-relaxed text-arcade-tan">
                 {s.text}
               </p>
             </Reveal>
@@ -425,7 +412,7 @@ export function V3Fondateur() {
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:items-center">
         <Reveal>
           <Eyebrow color="jaune">{v3fondateur.eyebrow}</Eyebrow>
-          <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl">
+          <h2 className="mt-5 font-pixel text-base leading-relaxed tracking-tight text-arcade-cream sm:text-xl">
             {v3fondateur.title}
           </h2>
           <div className="mt-6 flex flex-wrap gap-2">
@@ -440,12 +427,12 @@ export function V3Fondateur() {
           </div>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="font-sans text-lg leading-relaxed text-arcade-tan">
+          <p className="font-terminal text-xl leading-relaxed text-arcade-tan">
             {v3fondateur.teaser}
           </p>
           <Link
             href={v3fondateur.ctaHref}
-            className="mt-5 inline-flex items-center gap-2 font-sans text-sm font-bold text-arcade-gold underline underline-offset-4 hover:text-arcade-cream"
+            className="mt-5 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wide text-arcade-gold underline underline-offset-4 hover:text-arcade-cream"
           >
             {v3fondateur.ctaLabel} →
           </Link>
@@ -470,10 +457,10 @@ export function V3Contact() {
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <Reveal>
             <Eyebrow color="violet">{v3contact.eyebrow}</Eyebrow>
-            <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-tight text-arcade-cream sm:text-4xl md:text-5xl">
+            <h2 className="mt-5 font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
               {v3contact.title}
             </h2>
-            <p className="mt-4 font-sans text-lg text-arcade-tan">
+            <p className="mt-4 font-terminal text-xl text-arcade-tan">
               {v3contact.subtitle}
             </p>
             <p className="mt-6 font-display text-xl italic text-arcade-tan">
@@ -532,10 +519,10 @@ export function V3Contact() {
                   >
                     ✓
                   </span>
-                  <h3 className="mt-5 font-sans text-2xl font-extrabold text-arcade-cream">
+                  <h3 className="mt-5 font-pixel text-base text-arcade-cream">
                     Bien reçu !
                   </h3>
-                  <p className="mt-2 max-w-xs font-sans text-arcade-tan">
+                  <p className="mt-3 max-w-xs font-terminal text-lg leading-relaxed text-arcade-tan">
                     Votre demande est notée. Je reviens vers vous sous 24h pour
                     caler l'audit.
                   </p>
@@ -585,7 +572,7 @@ export function V3Contact() {
                   />
                   <button
                     type="submit"
-                    className="w-full rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-6 py-4 font-sans text-base font-bold text-arcade-bg shadow-[4px_4px_0_#000000] transition-transform hover:-translate-y-0.5"
+                    className="w-full rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-6 py-4 font-pixel text-[0.65rem] leading-relaxed text-arcade-bg shadow-[4px_4px_0_#000000] transition-transform hover:-translate-y-0.5"
                   >
                     {v3contact.submit}
                   </button>
@@ -606,14 +593,14 @@ export function V3Footer() {
       <div className="mx-auto flex max-w-content flex-col gap-6 px-5 py-12 md:px-8 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-arcade-border-thick bg-arcade-gold font-sans text-sm font-extrabold text-arcade-bg">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-arcade-border-thick bg-arcade-gold font-pixel text-xs text-arcade-bg">
               N
             </span>
-            <span className="font-sans text-lg font-extrabold tracking-tight text-arcade-cream">
+            <span className="font-pixel text-xs tracking-tight text-arcade-cream">
               NOVA<span className="text-arcade-orange">.studio</span>
             </span>
           </div>
-          <p className="mt-3 max-w-sm font-sans text-sm leading-relaxed text-arcade-taupe">
+          <p className="mt-3 max-w-sm font-terminal text-base leading-relaxed text-arcade-taupe">
             {v3footer.blurb}
           </p>
         </div>

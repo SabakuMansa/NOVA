@@ -1921,3 +1921,142 @@ chaudes) aurait cassé la lisibilité de l'effet.
   `/exemples/machine`, `/labo`.
 - **Tout reste local** — aucun `git push`, aucune interaction avec un
   remote, aucun déploiement déclenché.
+
+## [Extension arcade] Style pixel étendu à tout le site + réponses défilantes — 16/07
+
+### Changement de portée
+
+Le style "pixel arcade" (import du 15/07 ci-dessus) était jusqu'ici limité
+au Hero et à "La Carte" ; les autres sections restaient en typographie
+standard, seule la palette de couleurs étant reprise. Sur demande
+explicite, cette limitation est levée : les 9 sections réelles du site
+(Hero, Verdict, Constat, Méthode, La Carte, Process, Qui suis-je, Contact,
+Footer) et la Nav passent en pixel arcade complet. Palette, fond
+anthracite, absence de filtre CRT/glow sur le texte et non-emphase du mot
+"dès" — toutes des contraintes déjà en place depuis le 15/07 — restent
+inchangées.
+
+### Hiérarchie typographique établie
+
+Pour garder les sections denses en texte lisibles (contrainte explicite),
+une hiérarchie à trois polices est appliquée partout, pas seulement dans
+"La Carte" comme avant :
+
+- **`font-pixel`** (Press Start 2P) : titres, sous-titres de section,
+  noms de cartes/étapes, boutons courts, logo Nav — texte court affiché
+  en casse naturelle (jamais `uppercase`, cf. bug de glyphe ci-dessous).
+- **`font-terminal`** (VT323) : paragraphes de corps, descriptions —
+  lisible en taille normale même sur de longs paragraphes (vérifié sur
+  Constat et Process, les deux sections les plus denses).
+- **`font-mono`** (IBM Plex Mono, déjà utilisé avant le 15/07) : labels
+  structurels courts (badges eyebrow, chips) — inchangé, déjà fiable avec
+  les majuscules accentuées ("BASÉ EN ÎLE-DE-FRANCE").
+
+`Eyebrow` (composant partagé de Constat/Méthode/Plans/Fondateur/Contact)
+passe de `font-mono uppercase` à `font-pixel` en casse naturelle — la
+classe `uppercase` est retirée précisément pour éviter le bug de glyphe
+(voir plus bas), pas juste pour le style.
+
+### Nav — conversion complète
+
+`components/v3/Nav.tsx` : logo ("N" + "NOVA.studio"), liens desktop et
+mobile, CTA "Audit gratuit" (desktop + mobile) tous passés en
+`font-pixel`, casse naturelle préservée ("Le constat", "Ce que ça fait" —
+contient un ç, vérifié sans problème de rendu).
+
+### Section Verdict — remplacement de l'effet glitch par un défilement simple
+
+L'ancien effet glitch/RGB-split (`GlitchAnswer`, deux couleurs froid/chaud
+`#ff6b4a`/`#0ea88b`) est retiré et remplacé par `CyclingAnswer` : la
+question reste fixe, la réponse en dessous change automatiquement toutes
+les 1,8 s parmi les 7 réponses réelles déjà présentes dans
+`content/v3.ts` (`v3verdict.answers` — "Rien. Absolument rien.", "Il
+dort.", "Il est invisible.", "Il fait fuir vos clients.", "Il tourne en
+rond.", "Il ment sur vos horaires.", "Il rate des opportunités.") :
+**aucun contenu inventé**, le tableau existant est réutilisé tel quel et
+couvre déjà toutes les variantes demandées.
+
+Transition : `@keyframes arcade-answer-in` dans `globals.css`
+(`opacity 0→1` + `translateY(10px→0)`, `cubic-bezier(0.22,1,0.36,1)`, la
+même courbe sans dépassement déjà utilisée pour `hero-rise`/`preview-in`/
+`sig-word` ailleurs dans le site) — retrigger via la prop `key={i}` sur le
+`<p>` à chaque changement. Aucun saut brutal, aucun rebond (la courbe ne
+peut pas dépasser 1 car ses points de contrôle valent exactement 1, la
+valeur finale).
+
+`prefers-reduced-motion` : `useReducedMotion()` (framer-motion) coupe
+l'intervalle JS lui-même (`useEffect` retourne tôt si `reduce`), pas
+seulement la transition CSS — sans ce garde JS, le blanket rule global de
+`globals.css` aurait neutralisé l'animation visuelle mais le texte aurait
+quand même continué à changer brutalement (sans transition) toutes les
+1,8 s. `items[0]` seul est affiché, statique, sans classe d'animation.
+
+### Bug de police — toujours le même, appliqué de façon cohérente
+
+Press Start 2P ne rend pas les majuscules accentuées (`Î`, `É`…) — déjà
+découvert et documenté le 15/07. Règle appliquée partout dans cette
+extension : jamais de `uppercase` sur du texte `font-pixel`, casse
+naturelle systématique. Revérifié visuellement sur cette extension :
+minuscules accentuées (é, à, ç, û, î) et guillemets « » s'affichent
+correctement en Press Start 2P ; seules les majuscules accentuées posent
+problème, et aucun texte réel du site n'en a besoin en contexte pixel.
+
+### Vérification visuelle — desktop + mobile
+
+Parcours complet revérifié en preview après l'extension : Hero, Verdict
+(réponses en cycle confirmées : "Il dort." → "Il est invisible." → "Il
+fait fuir vos clients."), Constat, Méthode, La Carte (mobile : bandeau
+"1P"/"CREDIT 04" collapse proprement, carte "Présence" à 690€ lisible),
+Process (titres d'étape "01 Audit"/"02 Proposition"/"03 Conception"
+lisibles, guillemets « on se parle » corrects), Qui suis-je (chip "BASÉ
+EN ÎLE-DE-FRANCE" intact), Contact (email/téléphone volontairement
+laissés en `font-sans`, intro `font-display italic` inchangée), Footer
+(logo pixel, blurb terminal, tagline mono). Mobile 375×812 : aucun
+débordement horizontal (`scrollWidth` = 375px exact) sur toutes les
+sections testées, menu mobile fonctionnel. `/exemples/*`, `/labo`,
+`/_archive` non retouchés dans cette extension (aucun fichier de ces
+répertoires modifié).
+
+### `prefers-reduced-motion` — test dédié sur `CyclingAnswer`
+
+Le garde JS (`reduce = useReducedMotion()`) temporairement forcé à `true`
+en local pour vérifier en preview : réponse figée sur "Rien. Absolument
+rien." (premier élément du tableau), aucun changement sur 3,6 s
+d'observation (2× le cycle normal), aucune classe `arcade-answer-in`
+appliquée. Modification temporaire annulée immédiatement après capture —
+`git diff` confirmé propre sur ce fichier après coup.
+
+### Lighthouse — avant/après
+
+Build de production propre (`rm -rf .next && next build`), servi sur un
+port isolé (4100, serveur de preview arrêté pendant la mesure pour ne pas
+fausser le résultat), Lighthouse mobile par défaut :
+
+| Catégorie | Score |
+|---|---|
+| Performance | 94 (référence précédente : 96) |
+| Accessibilité | 96 |
+| Bonnes pratiques | 96 |
+| SEO | 100 |
+
+Léger recul de 2 points en performance, entièrement expliqué : l'élément
+LCP devient le logo Nav ("NOVA.studio", maintenant en `font-pixel`) au
+lieu d'un texte en police système — délai de rendu de l'élément ~540 ms
+pendant que la police pixel se charge, malgré `display: "swap"` déjà
+configuré sur toutes les polices dans `app/layout.tsx` (donc pas de FOIT,
+juste le coût inhérent d'étendre une police d'affichage à un élément
+au-dessus de la ligne de flottaison sur toutes les pages). TBT (0 ms),
+CLS (0), FCP (0,8 s) et Speed Index (1,1 s) restent parfaits. 94/100 reste
+dans la zone verte ("Good") de Lighthouse — recul mineur et attendu, pas
+une régression fonctionnelle.
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- Console navigateur : 0 erreur sur `/` (desktop et mobile, toutes
+  sections), avant et après le build de production.
+- Serveur de preview arrêté proprement avant le build de production,
+  redémarré après la mesure Lighthouse — aucune interruption durable du
+  flux de développement.
+- **Tout reste local** — aucun `git push`, aucune interaction avec un
+  remote, aucun déploiement déclenché.

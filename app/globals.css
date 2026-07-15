@@ -275,83 +275,35 @@ body {
 }
 
 /* ------------------------------------------------------------------ *
- * Section Verdict — réponse qui défile avec effet glitch / RGB-split. *
- * Simplifié le 14/07 : clip-path retiré (flaggé "non composité" par    *
- * Lighthouse — repaint, pas de passage au compositeur). Le split RGB   *
- * vient maintenant uniquement de translate/scaleX/opacity en pas       *
- * saccadés (steps()) — même esprit "signal qui saute", garanti         *
- * accéléré GPU. Un seul élément + 2 pseudo-éléments, aucun repaint.    *
+ * Section Verdict — réponse qui défile en boucle. Remplace le 16/07   *
+ * l'ancien effet glitch/RGB-split (retiré à la demande explicite :    *
+ * "jamais de saut brutal, jamais de rebond") par un simple fade +     *
+ * léger mouvement, transform/opacity uniquement, même easing que      *
+ * hero-rise/preview-in/sig-word (cubic-bezier(0.22,1,0.36,1), aucun   *
+ * dépassement donc aucun rebond).                                     *
  * ------------------------------------------------------------------ */
-.glitch-answer {
-  position: relative;
-  display: inline-block;
-}
-.glitch-answer.is-glitching {
-  animation: glitch-jitter 0.35s steps(6, end);
-}
-.glitch-answer.is-glitching::before,
-.glitch-answer.is-glitching::after {
-  content: attr(data-text);
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  mix-blend-mode: screen;
-}
-.glitch-answer.is-glitching::before {
-  color: #ff6b4a;
-  animation: glitch-split-a 0.35s steps(6, end);
-}
-.glitch-answer.is-glitching::after {
-  color: #0ea88b;
-  animation: glitch-split-b 0.35s steps(6, end);
-}
-@keyframes glitch-jitter {
-  /* transform uniquement (composité) : le micro-flou de 0.3px qui existait ici
-     animait `filter`, flaggé non-composité par Lighthouse pour un effet à
-     peine perceptible — retiré, le tremblement transform seul suffit. */
-  0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(-2px, 1px); }
-  40% { transform: translate(2px, -1px); }
-  60% { transform: translate(-1px, 0); }
-  80% { transform: translate(1px, 1px); }
-}
-@keyframes glitch-split-a {
-  0% { transform: translate(0, 0) scaleX(1); opacity: 0; }
-  10% { transform: translate(-6px, -1px) scaleX(1.03); opacity: 0.85; }
-  25% { transform: translate(4px, 1px) scaleX(0.98); opacity: 0.4; }
-  40% { transform: translate(-3px, 0) scaleX(1.01); opacity: 0.8; }
-  55% { transform: translate(5px, -1px) scaleX(1); opacity: 0.25; }
-  70% { transform: translate(-2px, 1px) scaleX(1); opacity: 0.7; }
-  85% { transform: translate(3px, 0) scaleX(1); opacity: 0.35; }
-  100% { transform: translate(0, 0) scaleX(1); opacity: 0; }
-}
-@keyframes glitch-split-b {
-  0% { transform: translate(0, 0) scaleX(1); opacity: 0; }
-  10% { transform: translate(6px, 1px) scaleX(0.98); opacity: 0.85; }
-  25% { transform: translate(-4px, -1px) scaleX(1.03); opacity: 0.4; }
-  40% { transform: translate(3px, 0) scaleX(0.99); opacity: 0.8; }
-  55% { transform: translate(-5px, 1px) scaleX(1); opacity: 0.25; }
-  70% { transform: translate(2px, -1px) scaleX(1); opacity: 0.7; }
-  85% { transform: translate(-3px, 0) scaleX(1); opacity: 0.35; }
-  100% { transform: translate(0, 0) scaleX(1); opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .glitch-answer.is-glitching,
-  .glitch-answer.is-glitching::before,
-  .glitch-answer.is-glitching::after {
-    animation: none;
-    content: none;
+@keyframes arcade-answer-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.arcade-answer-in {
+  animation: arcade-answer-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* ------------------------------------------------------------------ *
- * Arcade — import maquette Claude Design du 15/07, homepage seulement *
- * (Hero + "La Carte" en style pixel complet, reste du site en palette *
- * seule). Le bloc reduced-motion global tout en haut de ce fichier    *
- * (*, *::before, *::after { animation-duration: 0.001ms !important }) *
- * neutralise déjà ces animations sous prefers-reduced-motion — pas    *
- * besoin d'override spécifique ici, juste ne jamais utiliser de       *
- * filtre blur/glow sur du texte (interdit explicitement).             *
+ * Arcade — import maquette Claude Design du 15/07, étendu le 16/07 à  *
+ * l'ensemble du site (précédemment limité au Hero + "La Carte"). Le   *
+ * bloc reduced-motion global tout en haut de ce fichier (*, *::before,*
+ * *::after { animation-duration: 0.001ms !important }) neutralise déjà*
+ * ces animations sous prefers-reduced-motion — pas besoin d'override  *
+ * spécifique ici, juste ne jamais utiliser de filtre blur/glow sur du *
+ * texte (interdit explicitement).                                     *
  * ------------------------------------------------------------------ */
 @keyframes arcade-blink {
   0%, 49% { opacity: 1; }
