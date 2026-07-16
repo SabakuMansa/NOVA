@@ -74,7 +74,7 @@ export default function QuiJeSuisPage() {
                 On regarde votre commerce ensemble ?
               </p>
               <Link
-                href="/#contact"
+                href="mailto:bonjour@nova-studio.fr"
                 className="shrink-0 rounded-xl border-2 border-encre bg-corail px-6 py-3 text-center font-sans text-sm font-bold text-white shadow-[3px_3px_0_#211D16] transition-transform hover:-translate-y-0.5"
               >
                 Réserver un audit gratuit →

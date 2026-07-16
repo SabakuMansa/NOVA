@@ -2291,3 +2291,110 @@ pleinement fonctionnelle").
   `/exemples/*`, `/labo`, `/_archive` modifié directement.
 - **Tout reste local** — aucun `git push`, aucune interaction avec un
   remote, aucun déploiement déclenché.
+
+## [Structure] Réduction à la structure de référence — 16/07
+
+### Périmètre — décidé avec l'utilisateur avant toute suppression
+
+Consigne explicite : ne garder qu'une page d'accueil unique (question
+défilante, titre, Les plans, Qui suis-je) + les 4 démos `/exemples/*`.
+Trois points ambigus ont été tranchés **avec l'utilisateur avant
+d'agir** (aucune suppression de contenu réel sans confirmation, cf.
+contrainte explicite de la consigne) :
+
+1. **Sections homepage hors des 4 listées** (Le constat, Ce que ça fait,
+   Le process, Contact, Footer) : confirmé à supprimer — pas juste les
+   routes séparées, mais aussi ces sections déjà présentes sur `/`.
+2. **`/qui-je-suis`** (page dédiée, bio complète) : confirmé à
+   **conserver comme 5ᵉ route réelle**, en plus de `/` et des 4 démos —
+   pas de fusion de contenu, pas de suppression.
+3. **`/demo/avis`, `/demo/commande`, `/demo/livraison`** (déjà
+   orphelines, aucun lien actif ne pointait vers elles — le module
+   "Commande & Livraison" qui y renvoyait était déjà masqué de
+   l'affichage) : confirmé à **laisser telles quelles**, hors périmètre
+   de ce nettoyage.
+
+### Suppressions
+
+`components/v3/Sections.tsx` : `V3Constat`, `V3Moteur`, `V3Process`,
+`V3Contact` retirés (fonctions + imports de contenu associés), ainsi
+que la palette `SOFT` (devenue inutilisée — ne servait qu'à `V3Constat`).
+`content/v3.ts` : exports `v3constat`, `v3moteur`, `v3process`,
+`v3contact` retirés. `app/page.tsx` : ne rend plus que `V3Verdict`,
+`V3Hero`, `V3Plans`, `V3Fondateur` (dans cet ordre — celui demandé).
+`V3Footer` n'est plus rendu sur `/`, mais **reste utilisé sur
+`/qui-je-suis`** (le composant n'est pas supprimé, seulement
+déréférencé de la homepage) — email, téléphone, tagline et copyright du
+footer restent donc visibles sur le site, pas perdus.
+
+### Liens cassés anticipés et corrigés avant qu'ils posent problème
+
+La section Contact retirée portait le seul point d'entrée vers le
+formulaire d'audit ; plusieurs CTA du site y pointaient
+(`#contact`/`/#contact`). Plutôt que de laisser des liens morts,
+chacun a été redirigé vers `mailto:bonjour@nova-studio.fr` — l'email
+réel déjà validé dans le contenu (`v3contact.email`), pas une valeur
+inventée :
+
+- `content/v3.ts` : `v3nav.cta.href` (bouton "Audit gratuit" de la Nav)
+  et `v3hero.ctaPrimary.href` ("Réserver un audit gratuit (15 min)").
+- `components/v3/Sections.tsx` : bouton "Démarrer avec {Plan}" sur
+  chacune des 4 cartes de La Carte (`href="#contact"` → mailto).
+- `app/qui-je-suis/page.tsx` : CTA "Réserver un audit gratuit →" en bas
+  de page (`href="/#contact"` → mailto).
+
+`v3nav.links` réduit à `Les plans` et `Qui suis-je` uniquement (`Le
+constat`, `Ce que ça fait`, `Le process` retirés avec leurs sections).
+Menu mobile revérifié : mêmes 2 liens + CTA, rien de cassé.
+
+### Ce qui n'a pas changé (vérifié explicitement)
+
+- **Aucune modification de DA** : palette, police pixel/terminal,
+  bordures, ombres — tout identique. Seul le contenu structurel
+  (sections/routes) a bougé, jamais le style d'une section conservée.
+- `/exemples/presence`, `/exemples/autonome`, `/exemples/machine`,
+  `/exemples/boutique` et toutes leurs sous-pages : **non touchées**,
+  `git status --short` confirmé vide sur ces répertoires.
+- `/labo`, `/_archive/*` : non touchés.
+- `/demo/avis`, `/demo/commande`, `/demo/livraison` : laissés intacts
+  par décision explicite (voir périmètre ci-dessus).
+- `v3fondateur` (contenu complet utilisé par `/qui-je-suis` : pageIntro,
+  points, closing, badges) : conservé intégralement, rien perdu.
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- `grep` exhaustif sur les symboles retirés (`V3Constat`, `V3Moteur`,
+  `V3Process`, `V3Contact`, `v3constat`, `v3moteur`, `v3process`,
+  `v3contact`) et sur les ancres mortes (`#contact`, `#constat`,
+  `#moteur`, `#process`) dans tout le périmètre live : **0 référence
+  restante** (les seules occurrences trouvées sont dans `content/site.ts`,
+  utilisé exclusivement par les composants archivés `_archive/v1`/`v2`,
+  hors périmètre).
+- Structure de la page d'accueil vérifiée en DOM (`document.querySelector('main').children.length`
+  → 4, pas de `<footer>`) et par arbre d'accessibilité complet : ordre
+  confirmé question défilante → titre → Les plans (4 offres, boutons
+  "Démarrer avec {Plan}" et "Voir un exemple concret ↗" présents) → Qui
+  suis-je (teaser + lien "Voir mon parcours →" vers `/qui-je-suis`).
+- `/qui-je-suis` : 0 erreur console, CTA vérifié en `mailto:`, footer
+  toujours présent avec le bon contenu.
+- Les 4 démos + sous-pages testées par `fetch` : `/exemples/presence`,
+  `/exemples/autonome` (+`/contact`), `/exemples/machine`
+  (+`/espace-admin`), `/exemples/boutique` (+`/catalogue`),
+  `/exemples/presence/galerie` → **200** partout. `/demo/avis`,
+  `/demo/commande`, `/demo/livraison`, `/labo`, `/` → **200**.
+  `/nonexistent-page-xyz` → 404 confirmé (sanity check que la méthode
+  de vérification détecte bien un vrai 404).
+- Anomalie d'outil rencontrée pendant la vérification : captures d'écran
+  occasionnellement vides/crème après un grand saut de scroll dans cet
+  environnement (onglet de preview en arrière-plan, `document.hidden =
+  true`) — con contenu réel confirmé présent et correctement positionné
+  via `elementFromPoint`/inspection DOM à chaque fois ; contourné en
+  basculant sur l'arbre d'accessibilité (`preview_snapshot`) et des
+  requêtes `fetch` pour le reste de la vérification, non dépendants du
+  rendu visuel.
+- `git diff --stat` : `app/page.tsx`, `app/qui-je-suis/page.tsx`,
+  `components/v3/Sections.tsx`, `content/v3.ts` — aucun fichier de
+  `/exemples/*`, `/labo`, `/_archive` modifié.
+- **Tout reste local** — aucun `git push`, aucune interaction avec un
+  remote, aucun déploiement déclenché.
