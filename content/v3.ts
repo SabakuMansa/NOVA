@@ -39,28 +39,6 @@ export const v3hero = {
     "Je gère des restaurants en Île-de-France. J'y ai vu trop de commerces excellents avec une image en ligne qui ne leur ressemble pas. Je construis des vitrines numériques à la hauteur de votre commerce.",
   ctaPrimary: { label: "Réserver un audit gratuit (15 min)", href: "#contact" },
   ctaSecondary: { label: "Voir les plans", href: "#plans" },
-  // Flux de notifications simulé dans la fenêtre du hero.
-  terminalTitle: "votre-commerce.fr — en ligne",
-  events: [
-    { icon: "📅", text: "Nouveau rendez-vous — mardi 14h30", tag: "résa" },
-    {
-      icon: "⭐",
-      text: "Avis Google 5★ — réponse envoyée automatiquement",
-      tag: "avis",
-    },
-    {
-      icon: "🛒",
-      text: "Commande #214 confirmée — en préparation",
-      tag: "commande",
-    },
-    {
-      icon: "🕗",
-      text: "Horaires mis à jour depuis votre téléphone",
-      tag: "admin",
-    },
-    { icon: "📩", text: "Demande de contact — nouveau client", tag: "résa" },
-    { icon: "⭐", text: "Note moyenne : 4,8/5 sur 126 avis", tag: "avis" },
-  ],
 };
 
 // Section dédiée, plein écran, juste après le Hero — PAS le titre du Hero

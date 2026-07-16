@@ -2060,3 +2060,60 @@ une régression fonctionnelle.
   flux de développement.
 - **Tout reste local** — aucun `git push`, aucune interaction avec un
   remote, aucun déploiement déclenché.
+
+## [Hero] Vérification de l'ordre + suppression du mockup de notifications — 16/07
+
+### Ordre du Hero — vérifié, déjà correct
+
+Le titre réel (`v3hero.titleA/Em/B`, "Vos futurs clients vous cherchent
+déjà. Assurez-vous qu'ils vous trouvent.") est déjà la première chose
+rendue dans `app/page.tsx` (`<V3Hero />` avant `<V3Verdict />`), et
+`content/v3.ts` porte déjà un commentaire explicite à cet effet depuis
+la conception de la section Verdict ("Section dédiée, plein écran, juste
+après le Hero — PAS le titre du Hero"). Revérifié en preview (desktop et
+mobile) : le titre est bien la première chose visible sous la Nav, la
+question défilante "Votre site actuel, il fait quoi, là, tout de suite ?"
+n'apparaît qu'après un scroll, dans sa propre section `min-h-screen`.
+Aucune correction nécessaire sur l'ordre — juste une confusion possible
+entre les deux sections adjacentes de même palette, sans bordure
+marquée entre elles.
+
+### Suppression du mockup "fenêtre navigateur avec notifications"
+
+`components/v3/Hero.tsx` : la fausse fenêtre "votre-commerce.fr — en
+ligne" (barre de titre, badge "live", flux `NotifFeed` de 6 notifications
+simulées, phrase "Pendant ce temps, vous êtes avec vos clients.")
+**retirée entièrement** de la colonne de droite du grid. Le grid à deux
+colonnes (`lg:grid-cols-[1.05fr_0.95fr]`) devient une colonne unique
+centrée (`mx-auto max-w-2xl`) — texte, eyebrow et CTA inchangés, mise en
+page simplement reflow. `NotifFeed.tsx` **n'est pas supprimé** : toujours
+utilisé par `/exemples/machine` (accueil + espace-admin), composant
+intact, uniquement déréférencé du Hero.
+
+`content/v3.ts` : `v3hero.terminalTitle` et `v3hero.events` (les 6
+notifications, uniquement consommées par ce mockup) supprimés après
+vérification par `grep` qu'aucun autre composant ne les référence —
+contenu devenu mort, pas déplacé ni recréé ailleurs. L'idée
+automatisation/notifications reste déjà présente ailleurs sur le site
+sans doublon visuel : pilier "Automatisation" de la section Méthode et
+tagline "pour automatiser" de l'offre Machine (La Carte).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- Bug de compilation rencontré pendant le test ("V3Hero" référencé à une
+  ligne inexistante dans un ancien bundle HMR, erreurs `NotFoundErrorBoundary`
+  en boucle) : cache `.next` obsolète après l'édition — résolu par
+  `rm -rf .next` + redémarrage propre du serveur de preview, pas une
+  vraie erreur de code (confirmé par `tsc` propre avant et après, et 0
+  erreur console après redémarrage).
+- Preview desktop : titre du Hero bien la première chose visible, panneau
+  "borne d'arcade" qui se referme proprement juste après les CTA (plus de
+  grand vide ni de colonne fantôme), question défilante du Verdict
+  confirmée juste après au scroll.
+- Preview mobile (375×812) : même ordre, `scrollWidth` = 375px exact,
+  aucun débordement horizontal, CTA empilés proprement en colonne unique.
+- `git diff --stat` : seuls `components/v3/Hero.tsx` et `content/v3.ts`
+  touchés — aucun fichier de `/exemples/*`, `/labo`, `/_archive` modifié.
+- **Tout reste local** — aucun `git push`, aucune interaction avec un
+  remote, aucun déploiement déclenché.

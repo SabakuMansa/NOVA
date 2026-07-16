@@ -1,17 +1,6 @@
 "use client";
 
 import { v3hero } from "@/content/v3";
-import NotifFeed from "./NotifFeed";
-
-// Couleurs de tags spécifiques au Hero arcade — n'affecte pas les autres
-// appelants de NotifFeed (défauts inchangés dans NotifFeed.tsx).
-const HERO_TAG_COLORS: Record<string, string> = {
-  résa: "bg-arcade-orange/15 text-arcade-orange",
-  avis: "bg-arcade-gold/20 text-arcade-gold",
-  commande: "bg-arcade-tan/15 text-arcade-tan",
-  admin: "bg-arcade-orange/15 text-arcade-orange",
-  contact: "bg-arcade-tan/15 text-arcade-tan",
-};
 
 /**
  * Hero arcade — import maquette Claude Design du 15/07. Cadre "borne
@@ -20,6 +9,8 @@ const HERO_TAG_COLORS: Record<string, string> = {
  * n'est plus rendu ici : le nouveau Hero est un panneau sombre uni, pas un
  * fond animé de blobs colorés — composant conservé intact, simplement plus
  * importé (même traitement que les sections retirées de la homepage).
+ * Mockup "fenêtre navigateur avec notifications" retiré le 16/07 (colonne
+ * de droite du grid) — colonne unique centrée depuis.
  */
 export default function V3Hero() {
   return (
@@ -42,13 +33,13 @@ export default function V3Hero() {
           </div>
 
           <div
-            className="grid items-center gap-12 px-6 py-14 sm:px-10 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:px-14"
+            className="px-6 py-14 sm:px-10 sm:py-20 lg:px-14"
             style={{
               background:
                 "radial-gradient(120% 130% at 50% 20%, #2A1C08 0%, #17130D 60%)",
             }}
           >
-            <div>
+            <div className="mx-auto max-w-2xl">
               {/* font-mono (pas font-pixel) : Press Start 2P n'a pas de
                   glyphe correct pour les majuscules accentuées (Î) —
                   vérifié visuellement, glyphe cassé. Le label reste dans
@@ -93,44 +84,6 @@ export default function V3Hero() {
                 >
                   {v3hero.ctaSecondary.label}
                 </a>
-              </div>
-            </div>
-
-            {/* Fenêtre « le site en service » */}
-            <div
-              className="hero-slate mx-auto w-full max-w-md overflow-hidden rounded-2xl border-2 border-arcade-border-thick bg-arcade-card shadow-[6px_6px_0_#000000]"
-              style={{ transform: "rotate(1.2deg)" }}
-            >
-              <div className="flex items-center gap-2 border-b-2 border-arcade-border-thick bg-arcade-bg px-3.5 py-2.5">
-                <span
-                  className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-orange"
-                  aria-hidden
-                />
-                <span
-                  className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-gold"
-                  aria-hidden
-                />
-                <span
-                  className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-tan"
-                  aria-hidden
-                />
-                <span className="ml-2 truncate font-mono text-[0.62rem] text-arcade-taupe">
-                  {v3hero.terminalTitle}
-                </span>
-                <span className="ml-auto rounded-md bg-arcade-orange px-2 py-0.5 font-mono text-[0.55rem] font-bold uppercase text-arcade-bg">
-                  live
-                </span>
-              </div>
-              <div className="p-4 sm:p-5">
-                <NotifFeed
-                  events={v3hero.events}
-                  tagColors={HERO_TAG_COLORS}
-                  itemClassName="border-arcade-border bg-arcade-bg"
-                  textClassName="text-arcade-cream/90"
-                />
-                <p className="mt-4 border-t-2 border-dashed border-arcade-border pt-3 font-mono text-[0.6rem] uppercase tracking-wide text-arcade-muted">
-                  Pendant ce temps, vous êtes avec vos clients.
-                </p>
               </div>
             </div>
           </div>
