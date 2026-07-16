@@ -4,13 +4,19 @@ import { v3hero } from "@/content/v3";
 
 /**
  * Hero arcade — import maquette Claude Design du 15/07. Cadre "borne
- * d'arcade" (bandeau 1P/HI SCORE décoratif, police pixel) réservé à ce
- * composant + V3Plans, par consigne explicite. V3Backdrop (aurore WebGL)
- * n'est plus rendu ici : le nouveau Hero est un panneau sombre uni, pas un
- * fond animé de blobs colorés — composant conservé intact, simplement plus
- * importé (même traitement que les sections retirées de la homepage).
+ * d'arcade" (police pixel) réservé à ce composant + V3Plans, par consigne
+ * explicite. V3Backdrop (aurore WebGL) n'est plus rendu ici : le nouveau
+ * Hero est un panneau sombre uni, pas un fond animé de blobs colorés —
+ * composant conservé intact, simplement plus importé (même traitement que
+ * les sections retirées de la homepage).
  * Mockup "fenêtre navigateur avec notifications" retiré le 16/07 (colonne
  * de droite du grid) — colonne unique centrée depuis.
+ * Bandeau "1P/INSERT COIN/HI" propre au Hero retiré le 16/07 : la Nav
+ * porte désormais ce chrome en permanence (bandeau global sticky sur tout
+ * le site) — le garder ici en plus aurait affiché deux compteurs "1P"
+ * différents empilés (celui de la Nav, qui suit le scroll, et celui-ci,
+ * statique), lisible comme une incohérence plutôt que deux clins d'œil
+ * volontaires.
  */
 export default function V3Hero() {
   return (
@@ -20,18 +26,6 @@ export default function V3Hero() {
     >
       <div className="relative z-10 mx-auto max-w-content px-5 pb-14 md:px-8 md:pb-20">
         <div className="overflow-hidden rounded-[18px] border border-arcade-border shadow-[0_30px_70px_rgba(0,0,0,0.55)]">
-          {/* Bandeau "borne d'arcade" — chrome décoratif uniquement, aucune
-              donnée réelle représentée (pas de vrais scores/stats). */}
-          <div className="flex items-center justify-between border-b-2 border-arcade-border bg-arcade-bg px-6 py-3.5 font-pixel text-[0.55rem] text-arcade-gold sm:px-8 sm:text-[0.6rem]">
-            <span className="text-arcade-orange">
-              1P <span className="text-arcade-cream">00042</span>
-            </span>
-            <span className="arcade-blink hidden sm:inline">INSERT COIN</span>
-            <span className="text-arcade-orange">
-              HI <span className="text-arcade-cream">99999</span>
-            </span>
-          </div>
-
           <div
             className="px-6 py-14 sm:px-10 sm:py-20 lg:px-14"
             style={{

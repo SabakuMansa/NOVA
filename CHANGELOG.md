@@ -2175,3 +2175,119 @@ dans `page.tsx` change, pas son code interne.
   `/_archive` modifié.
 - **Tout reste local** — aucun `git push`, aucune interaction avec un
   remote, aucun déploiement déclenché.
+
+## [Nav] Barre arcade en header persistant global — 16/07
+
+### Ce qui change
+
+La Nav (`components/v3/Nav.tsx`) porte désormais en permanence, sur toutes
+les sections et pendant tout le scroll, le chrome "borne d'arcade"
+jusqu'ici réservé au Hero : `1P {compteur}` à gauche, `INSERT COIN`
+clignotant au centre, `HI 99999` à droite — police pixel, orange/or,
+fond anthracite opaque, bordure basse. Objectif explicite : donner
+l'impression d'être "dans" une borne d'arcade du début à la fin de la
+visite, pas seulement en haut de la page.
+
+### Implémentation
+
+- Nouveau bandeau ajouté au-dessus de la barre de nav fonctionnelle,
+  dans le même `<header fixed>` — **toujours opaque** (`bg-arcade-bg`
+  fixe), indépendant du compactage au scroll de la barre de nav en
+  dessous (qui garde son comportement `transparent → opaque + blur`
+  existant, simplement déplacé du `<header>` vers le `<nav>` interne).
+  Cette persistance volontaire distingue le bandeau (chrome permanent)
+  de la nav (qui se contracte pour gagner de la place).
+- **Compteur `1P`** : calculé dans le `onScroll` déjà existant
+  (`progress = scrollY / (scrollHeight - innerHeight)`, formaté sur 5
+  chiffres). Mise à jour en texte simple, sans transition ni easing —
+  aucune animation au sens CSS, donc rien à neutraliser sous
+  `prefers-reduced-motion` (un changement de texte n'est pas un
+  mouvement). Explicitement commenté dans le code comme décoratif :
+  ne représente aucune donnée réelle (pas un nombre de clients, de
+  ventes, etc.).
+- **`INSERT COIN`** : réutilise `.arcade-blink` (`globals.css`),
+  clignotement déjà neutralisé par le bloc `prefers-reduced-motion`
+  global existant (`animation-duration: 0.001ms !important`) — même
+  mécanisme que toutes les autres animations arcade du site, aucun code
+  additionnel nécessaire.
+- **Mobile** : bandeau entièrement masqué (`hidden sm:flex`) — sur petit
+  écran, seuls le logo/wordmark et le bouton hamburger restent visibles,
+  conformément à la consigne explicite de simplification plutôt que de
+  compresser tous les éléments sur une largeur trop étroite.
+- **Bezel du Hero retiré** (`components/v3/Hero.tsx`) : le Hero avait
+  son propre bandeau "1P 00042 / INSERT COIN / HI 99999" local (import
+  du 15/07). Une fois la Nav globale en place, le garder aurait affiché
+  **deux compteurs "1P" différents empilés** (celui de la Nav, qui suit
+  le scroll, et celui du Hero, figé à "00042") — lisible comme une
+  incohérence/un bug plutôt que deux clins d'œil volontaires. Retiré ;
+  le panneau du Hero s'ouvre directement sur l'eyebrow. Le bezel de
+  `V3Plans` ("1P / SELECT YOUR PLAN / CREDIT {n}") est resté inchangé :
+  centre et compteur de droite différents, pas un doublon.
+- **Clearance verticale** : hauteur totale du header mesurée en preview
+  (`110px` déployé, `87px` compact) — la marge haute déjà en place sur
+  `V3Verdict` (`pt-28 md:pt-32`, ajoutée lors de l'inversion d'ordre
+  ci-dessus) couvre largement ce nouveau total, vérifié par
+  `getBoundingClientRect` (question à 290px du haut, aucun chevauchement).
+
+### Bug pré-existant découvert et corrigé en cours de vérification
+
+En testant les vrais liens de nav (`/#plans`, `/#constat`, etc.), le
+scroll vers l'ancre ne se produisait pas du tout : Lenis (smooth-scroll,
+`components/v2/SmoothScroll.tsx`) pilote sa propre position virtuelle de
+scroll via une boucle `requestAnimationFrame`, et écrase silencieusement
+le saut natif du navigateur au tick suivant, puisqu'il ignore qu'un clic
+sur `<a href="#section">` doit déplacer sa cible interne. **Confirmé
+préexistant** : reproduit à l'identique en testant `git stash` (Nav
+d'avant cette tâche) — aucun lien ancré du site ne fonctionnait déjà
+avant ce chantier, indépendamment du bandeau arcade.
+
+Corrigé à la racine dans `SmoothScroll.tsx` (composant partagé, utilisé
+par `/`, `/qui-je-suis`, et le layout de `/_archive/v2` — ce dernier non
+routable, confirmé par la convention Next.js du préfixe `_`, donc sans
+effet observable) : un handler de clic délégué intercepte tout
+`<a href>` contenant un `#`, vérifie que le chemin correspond à la page
+courante (ou est vide, pour les liens `#id` relatifs), et appelle
+`lenis.scrollTo(element, { offset: -90 })` explicitement au lieu de
+laisser le navigateur faire un saut que Lenis annulerait. Corrige tous
+les liens ancrés du site, pas seulement ceux de la Nav (bénéfice
+collatéral direct de l'exigence "la navigation réelle doit rester
+pleinement fonctionnelle").
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- Bug de compilation HMR rencontré pendant l'implémentation ("Unexpected
+  token `header`", `V3Hero` référencé à une ligne inexistante) : erreur
+  obsolète d'un état intermédiaire de l'édition — résolu par `rm -rf
+  .next` + redémarrage propre du serveur de preview (même pattern que
+  les fois précédentes).
+- Liens réels testés un par un en preview (clic réel via `element.click()`,
+  pas de raccourci) : `/#plans` et `/#constat` confirmés — scroll Lenis
+  complet, atterrissage exact sur la section ciblée, titre visible sous
+  le header (pas caché dessous). Cibles `/#moteur`, `/#process`,
+  `/#contact` confirmées existantes dans le DOM (`getElementById`) pour
+  les 5 liens à ancre ; `/` (logo) et `/qui-je-suis` (navigation de page
+  réelle, non concernés par Lenis) revérifiés séparément, 0 erreur
+  console sur `/qui-je-suis`.
+- Anomalie de test notée et élucidée : l'onglet de preview est en
+  `document.hidden = true` (arrière-plan) dans cet environnement, ce qui
+  throttle `requestAnimationFrame` côté navigateur et retarde
+  l'animation Lenis bien au-delà de sa durée configurée (1,1 s) — un
+  clic met plusieurs secondes réelles à aboutir ici, contre quasi
+  instantané pour un visiteur réel (onglet au premier plan, `rAF` non
+  bridé). Confirmé en pilotant manuellement la boucle `lenis.raf()` :
+  la logique atteint exactement sa cible dès que les frames s'exécutent
+  normalement — artefact de l'outil de test, pas un bug du site.
+- Mobile (375×812) : bandeau arcade absent, seuls logo + hamburger
+  visibles, menu ouvert affiche les 5 liens + CTA, `scrollWidth` = 375px
+  exact, aucun débordement.
+- `prefers-reduced-motion` : vérifié par inspection de code (pas
+  d'émulation directe disponible dans l'outil de preview, même
+  limitation que les vérifications précédentes de cette session) —
+  `.arcade-blink` n'utilise que `animation` (aucune transition), donc
+  entièrement couvert par le bloc global déjà en tête de `globals.css`.
+- `git diff --stat` : `components/v2/SmoothScroll.tsx`,
+  `components/v3/Nav.tsx`, `components/v3/Hero.tsx` — aucun fichier de
+  `/exemples/*`, `/labo`, `/_archive` modifié directement.
+- **Tout reste local** — aucun `git push`, aucune interaction avec un
+  remote, aucun déploiement déclenché.
