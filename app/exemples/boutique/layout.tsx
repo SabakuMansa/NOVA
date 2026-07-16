@@ -24,7 +24,7 @@ export default function BoutiqueDemoLayout({
 }) {
   return (
     <CartProvider>
-      <div className="min-h-screen bg-lait text-encre">
+      <div className="min-h-screen bg-arcade-bg text-arcade-cream">
         <ExempleBanner planLabel="Plan Boutique" />
         <ExempleNav
           businessName={boutiqueDemo.business.name}

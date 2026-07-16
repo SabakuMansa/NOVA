@@ -26,14 +26,14 @@ export default function BoutiqueCataloguePage() {
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
-      <p className="inline-flex items-center gap-2 rounded-full border-2 border-encre bg-white px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-encre shadow-[2px_2px_0_#211D16]">
+      <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
         <span className="h-2 w-2 rounded-full bg-jaune" aria-hidden />
         {catalogue.eyebrow}
       </p>
-      <h1 className="mt-6 font-sans text-4xl font-extrabold tracking-tight sm:text-5xl">
+      <h1 className="mt-6 font-pixel text-2xl tracking-tight text-arcade-cream sm:text-3xl">
         {catalogue.title}
       </h1>
-      <p className="mt-4 max-w-xl font-sans text-lg text-encre/70">
+      <p className="mt-4 max-w-xl font-terminal text-xl text-arcade-tan">
         {catalogue.subtitle}
       </p>
 
@@ -43,10 +43,10 @@ export default function BoutiqueCataloguePage() {
             key={c}
             type="button"
             onClick={() => setActiveCategory(c)}
-            className={`rounded-full border-2 border-encre px-4 py-1.5 font-sans text-sm font-bold transition-colors ${
+            className={`rounded-full border-2 border-arcade-border-thick px-4 py-1.5 font-mono text-sm font-bold transition-colors ${
               activeCategory === c
-                ? "bg-encre text-lait"
-                : "bg-white text-encre hover:bg-encre/5"
+                ? "bg-jaune text-arcade-bg"
+                : "bg-arcade-card text-arcade-tan hover:bg-arcade-bg-alt"
             }`}
           >
             {c}
@@ -56,7 +56,10 @@ export default function BoutiqueCataloguePage() {
 
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {visible.map((p) => (
-          <div key={p.slug} className="v3-card flex flex-col p-4">
+          <div
+            key={p.slug}
+            className="flex flex-col rounded-xl border border-arcade-border bg-arcade-card p-4"
+          >
             <Link href={`/exemples/boutique/produit/${p.slug}`}>
               <PlaceholderImage
                 icon={p.icon}
@@ -67,21 +70,21 @@ export default function BoutiqueCataloguePage() {
             </Link>
             <Link
               href={`/exemples/boutique/produit/${p.slug}`}
-              className="mt-4 font-sans text-base font-bold text-encre hover:underline"
+              className="mt-4 font-terminal text-lg font-bold text-arcade-cream hover:underline"
             >
               {p.name}
             </Link>
-            <p className="mt-1 font-sans text-sm text-encre/60">
+            <p className="mt-1 font-terminal text-base text-arcade-taupe">
               {p.description}
             </p>
             <div className="mt-4 flex items-center justify-between">
-              <span className="font-mono text-lg font-bold text-encre">
+              <span className="font-mono text-lg font-bold text-arcade-gold">
                 {p.price}€
               </span>
               <button
                 type="button"
                 onClick={() => handleAdd(p.slug)}
-                className="rounded-xl border-2 border-encre bg-jaune px-4 py-2 font-sans text-sm font-bold text-encre shadow-[3px_3px_0_#211D16] transition-transform hover:-translate-y-0.5"
+                className="rounded-xl border-2 border-arcade-border-thick bg-jaune px-4 py-2 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[3px_3px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
               >
                 {justAdded === p.slug ? "✓ Ajouté" : "Ajouter"}
               </button>

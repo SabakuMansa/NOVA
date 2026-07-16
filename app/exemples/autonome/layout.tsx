@@ -22,7 +22,7 @@ export default function AutonomeDemoLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-lait text-encre">
+    <div className="min-h-screen bg-arcade-bg text-arcade-cream">
       <ExempleBanner planLabel="Plan Autonome" />
       <ExempleNav
         businessName={autonomeDemo.business.name}

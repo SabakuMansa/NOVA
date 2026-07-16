@@ -6,11 +6,11 @@ export default function MachineAProposPage() {
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
-      <p className="inline-flex items-center gap-2 rounded-full border-2 border-encre bg-white px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-encre shadow-[2px_2px_0_#211D16]">
-        <span className="h-2 w-2 rounded-full bg-jaune" aria-hidden />
+      <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
+        <span className="h-2 w-2 rounded-full bg-corail" aria-hidden />
         {aPropos.eyebrow}
       </p>
-      <h1 className="mt-6 max-w-2xl font-sans text-4xl font-extrabold tracking-tight sm:text-5xl">
+      <h1 className="mt-6 max-w-2xl font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
         {aPropos.title}
       </h1>
 
@@ -25,7 +25,7 @@ export default function MachineAProposPage() {
           {aPropos.body.map((p, i) => (
             <p
               key={i}
-              className="font-sans text-lg leading-relaxed text-encre/80"
+              className="font-terminal text-xl leading-relaxed text-arcade-tan"
             >
               {p}
             </p>
@@ -35,11 +35,14 @@ export default function MachineAProposPage() {
 
       <div className="mt-14 grid gap-5 sm:grid-cols-3">
         {aPropos.values.map((v) => (
-          <div key={v.title} className="v3-card h-full p-5">
-            <h3 className="font-sans text-lg font-extrabold text-encre">
+          <div
+            key={v.title}
+            className="h-full rounded-xl border border-arcade-border bg-arcade-card p-5"
+          >
+            <h3 className="font-pixel text-sm leading-relaxed text-arcade-cream">
               {v.title}
             </h3>
-            <p className="mt-2 font-sans text-sm leading-relaxed text-encre/75">
+            <p className="mt-3 font-terminal text-base leading-relaxed text-arcade-tan">
               {v.text}
             </p>
           </div>

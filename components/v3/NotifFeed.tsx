@@ -6,23 +6,26 @@ import { useReducedMotion } from "framer-motion";
 export type NotifEvent = { icon: string; text: string; tag: string };
 
 const DEFAULT_TAG_COLORS: Record<string, string> = {
-  résa: "bg-violet/15 text-violet",
-  avis: "bg-jaune/25 text-encre",
-  commande: "bg-corail/15 text-corail",
-  admin: "bg-teal/15 text-teal",
-  contact: "bg-teal/15 text-teal",
+  résa: "bg-arcade-orange/15 text-arcade-orange",
+  avis: "bg-arcade-gold/20 text-arcade-gold",
+  commande: "bg-arcade-tan/15 text-arcade-tan",
+  admin: "bg-arcade-orange/15 text-arcade-orange",
+  contact: "bg-arcade-tan/15 text-arcade-tan",
 };
 
 /** Flux d'événements simulé : une notif toutes les `intervalMs`, 4 visibles
  *  max. Reduced-motion : liste statique, aucune rotation. Extrait du Hero
- *  v3 pour être réutilisé partout où il faut montrer une automatisation
- *  qui se déclenche seule, sans interaction du visiteur. */
+ *  v3 (arcade) pour être réutilisé partout où il faut montrer une
+ *  automatisation qui se déclenche seule, sans interaction du visiteur —
+ *  seul appelant restant : la démo Machine, restylée en arcade le 16/07,
+ *  donc les défauts sont désormais directement arcade (plus besoin de
+ *  surcharge par prop). */
 export default function NotifFeed({
   events,
   tagColors = DEFAULT_TAG_COLORS,
   intervalMs = 2200,
-  itemClassName = "border-encre/10 bg-lait",
-  textClassName = "text-encre/85",
+  itemClassName = "border-arcade-border bg-arcade-bg",
+  textClassName = "text-arcade-cream/90",
 }: {
   events: NotifEvent[];
   tagColors?: Record<string, string>;
@@ -57,13 +60,13 @@ export default function NotifFeed({
             {e.icon}
           </span>
           <span
-            className={`min-w-0 flex-1 truncate font-sans text-[0.83rem] ${textClassName}`}
+            className={`min-w-0 flex-1 truncate font-terminal text-base ${textClassName}`}
           >
             {e.text}
           </span>
           <span
             className={`shrink-0 rounded-md px-2 py-0.5 font-mono text-[0.58rem] uppercase ${
-              tagColors[e.tag] || "bg-encre/10 text-encre"
+              tagColors[e.tag] || "bg-arcade-tan/15 text-arcade-tan"
             }`}
           >
             {e.tag}

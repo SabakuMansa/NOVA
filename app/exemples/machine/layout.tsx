@@ -22,7 +22,7 @@ export default function MachineDemoLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-lait text-encre">
+    <div className="min-h-screen bg-arcade-bg text-arcade-cream">
       <ExempleBanner planLabel="Plan Machine" />
       <ExempleNav
         businessName={machineDemo.business.name}

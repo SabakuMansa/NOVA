@@ -2398,3 +2398,139 @@ Menu mobile revérifié : mêmes 2 liens + CTA, rien de cassé.
   `/exemples/*`, `/labo`, `/_archive` modifié.
 - **Tout reste local** — aucun `git push`, aucune interaction avec un
   remote, aucun déploiement déclenché.
+
+## [DA] Extension du style pixel arcade aux 4 démos + Qui suis-je — 16/07
+
+### Changement de périmètre — explicite, tranché par l'utilisateur
+
+Les 4 pages `/exemples/*` et `/labo`/`/_archive` étaient protégées par
+consigne permanente depuis le début du chantier arcade (aucune
+modification autorisée). Cette tâche lève explicitement cette
+protection pour les 4 démos et "Qui suis-je" — nommées une par une par
+l'utilisateur — tout en la maintenant pour `/labo` et `/_archive`,
+toujours hors périmètre.
+
+### Composants partagés restylés en premier (effet de levier)
+
+Avant de toucher aux 22 pages de contenu, les composants communs à
+toutes les démos ont été convertis en arcade :
+- `components/exemples/ExempleNav.tsx`, `ExempleFooter.tsx`,
+  `ExempleBanner.tsx`, `PlaceholderImage.tsx` — palette `lait`/`encre`
+  → `arcade-bg`/`arcade-cream`/`arcade-border`, liens/logo en
+  `font-pixel` casse naturelle (jamais `uppercase`, bug de glyphe
+  Press Start 2P sur les majuscules accentuées — déjà documenté et
+  systématiquement respecté).
+- `components/v3/NotifFeed.tsx` : son seul appelant restant est la démo
+  Machine (l'usage Hero avait déjà été retiré plus tôt dans la
+  session) — les couleurs par défaut du composant sont donc passées
+  directement en arcade plutôt que de garder une surcharge par prop
+  désormais inutile.
+- `app/qui-je-suis/page.tsx` : Nav/Footer étaient déjà arcade (composants
+  partagés avec la homepage), seul le corps de page suivait encore
+  l'ancien thème clair — converti en référence/gabarit pour le reste du
+  chantier (titre `font-pixel`, corps `font-terminal`, badges
+  `font-mono`).
+
+### Les 4 démos — déléguées à 4 agents en parallèle, un par plan
+
+Périmètre trop large pour un seul passage séquentiel (22 fichiers,
+4 systèmes de contenu indépendants) : un agent par démo
+(`/exemples/presence`, `/autonome`, `/machine`, `/boutique`), chacun
+avec la même table de correspondance de tokens exacte, le même
+gabarit de référence (`qui-je-suis`), et une couleur d'accent
+secondaire assignée par plan — **teal** (Présence), **violet**
+(Autonome), **corail** (Machine), **jaune** (Boutique), reprenant
+exactement les couleurs déjà assignées à chaque plan dans
+`content/v3.ts` (`v3plans.plans[].color`). Ces accents restent visibles
+par-dessus la base arcade sombre/orange/or, exactement comme la
+homepage continue d'utiliser violet/teal/corail/jaune pour les chips et
+coches (`TEXT`/`DOT` dans `components/v3/Sections.tsx`) — seules les
+couleurs *structurelles* (fonds, bordures, CTA principaux, texte de
+corps) basculent en arcade.
+
+- **`.v3-card`/`.v3-window`** (classes globales `app/globals.css`) sont
+  aussi utilisées par `/demo/*` et `components/delivery/*`, hors
+  périmètre — jamais éditées. Chaque usage dans les 4 démos + Qui
+  suis-je a été remplacé par des classes Tailwind directes
+  (`rounded-xl border border-arcade-border bg-arcade-card`, fenêtres
+  avec bandeau à 3 pastilles orange/or/tan), même pattern déjà établi
+  pour le Hero et La Carte lors de l'import de maquette du 15/07.
+- **Lisibilité du texte dense** : règle explicite respectée partout —
+  `font-pixel` réservé aux titres/labels courts, `font-terminal` pour
+  tout corps de texte (paragraphes, listes de prestations, texte des
+  champs de formulaire), `font-mono` conservé pour les prix (Boutique)
+  et labels structurels courts.
+- **Champs de formulaire éditables** (contact, espace-admin) :
+  volontairement laissés en police lisible standard (jamais
+  `font-pixel`, illisible pour de la saisie), bordure visible
+  (`border-2 border-arcade-border-thick`), état focus
+  (`focus:border-arcade-orange`) — priorité de lisibilité explicitement
+  demandée respectée.
+
+### Incohérence détectée et corrigée après coup
+
+Les 4 agents ont fait un choix légèrement différent sur la couleur du
+texte des CTA/badges posés sur fond accent (violet/corail/teal) : l'agent
+Présence a utilisé `text-arcade-bg` (cohérent avec la convention déjà
+en place sur le Hero/La Carte — jamais `text-white` nulle part sur le
+site), les 3 autres avaient gardé `text-white`. Fonctionnellement
+identique (contraste correct dans les deux cas), mais incohérent d'une
+démo à l'autre — corrigé après coup (`text-white` → `text-arcade-bg`)
+dans les 7 fichiers concernés (`autonome/contact`, `autonome/espace-admin`,
+`autonome/page`, `machine/contact`, `machine/espace-admin`,
+`machine/page`, `boutique/confirmation`) pour une cohérence stricte
+entre les 4 démos, exigée explicitement par la consigne ("vérifie la
+cohérence globale en naviguant d'une page à l'autre").
+
+### Fonctionnalités vérifiées intactes
+
+- **Formulaires de contact** (Présence, Autonome, Machine) : logique
+  `useState`/`onSubmit` non touchée par les agents (uniquement les
+  classNames) — testé en direct sur Présence : validation HTML5
+  `required` toujours active (champ message vide bloque l'envoi),
+  soumission complète → état "Message envoyé !" avec coche teal,
+  fonctionne à l'identique.
+- **Espace admin simulé** (Autonome, Machine) : changement d'onglet et
+  bouton "Enregistrer" (confirmation temporisée via `setTimeout`)
+  testés en direct sur les deux démos — comportement inchangé. Onglets
+  spécifiques à Machine (Automatisations avec flux `NotifFeed` en
+  direct, Tableau de bord avec tuiles de stats) vérifiés aussi.
+- **Panier + paiement test Stripe** (Boutique) : ajout au panier depuis
+  le catalogue, incrémentation de quantité et recalcul du total en
+  direct testés dans le panier (24,00 € → 32,00 €), logique de
+  `CartContext.tsx` et l'appel `POST /api/checkout` non touchés par
+  l'agent (confirmé, ni ouverts ni modifiés).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅ après chaque agent puis en combiné.
+- `grep` exhaustif sur les 31 fichiers touchés pour tout résidu de
+  l'ancien thème (`bg-lait`, `text-encre`, `border-encre`, `bg-white`,
+  `v3-card`, `v3-window`, `#211D16`, `text-white`) : **0 occurrence**
+  après la correction `text-white`.
+- Parcours desktop complet : accueil + une page fonctionnelle par démo
+  (Présence/contact, Autonome/espace-admin, Machine/espace-admin,
+  Boutique/catalogue+panier), 0 erreur console partout.
+- Mobile (375×812) vérifié sur Présence, Autonome/espace-admin (page la
+  plus dense — onglets qui deviennent défilables horizontalement,
+  champs toujours lisibles) et Boutique/catalogue : `scrollWidth` =
+  375px exact partout, aucun débordement.
+- Cohérence de navigation croisée : bandeau "← Retour aux plans NOVA
+  Studio" (`ExempleBanner`) toujours vers `/#plans`, liens "Voir un
+  exemple concret" de La Carte toujours valides (`exampleHref` non
+  modifié dans `content/v3.ts`).
+- `/labo`, `/_archive/v1`, `/_archive/v2` : confirmé non touchés
+  (`git status --short app/labo app/_archive` → aucune ligne).
+- **Lighthouse** (build de production propre, port isolé 4100) :
+  - Accueil : Performance 94 (identique à la référence précédente),
+    Accessibilité 100 (+4), Bonnes pratiques 96, SEO 100 — aucune
+    régression.
+  - `/exemples/presence` (nouvelle mesure, pas de référence antérieure) :
+    Performance 91, Accessibilité 91, Bonnes pratiques 96, **SEO 66**.
+    Le score SEO bas est **entièrement dû à `robots: { index: false }`**,
+    déjà présent avant ce chantier dans chaque `layout.tsx` de démo
+    (choix délibéré : ce sont des sites fictifs, ils ne doivent pas être
+    indexés) — vérifié par grep, aucun agent n'a touché aux exports
+    `metadata`/`robots`. Pas une régression liée au restyle.
+- **Tout reste local** — aucun `git push`, aucune interaction avec un
+  remote, aucun déploiement déclenché.

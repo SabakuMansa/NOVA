@@ -25,17 +25,17 @@ export default function BoutiqueProduitPage({
           className="aspect-square w-full"
         />
         <div>
-          <p className="inline-flex items-center gap-2 rounded-full border-2 border-encre bg-white px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-encre shadow-[2px_2px_0_#211D16]">
+          <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
             <span className="h-2 w-2 rounded-full bg-jaune" aria-hidden />
             {product.category}
           </p>
-          <h1 className="mt-6 font-sans text-3xl font-extrabold tracking-tight sm:text-4xl">
+          <h1 className="mt-6 font-pixel text-xl tracking-tight text-arcade-cream sm:text-2xl">
             {product.name}
           </h1>
-          <p className="mt-4 font-mono text-2xl font-bold text-encre">
+          <p className="mt-4 font-mono text-2xl font-bold text-arcade-gold">
             {product.price}€
           </p>
-          <p className="mt-5 max-w-md font-sans text-lg leading-relaxed text-encre/75">
+          <p className="mt-5 max-w-md font-terminal text-xl leading-relaxed text-arcade-tan">
             {product.description}
           </p>
 
