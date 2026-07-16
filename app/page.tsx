@@ -21,8 +21,8 @@ export default function Home() {
       <SmoothScroll />
       <V3Nav />
       <main>
-        <V3Hero />
         <V3Verdict />
+        <V3Hero />
         <V3Constat />
         <V3Moteur />
         <V3Plans />

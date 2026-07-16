@@ -2117,3 +2117,61 @@ tagline "pour automatiser" de l'offre Machine (La Carte).
   touchés — aucun fichier de `/exemples/*`, `/labo`, `/_archive` modifié.
 - **Tout reste local** — aucun `git push`, aucune interaction avec un
   remote, aucun déploiement déclenché.
+
+## [Hero] Inversion de l'ordre Verdict/Hero — 16/07
+
+### Changement de consigne — inversion explicite par rapport à la vérification précédente
+
+La consigne précédente (entrée juste au-dessus) avait vérifié et
+documenté que le titre du Hero passait **avant** la question défilante
+du Verdict, avec un commentaire dédié dans `content/v3.ts` confirmant
+cet ordre. Nouvelle consigne explicite, opposée : l'ordre attendu est
+désormais **question fixe → réponse défilante → titre de résolution**.
+Ce n'est pas la correction d'un bug mais un changement de séquence
+demandé — traité comme tel, sans reproduire l'ancien raisonnement.
+
+### Modification
+
+`app/page.tsx` : `<V3Verdict />` déplacé avant `<V3Hero />` dans l'ordre
+de rendu du `<main>` — seule inversion, aucun autre composant touché,
+aucune fusion des deux sections en un seul bloc (les deux `<section>`
+restent distinctes, seul l'ordre change).
+
+`components/v3/Sections.tsx` (`V3Verdict`) : `V3Verdict` étant
+désormais la toute première section sous la Nav fixe (`fixed inset-x-0
+top-0 z-50`), son padding vertical (`py-24`) est remplacé par
+`pb-24 pt-28 md:pb-28 md:pt-32` — même dégagement que celui déjà
+utilisé par `V3Hero` pour ne jamais passer sous la Nav. Sans ce
+changement, le contenu vertical-centré de la section (`min-h-screen
+justify-center`) aurait pu se retrouver partiellement masqué par la
+Nav sur les viewports courts.
+
+`V3Hero` (contenu, styles internes, absence du mockup de notifications
+retiré à la consigne précédente) : **inchangé** — seule sa position
+dans `page.tsx` change, pas son code interne.
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- Preview desktop : rechargé, confirmé par capture + inspection DOM
+  (`getComputedStyle`) que la question "Votre site actuel, il fait quoi,
+  là, tout de suite ?" est la première chose visible sous la Nav, la
+  réponse qui défile juste en dessous (`opacity: 1`, couleur
+  `rgb(255, 210, 63)` = `arcade-gold` confirmée), puis au scroll suivant
+  le panneau "borne d'arcade" avec le titre "Vos futurs clients vous
+  cherchent déjà. Assurez-vous qu'ils vous trouvent." en troisième
+  position. Aucun mockup de notifications présent (confirmation que la
+  suppression de la consigne précédente n'a pas régressé).
+- Artefact de capture noté en cours de vérification : la réponse
+  défilante apparaît parfois "terne" sur une capture d'écran alors que
+  `getComputedStyle` confirme `opacity: 1` et la couleur exacte —
+  quirk de l'outil de capture sur ce fond sombre, pas un bug réel
+  (vérifié en interrogeant le DOM directement plutôt que de se fier à
+  la capture seule).
+- Preview mobile (375×812) : même ordre confirmé, `scrollWidth` = 375px
+  exact, aucun débordement horizontal, 0 erreur console.
+- `git diff --stat` : seuls `app/page.tsx` et `components/v3/Sections.tsx`
+  touchés (2 lignes au total) — aucun fichier de `/exemples/*`, `/labo`,
+  `/_archive` modifié.
+- **Tout reste local** — aucun `git push`, aucune interaction avec un
+  remote, aucun déploiement déclenché.

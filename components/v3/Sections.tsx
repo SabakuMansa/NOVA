@@ -116,7 +116,7 @@ export function V3Verdict() {
   return (
     <section
       id={v3verdict.id}
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-arcade-bg px-5 py-24 text-center md:px-8"
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-arcade-bg px-5 pb-24 pt-28 text-center md:px-8 md:pb-28 md:pt-32"
     >
       <Reveal>
         <h2 className="mx-auto max-w-3xl font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
