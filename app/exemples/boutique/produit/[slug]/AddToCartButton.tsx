@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/components/exemples/CartContext";
+import QuantitySelector from "@/components/exemples/QuantitySelector";
 
 export default function AddToCartButton({ slug }: { slug: string }) {
   const { addItem } = useCart();
@@ -12,27 +13,7 @@ export default function AddToCartButton({ slug }: { slug: string }) {
   return (
     <div className="mt-8">
       <div className="flex items-center gap-3">
-        <div className="flex items-center rounded-xl border-2 border-arcade-border-thick">
-          <button
-            type="button"
-            onClick={() => setQty((q) => Math.max(1, q - 1))}
-            className="px-3 py-2 font-mono text-lg font-bold text-arcade-cream hover:text-arcade-gold"
-            aria-label="Diminuer la quantité"
-          >
-            −
-          </button>
-          <span className="min-w-[2ch] text-center font-mono text-base font-bold text-arcade-cream">
-            {qty}
-          </span>
-          <button
-            type="button"
-            onClick={() => setQty((q) => Math.min(99, q + 1))}
-            className="px-3 py-2 font-mono text-lg font-bold text-arcade-cream hover:text-arcade-gold"
-            aria-label="Augmenter la quantité"
-          >
-            +
-          </button>
-        </div>
+        <QuantitySelector value={qty} onChange={setQty} />
         <button
           type="button"
           onClick={() => {

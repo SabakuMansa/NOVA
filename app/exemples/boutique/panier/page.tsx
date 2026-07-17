@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PlaceholderImage from "@/components/exemples/PlaceholderImage";
+import QuantitySelector from "@/components/exemples/QuantitySelector";
 import { useCart } from "@/components/exemples/CartContext";
 import { boutiqueDemo } from "@/content/exemples/boutique";
 
@@ -76,14 +77,14 @@ export default function BoutiquePanierPage() {
             {lines.map(({ item, product }) => (
               <div
                 key={item.slug}
-                className="flex items-center gap-4 rounded-xl border border-arcade-border bg-arcade-card p-4"
+                className="flex flex-wrap items-center gap-4 rounded-xl border border-arcade-border bg-arcade-card p-4"
               >
                 <PlaceholderImage
                   icon={product!.icon}
                   color={product!.color}
                   className="h-20 w-20 shrink-0"
                 />
-                <div className="min-w-0 flex-1">
+                <div className="min-w-[10rem] flex-1">
                   <p className="font-terminal text-base font-bold text-arcade-cream">
                     {product!.name}
                   </p>
@@ -91,37 +92,22 @@ export default function BoutiquePanierPage() {
                     {product!.price}€ / unité
                   </p>
                 </div>
-                <div className="flex items-center rounded-xl border-2 border-arcade-border-thick">
-                  <button
-                    type="button"
-                    onClick={() => updateQty(item.slug, item.qty - 1)}
-                    className="px-2.5 py-1.5 font-mono text-base font-bold text-arcade-cream hover:text-arcade-gold"
-                    aria-label="Diminuer la quantité"
-                  >
-                    −
-                  </button>
-                  <span className="min-w-[2ch] text-center font-mono text-sm font-bold text-arcade-cream">
-                    {item.qty}
+                <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-end">
+                  <QuantitySelector
+                    value={item.qty}
+                    onChange={(qty) => updateQty(item.slug, qty)}
+                  />
+                  <span className="w-16 shrink-0 text-right font-mono text-sm font-bold text-arcade-gold">
+                    {(product!.price * item.qty).toFixed(2)}€
                   </span>
                   <button
                     type="button"
-                    onClick={() => updateQty(item.slug, item.qty + 1)}
-                    className="px-2.5 py-1.5 font-mono text-base font-bold text-arcade-cream hover:text-arcade-gold"
-                    aria-label="Augmenter la quantité"
+                    onClick={() => removeItem(item.slug)}
+                    className="shrink-0 font-mono text-xs font-bold text-arcade-taupe underline underline-offset-2 hover:text-arcade-cream"
                   >
-                    +
+                    Retirer
                   </button>
                 </div>
-                <span className="w-16 shrink-0 text-right font-mono text-sm font-bold text-arcade-gold">
-                  {(product!.price * item.qty).toFixed(2)}€
-                </span>
-                <button
-                  type="button"
-                  onClick={() => removeItem(item.slug)}
-                  className="shrink-0 font-mono text-xs font-bold text-arcade-taupe underline underline-offset-2 hover:text-arcade-cream"
-                >
-                  Retirer
-                </button>
               </div>
             ))}
           </div>

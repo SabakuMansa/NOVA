@@ -2534,3 +2534,93 @@ cohérence globale en naviguant d'une page à l'autre").
     `metadata`/`robots`. Pas une régression liée au restyle.
 - **Tout reste local** — aucun `git push`, aucune interaction avec un
   remote, aucun déploiement déclenché.
+
+## [Boutique] Sélecteur de quantité "− [n] +" sur catalogue/fiche/panier — 17/07
+
+### Nouveau composant partagé
+
+`components/exemples/QuantitySelector.tsx` — un seul composant réutilisé
+sur les 3 emplacements concernés (catalogue, fiche produit, panier)
+pour garantir le même style et le même comportement partout, comme
+demandé. Le champ central est un vrai `<input>` (pas un `<span>` figé
+comme c'était le cas dans l'ancien stepper de la fiche produit et du
+panier) :
+- Saisie filtrée en direct aux chiffres uniquement (`replace(/[^0-9]/g,
+  "")`) — lettres, signe moins, point décimal impossibles à taper.
+- Validation à la perte de focus (`onBlur`) : parse + clamp à
+  `[min, max]` (1 à 99 par défaut) ; vide ou invalide → revient à 1.
+- `Enter` déclenche le blur (donc la validation) sans soumettre de
+  formulaire parent.
+- Boutons `−`/`+` en `h-11 w-11` (44px), input en `h-11 w-12` (44px de
+  haut) — zone cliquable conforme à la contrainte tactile minimale de
+  44px demandée, vérifié par `preview_inspect` (`{"height":"44px",
+  "width":"44px"}` sur les boutons).
+
+### Intégration aux 3 emplacements
+
+- **`produit/[slug]/AddToCartButton.tsx`** : l'ancien stepper local
+  (span + boutons, déjà présent mais non éditable) remplacé par
+  `<QuantitySelector>` — la logique `addItem(slug, qty)` au clic
+  utilisait déjà la quantité sélectionnée, aucun changement nécessaire
+  côté ajout.
+- **`catalogue/page.tsx`** : n'avait AUCUN sélecteur avant (juste un
+  bouton "Ajouter" qui appelait toujours `addItem(slug)`, qty implicite
+  1) — ajouté un état `Record<string, number>` (une quantité par
+  produit visible), bouton "Ajouter" passé en pleine largeur sous la
+  ligne prix + sélecteur (plutôt que de caser 3 éléments sur une seule
+  ligne dans une carte de grille étroite), la quantité de ce produit
+  revient à 1 juste après l'ajout.
+- **`panier/page.tsx`** : l'ancien stepper (span + boutons compacts,
+  `px-2.5 py-1.5`) remplacé par le même `<QuantitySelector>`. Changement
+  de comportement assumé : l'ancien bouton `−` n'avait **aucun plancher**
+  (`updateQty(slug, item.qty - 1)` sans `Math.max`), donc décrémenter à
+  0 supprimait la ligne — `QuantitySelector` impose `min={1}` par
+  défaut, donc le bouton `−` du panier ne descend plus jamais à 0 ; la
+  suppression reste possible via le lien "Retirer" déjà présent à côté.
+  Cohérent avec la consigne explicite ("la quantité ne peut jamais
+  descendre en dessous de 1").
+
+### Logique panier — déjà correcte, non modifiée
+
+`components/exemples/CartContext.tsx` : `addItem(slug, qty)` additionnait
+déjà la quantité à l'existant plutôt que de dupliquer une ligne
+(`it.qty + qty`), et `total`/`count` recalculaient déjà à partir de
+`items` — aucun changement nécessaire sur le Context, seulement sur les
+3 pages qui l'utilisent.
+
+### Bug de layout mobile détecté et corrigé pendant la vérification
+
+Les boutons 44px du panier (plus larges que l'ancien stepper compact)
+faisaient déborder la ligne d'article : `scrollWidth` mesuré à 503px sur
+un viewport de 375px. Corrigé en rendant la ligne d'article responsive
+(`flex flex-wrap`, le groupe sélecteur + prix + "Retirer" passe en
+`w-full` sous `md:` pour s'empiler proprement sous l'image/nom du
+produit, redevient une ligne unique à partir de `md:`) — revérifié :
+`scrollWidth` = 375px exact après correction, layout desktop inchangé
+(revérifié par capture).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- Saisie clavier testée en direct : frappe de "abc-3.5" filtrée en
+  temps réel à "35" ; champ vidé puis perte de focus réelle (clic
+  ailleurs, pas un événement synthétique) → revient à "1" ; "150" tapé
+  puis `Enter` → clampé à "99" (max).
+- Incrémentation/décrémentation par clic testée avec délai réel entre
+  les clics (un `dispatchEvent` synchrone en rafale ne reflète pas un
+  vrai clic utilisateur et donnait un faux résultat en test — confirmé
+  en ajoutant un délai, comportement réel correct).
+- Somme au lieu de doublon vérifiée : ajout du même produit deux fois
+  (catalogue puis à nouveau) → une seule ligne dans le panier,
+  quantité cumulée (4 → 5), pas de ligne dupliquée.
+- Total live vérifié à chaque étape : 8,00€ → 40,00€ (qty 5) → 32,00€
+  (qty 4 après clic `−` dans le panier) → recalcul correct à chaque
+  fois, aussi bien sur la ligne que sur le total général.
+- Zone tactile 44px confirmée par `preview_inspect` (boutons et input).
+- Mobile (375×812) vérifié sur catalogue, fiche produit et panier
+  (avant et après le fix de layout) : `scrollWidth` = 375px partout,
+  0 erreur console.
+- Desktop revérifié après le fix mobile : ligne d'article toujours sur
+  une seule ligne, aucune régression.
+- **Tout reste local** — aucun `git push`, aucune interaction avec un
+  remote, aucun déploiement déclenché.

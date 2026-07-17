@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import PlaceholderImage from "@/components/exemples/PlaceholderImage";
+import QuantitySelector from "@/components/exemples/QuantitySelector";
 import { useCart } from "@/components/exemples/CartContext";
 import { boutiqueDemo } from "@/content/exemples/boutique";
 
@@ -12,14 +13,18 @@ export default function BoutiqueCataloguePage() {
     useState<(typeof catalogue.categories)[number]>("Tous");
   const { addItem } = useCart();
   const [justAdded, setJustAdded] = useState<string | null>(null);
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
 
   const visible =
     activeCategory === "Tous"
       ? products
       : products.filter((p) => p.category === activeCategory);
 
+  const qtyFor = (slug: string) => quantities[slug] ?? 1;
+
   const handleAdd = (slug: string) => {
-    addItem(slug);
+    addItem(slug, qtyFor(slug));
+    setQuantities((q) => ({ ...q, [slug]: 1 }));
     setJustAdded(slug);
     setTimeout(() => setJustAdded((s) => (s === slug ? null : s)), 1600);
   };
@@ -77,18 +82,24 @@ export default function BoutiqueCataloguePage() {
             <p className="mt-1 font-terminal text-base text-arcade-taupe">
               {p.description}
             </p>
-            <div className="mt-4 flex items-center justify-between">
+            <div className="mt-4 flex items-center justify-between gap-2">
               <span className="font-mono text-lg font-bold text-arcade-gold">
                 {p.price}€
               </span>
-              <button
-                type="button"
-                onClick={() => handleAdd(p.slug)}
-                className="rounded-xl border-2 border-arcade-border-thick bg-jaune px-4 py-2 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[3px_3px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
-              >
-                {justAdded === p.slug ? "✓ Ajouté" : "Ajouter"}
-              </button>
+              <QuantitySelector
+                value={qtyFor(p.slug)}
+                onChange={(qty) =>
+                  setQuantities((q) => ({ ...q, [p.slug]: qty }))
+                }
+              />
             </div>
+            <button
+              type="button"
+              onClick={() => handleAdd(p.slug)}
+              className="mt-3 w-full rounded-xl border-2 border-arcade-border-thick bg-jaune px-4 py-2 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[3px_3px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
+            >
+              {justAdded === p.slug ? "✓ Ajouté" : "Ajouter"}
+            </button>
           </div>
         ))}
       </div>
