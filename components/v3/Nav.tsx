@@ -145,11 +145,7 @@ export default function V3Nav() {
         </div>
       )}
 
-      <InsertCoinOverlay
-        open={easterEgg}
-        onClose={() => setEasterEgg(false)}
-        contactHref={v3nav.cta.href}
-      />
+      <InsertCoinOverlay open={easterEgg} onClose={() => setEasterEgg(false)} />
     </header>
   );
 }

@@ -2726,3 +2726,132 @@ un jeu jouable) :
   reduced-motion, mobile).
 - **Tout reste local** — aucun `git push`, aucune interaction avec un
   remote, aucun déploiement déclenché.
+
+## [Insert Coin] Remplacement par un vrai mini-jeu Space Invaders jouable — 17/07
+
+### Changement de périmètre
+
+Remplace entièrement la partie 2 de la consigne précédente (scène
+Space Invaders décorative) — la partie 1 (effet clavier sur les
+réponses Verdict) n'est pas concernée, inchangée.
+
+### `components/v3/SpaceInvadersGame.tsx` (nouveau)
+
+Mini-jeu complet en Canvas 2D vanilla + `requestAnimationFrame`, sans
+dépendance de jeu externe :
+
+- **Boucle update/render séparée** : `updateGame(state, dt)` est une
+  fonction pure (mute l'état, ne touche jamais au DOM/canvas) appelée
+  chaque frame, suivie d'un `render()` dédié — permet de tester la
+  logique indépendamment du rendu (voir Vérifications).
+- **État "chaud" hors React** : positions, tirs, grille d'envahisseurs
+  vivent dans une `ref` mutée directement par la boucle — jamais dans
+  du `useState`, pour ne jamais déclencher de re-render à 60fps. Seuls
+  score/vies/phase (affichés dans l'UI) passent par du state, mis à
+  jour uniquement quand un kill/coup/game over survient réellement,
+  pas à chaque frame.
+- **Sprites pré-rendus** : le bitmap pixel-art de l'envahisseur (11×8)
+  et du vaisseau sont dessinés une seule fois sur des canvas hors-écran
+  au montage, puis blittés via `drawImage()` — beaucoup moins coûteux
+  que des dizaines de `fillRect()` par envahisseur et par frame,
+  cohérent avec les leçons déjà tirées de l'audit de performance du
+  14/07.
+- **`dt` plafonné à 50ms** — évite un saut massif de la grille si
+  l'onglet perd le focus (le navigateur suspend `requestAnimationFrame`
+  en arrière-plan, le prochain timestamp peut être très éloigné).
+- **Résolution capée** : `devicePixelRatio` limité à 2, résolution
+  interne fixe (320×420, format portrait façon borne d'arcade
+  classique) mise à l'échelle en CSS.
+
+**Mécaniques implémentées** : vaisseau contrôlable (flèches/Q-D +
+Espace au clavier, boutons ◀ ▶ TIR au tactile — pointer events, donc
+souris et tactile sans code séparé), grille 4×6 d'envahisseurs qui se
+déplacent en groupe (gauche-droite-descente classique) et tirent au
+hasard, collisions AABB (tir joueur → destruction + score, tir ennemi →
+perte de vie avec 1s d'invulnérabilité pour éviter de perdre plusieurs
+vies sur un seul frame), 3 vies de départ, vague suivante à chaque
+grille vidée avec vitesse ×1.18 et fréquence de tir ×1.12 (difficulté
+progressive sans complexifier — pas de palier/niveau distinct), game
+over si les vies tombent à 0 **ou** si la grille atteint la ligne du
+vaisseau (mécanique arcade classique). Écran de game over avec score
+final + bouton "Rejouer" qui réinitialise tout l'état.
+
+**Pas de sauvegarde de high score entre sessions** (le composant se
+démonte à la fermeture de l'overlay, l'état repart à zéro à chaque
+ouverture — aucun stockage) et **aucun son** — conformes aux deux
+contraintes explicites.
+
+### `components/v3/InsertCoinOverlay.tsx` (réécrit)
+
+Devient un simple cadre : fond, verrou de scroll pendant l'ouverture,
+fermeture (bouton dédié + touche Échap réelle), et le repli
+reduced-motion — délègue tout le jeu à `SpaceInvadersGame`. Le clic en
+dehors du contenu **ne ferme plus** l'overlay (contrairement à la
+version décorative précédente) : pendant une partie, un clic un peu
+large sur le pourtour ne doit pas interrompre accidentellement le jeu
+— changement délibéré, la consigne ne demandait plus explicitement
+cette fermeture. La prop `contactHref` (CTA "audit gratuit" de l'ancien
+écran décoratif) est retirée : le nouvel écran de game over ne
+contient que score + Rejouer, conformément à la consigne précise.
+
+reduced-motion : affiche "Cette fonctionnalité nécessite les
+animations activées." à la place du jeu — aucun canvas monté, aucune
+boucle démarrée, pas de jeu forcé à quelqu'un qui a demandé moins
+d'animation.
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- **Limite d'environnement rencontrée et contournée** : le navigateur
+  de l'outil de preview considère la page comme non visible
+  (`document.hidden === true` la plupart du temps), ce qui suspend
+  `requestAnimationFrame` côté navigateur (comportement standard de
+  tout navigateur pour les onglets en arrière-plan, pas un bug du
+  site) — un premier test tir-en-rafale montrait un score bloqué à 0
+  pour cette raison, pas un défaut de collision. Contourné en testant
+  la logique pure directement : `updateGame()` appelée 300 fois de
+  suite avec un `dt` fixe (1/60s, équivalent à 5 secondes de jeu réel)
+  en tirant toutes les 0,32 s — résultat : 8 envahisseurs détruits,
+  score à 80, grille qui dérive, tirs en vol — mouvement, collisions et
+  score confirmés corrects indépendamment du rAF. Cas limites testés un
+  par un de la même façon : perte de vie + fenêtre d'invulnérabilité
+  (un second tir immédiat ne retouche pas), grille atteignant le
+  vaisseau (game over), vague vidée (nouvelle grille + vitesse
+  augmentée ×1.18 confirmée par calcul exact). Une fenêtre où le
+  navigateur a repris la main (après un clic réel sur le canvas) a
+  permis de confirmer la même mécanique en conditions réelles via la
+  boucle React (score passé de 0 à 10 dans l'UI, un envahisseur
+  effectivement absent de la grille affichée).
+- **Partie complète jouée** : déplacement (flèches), tir (Espace),
+  destruction confirmée visuellement (grille à 23/24 puis moins),
+  écran "Game over" avec score final déclenché et vérifié à l'écran,
+  bouton "Rejouer" cliqué réellement — confirmé que tout l'état repart
+  à zéro (score 00000, 3 vies, grille pleine, vaisseau recentré).
+- **Contrôles tactiles** : boutons ◀ ▶ TIR déclenchés via
+  `PointerEvent` réels (`pointerdown`/`pointerup`) — aucune erreur
+  console, tir confirmé visuellement (nouveau projectile affiché).
+  Zone cliquable mesurée à 44px (boutons directionnels) via
+  `preview_inspect`.
+- **Fermeture propre** : touche Échap réelle testée pendant une partie
+  en cours — overlay fermé, `body.style.overflow` revérifié vide
+  après (verrou jamais laissé actif), page d'accueil revérifiée
+  intacte et interactive juste après (effet machine à écrire toujours
+  actif, aucune erreur console, aucun état résiduel).
+- reduced-motion : testé en forçant temporairement
+  `useReducedMotion() || true` dans `InsertCoinOverlay` (même technique
+  que pour l'effet clavier) — écran statique confirmé, aucun canvas
+  monté ; modification annulée immédiatement après capture, `grep
+  "TEMP:"` confirmé vide après coup sur les deux fichiers du jeu.
+- Mobile (375×812) : overlay + jeu + HUD + contrôles tactiles vérifiés
+  sans débordement (`scrollWidth` = 375px), disposition en colonne
+  lisible.
+- **60fps** : le design (dt-based movement, sprites pré-rendus,
+  résolution capée, pas de re-render React par frame) suit
+  systématiquement les pratiques déjà établies sur ce projet pour tenir
+  60fps ; une mesure prolongée en continu façon "profiler" n'a pas pu
+  être effectuée dans cet environnement précis (navigateur de preview
+  non focalisé la majorité du temps, cf. plus haut) — signalé
+  explicitement plutôt que prétendu vérifié à l'identique d'un vrai
+  navigateur utilisateur au premier plan.
+- **Tout reste local** — aucun `git push`, aucune interaction avec un
+  remote, aucun déploiement déclenché.
