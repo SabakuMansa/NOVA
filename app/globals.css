@@ -275,28 +275,6 @@ body {
 }
 
 /* ------------------------------------------------------------------ *
- * Section Verdict — réponse qui défile en boucle. Remplace le 16/07   *
- * l'ancien effet glitch/RGB-split (retiré à la demande explicite :    *
- * "jamais de saut brutal, jamais de rebond") par un simple fade +     *
- * léger mouvement, transform/opacity uniquement, même easing que      *
- * hero-rise/preview-in/sig-word (cubic-bezier(0.22,1,0.36,1), aucun   *
- * dépassement donc aucun rebond).                                     *
- * ------------------------------------------------------------------ */
-@keyframes arcade-answer-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.arcade-answer-in {
-  animation: arcade-answer-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* ------------------------------------------------------------------ *
  * Arcade — import maquette Claude Design du 15/07, étendu le 16/07 à  *
  * l'ensemble du site (précédemment limité au Hero + "La Carte"). Le   *
  * bloc reduced-motion global tout en haut de ce fichier (*, *::before,*

@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { v3nav } from "@/content/v3";
+import InsertCoinOverlay from "./InsertCoinOverlay";
 
 export default function V3Nav() {
   const [compact, setCompact] = useState(false);
   const [open, setOpen] = useState(false);
   const [score, setScore] = useState(0);
+  const [easterEgg, setEasterEgg] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -35,7 +37,15 @@ export default function V3Nav() {
             {String(score).padStart(5, "0")}
           </span>
         </span>
-        <span className="arcade-blink hidden md:inline">INSERT COIN</span>
+        <button
+          type="button"
+          onClick={() => setEasterEgg(true)}
+          className="arcade-blink hidden cursor-pointer md:inline hover:text-arcade-cream focus-visible:text-arcade-cream"
+          aria-haspopup="dialog"
+          aria-label="Easter egg Insert Coin"
+        >
+          INSERT COIN
+        </button>
         <span className="text-arcade-orange">
           HI <span className="text-arcade-cream">99999</span>
         </span>
@@ -134,6 +144,12 @@ export default function V3Nav() {
           </div>
         </div>
       )}
+
+      <InsertCoinOverlay
+        open={easterEgg}
+        onClose={() => setEasterEgg(false)}
+        contactHref={v3nav.cta.href}
+      />
     </header>
   );
 }

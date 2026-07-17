@@ -70,23 +70,43 @@ export function V3Ticker() {
 }
 
 /* --------------------------------------------------------------- Verdict */
-const VERDICT_CYCLE_MS = 1800;
+const TYPE_MS = 40;
+const PAUSE_MS = 800;
 
-/** Réponse qui défile en boucle — fade + léger mouvement uniquement
- *  (transform/opacity), jamais de saut brutal ni de rebond (courbe
- *  d'accélération sans dépassement). reduced-motion : answers[0] affichée
- *  seule, aucun cycle, aucune animation. */
-function CyclingAnswer({ items }: { items: string[] }) {
+/** Réponse façon terminal : effacement caractère par caractère (arrière),
+ *  puis écriture de la réponse suivante caractère par caractère, curseur
+ *  clignotant. Exception volontaire à la règle "pas d'effet lettre par
+ *  lettre" — cohérente avec le thème arcade/terminal déjà en place
+ *  (Press Start 2P, curseur INSERT COIN). reduced-motion : answers[0]
+ *  affichée seule, texte fixe, aucun curseur ni animation. */
+function TypewriterAnswer({ items }: { items: string[] }) {
   const reduce = useReducedMotion();
-  const [i, setI] = useState(0);
+  const [index, setIndex] = useState(0);
+  const [length, setLength] = useState(0);
+  const [phase, setPhase] = useState<"typing" | "erasing">("typing");
 
   useEffect(() => {
     if (reduce) return;
-    const interval = setInterval(() => {
-      setI((v) => (v + 1) % items.length);
-    }, VERDICT_CYCLE_MS);
-    return () => clearInterval(interval);
-  }, [reduce, items.length]);
+    const current = items[index];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (phase === "typing") {
+      if (length < current.length) {
+        timeout = setTimeout(() => setLength((l) => l + 1), TYPE_MS);
+      } else {
+        timeout = setTimeout(() => setPhase("erasing"), PAUSE_MS);
+      }
+    } else {
+      if (length > 0) {
+        timeout = setTimeout(() => setLength((l) => l - 1), TYPE_MS);
+      } else {
+        setIndex((v) => (v + 1) % items.length);
+        setPhase("typing");
+      }
+    }
+
+    return () => clearTimeout(timeout);
+  }, [reduce, phase, length, index, items]);
 
   const textClass =
     "font-pixel leading-relaxed text-arcade-gold text-xl sm:text-3xl md:text-4xl";
@@ -96,8 +116,11 @@ function CyclingAnswer({ items }: { items: string[] }) {
   }
 
   return (
-    <p key={i} className={`arcade-answer-in ${textClass}`}>
-      {items[i]}
+    <p className={textClass} aria-live="off">
+      {items[index].slice(0, length)}
+      <span className="arcade-blink" aria-hidden>
+        _
+      </span>
     </p>
   );
 }
@@ -114,7 +137,7 @@ export function V3Verdict() {
         </h2>
       </Reveal>
       <div className="mt-10 md:mt-14">
-        <CyclingAnswer items={v3verdict.answers} />
+        <TypewriterAnswer items={v3verdict.answers} />
       </div>
     </section>
   );

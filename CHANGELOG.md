@@ -2624,3 +2624,105 @@ produit, redevient une ligne unique à partir de `md:`) — revérifié :
   une seule ligne, aucune régression.
 - **Tout reste local** — aucun `git push`, aucune interaction avec un
   remote, aucun déploiement déclenché.
+
+## [Verdict + Nav] Effet clavier sur les réponses + easter egg "Insert Coin" — 17/07
+
+### Effet machine à écrire inversée sur la section Verdict
+
+`components/v3/Sections.tsx` : `CyclingAnswer` (fade + translateY) remplacé
+par `TypewriterAnswer` — effacement caractère par caractère (arrière),
+puis écriture de la réponse suivante caractère par caractère, curseur
+`_` clignotant (réutilise `.arcade-blink`, déjà utilisé pour "INSERT
+COIN", pas de nouvelle keyframe). Exception volontaire documentée en
+commentaire à la règle générale "pas d'effet lettre par lettre" —
+cohérente ici avec le thème terminal déjà en place, comme demandé
+explicitement.
+
+- Timing : 40ms/caractère (dans la fourchette 30-50ms demandée), pause
+  de 800ms une fois le mot complet affiché avant de commencer
+  l'effacement (dans la fourchette 500ms-1s demandée).
+- Implémentation : state machine à deux phases (`typing`/`erasing`) et
+  un `setTimeout` récursif (pas `setInterval`, les deux phases n'ont pas
+  la même cadence — la pause en fin de frappe n'est qu'un délai plus
+  long avant le prochain `setTimeout`, pas un troisième état).
+- `arcade-answer-in` (keyframe CSS de l'ancien fade) supprimée de
+  `app/globals.css` — plus aucun appelant après ce remplacement (vérifié
+  par grep).
+- reduced-motion : `items[0]` affichée seule, texte fixe, aucun curseur,
+  aucun cycle — le hook `useReducedMotion()` coupe l'`useEffect` du
+  timer entièrement (même garde déjà utilisée ailleurs sur le site).
+- `aria-live="off"` sur le paragraphe — évite qu'un lecteur d'écran
+  annonce chaque caractère effacé/tapé (même pattern déjà utilisé sur
+  `NotifFeed`).
+
+### Easter egg "INSERT COIN"
+
+`components/v3/Nav.tsx` : le texte "INSERT COIN" du bandeau arcade
+devient un `<button>` cliquable (au lieu d'un `<span>` purement
+décoratif) — `aria-haspopup="dialog"`, ouvre `InsertCoinOverlay`. Reste
+`hidden md:inline` (règle déjà en place pour la barre mobile
+simplifiée) : le déclencheur n'est donc accessible qu'à partir de `md`
+(768px), comme le reste du bandeau décoratif — pas de changement à
+cette règle de responsive existante, non demandé par cette consigne.
+
+`components/v3/InsertCoinOverlay.tsx` (nouveau) : overlay plein écran
+(`fixed inset-0 z-[100]`) avec une scène Space Invaders décorative (pas
+un jeu jouable) :
+- Canvas + `requestAnimationFrame`, mouvement calculé par delta-temps
+  (frame-rate independent, jamais de redessin lié à un event non
+  throttle) — grille 8×5 d'un sprite pixel-art codé en dur (bitmap
+  11×8), teintes orange/or alternées par ligne, déplacement classique
+  gauche-droite-descente façon Space Invaders.
+- Résolution plafonnée : `devicePixelRatio` capé à 2, dimensions canvas
+  internes fixes (~318×~326 avant DPR) — cohérent avec la leçon déjà
+  tirée lors de l'audit de performance du 14/07 (jamais de canvas à
+  résolution native non plafonnée).
+- reduced-motion : une seule frame dessinée statiquement, aucune boucle
+  `rAF` démarrée.
+- Fermeture : bouton dédié ("ÉCHAP — Fermer"), vraie touche `Escape`
+  (listener `keydown` sur `window`), clic sur le fond (`onClick` du
+  conteneur `fixed inset-0`) — le contenu intérieur (scène + boutons)
+  a `stopPropagation()` pour ne jamais se fermer sur un clic à
+  l'intérieur.
+- Verrou de scroll (`document.body.style.overflow = "hidden"`) actif
+  uniquement pendant l'ouverture, restauré à la valeur précédente à la
+  fermeture (`useEffect` cleanup) — jamais laissé actif après fermeture.
+- Message : "Game over" + "Contactez-nous pour continuer." + lien
+  "Réserver un audit gratuit" vers `v3nav.cta.href` (le vrai lien de
+  contact du site, pas une valeur inventée) — le clic sur ce lien ferme
+  aussi l'overlay.
+- Mobile : `maxWidth: "90vw"` sur le canvas (mise à l'échelle CSS,
+  résolution interne inchangée), boutons de fermeture en pile flexible
+  (`flex-wrap`) — vérifié à 375px, aucun débordement, bouton "Fermer"
+  mesuré à 46px de haut (au-dessus du minimum tactile).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- Effet clavier testé sur ~20 lectures échantillonnées sur plusieurs
+  cycles (300ms d'intervalle) : effacement caractère par caractère
+  confirmé, transition propre vers la réponse suivante, curseur présent
+  à chaque étape.
+- reduced-motion testé en forçant temporairement `useReducedMotion() ||
+  true` dans `TypewriterAnswer` et `InsertCoinOverlay` (technique déjà
+  utilisée plus tôt dans le chantier) : réponse figée sans curseur côté
+  Verdict, grille d'envahisseurs figée (deux captures à 2s d'intervalle
+  strictement identiques, confirmant qu'aucune boucle `rAF` ne tourne)
+  côté overlay — modifications temporaires annulées immédiatement
+  après capture, `grep "TEMP:"` confirmé vide après coup.
+- Mouvement de la grille confirmé par comparaison de deux captures à 2s
+  d'intervalle (position visiblement décalée).
+- Fermeture testée séparément pour chacun des 3 mécanismes : bouton
+  dédié, touche `Escape` réelle (`KeyboardEvent` sur `window`), clic sur
+  le fond — et vérifié qu'un clic sur le contenu intérieur (canvas) ne
+  ferme **pas** l'overlay (`stopPropagation` fonctionne). `body.style.
+  overflow` vérifié vide après chaque fermeture (verrou de scroll jamais
+  laissé actif).
+- Mobile (375×812) vérifié : overlay déclenché directement (le bouton
+  déclencheur est `hidden` en dessous de `md` par design existant, non
+  modifié par cette tâche), rendu sans débordement horizontal
+  (`scrollWidth` = 375px), bouton de fermeture mesuré à 46px de haut.
+- Console navigateur : 0 erreur à chaque étape (ouverture, fermeture,
+  reduced-motion, mobile).
+- **Tout reste local** — aucun `git push`, aucune interaction avec un
+  remote, aucun déploiement déclenché.
