@@ -1,75 +1,101 @@
 import Link from "next/link";
-import PlaceholderImage from "@/components/exemples/PlaceholderImage";
 import { autonomeDemo } from "@/content/exemples/autonome";
 
 export default function AutonomeAccueilPage() {
-  const { accueil, business } = autonomeDemo;
+  const { accueil, business, nav } = autonomeDemo;
+  const prestationsLabel =
+    nav.find((l) => l.href.endsWith("/prestations"))?.label ?? "Prestations";
 
   return (
-    <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
-      <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
-        <div>
-          <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
-            <span className="h-2 w-2 rounded-full bg-violet" aria-hidden />
+    <>
+      {/* HERO */}
+      <section className="grid gap-0 md:min-h-[74vh] md:grid-cols-[1.05fr_1fr] md:items-stretch">
+        <div className="metam-pop flex flex-col justify-center px-5 py-14 md:px-16 md:py-20">
+          <span className="inline-flex items-center gap-2 font-metam-sans text-[13px] font-semibold uppercase tracking-[1.5px] text-metam-purple">
+            <span
+              className="h-2 w-2 rounded-full bg-metam-purple"
+              aria-hidden
+            />
             {accueil.eyebrow}
-          </p>
-          <h1 className="mt-6 font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
+          </span>
+          <h1 className="mt-5 font-metam-display text-4xl font-bold leading-[1.03] tracking-tight text-metam-ink sm:text-5xl lg:text-[3.6rem]">
             {accueil.title}
           </h1>
-          <p className="mt-5 max-w-lg font-terminal text-xl leading-relaxed text-arcade-tan">
+          <p className="mt-6 max-w-md font-metam-sans text-lg leading-relaxed text-metam-muted">
             {accueil.subtitle}
           </p>
-          <Link
-            href="/exemples/autonome/contact"
-            className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-arcade-border-thick bg-violet px-6 py-3.5 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[4px_4px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
-          >
-            {accueil.cta} →
-          </Link>
-          <ul className="mt-10 space-y-3">
-            {accueil.highlights.map((h) => (
-              <li
-                key={h.text}
-                className="flex items-center gap-3 font-terminal text-base text-arcade-tan"
-              >
-                <span className="text-lg" aria-hidden>
-                  {h.icon}
-                </span>
-                {h.text}
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-8 inline-flex items-center gap-2 rounded-xl border-2 border-arcade-border-thick bg-violet/10 px-4 py-3 font-terminal text-lg font-bold text-arcade-cream">
-            <span aria-hidden>🖐️</span>
-            {accueil.philosophy}
-          </p>
+          <div className="mt-8 flex flex-wrap gap-3.5">
+            <Link
+              href="/exemples/autonome/contact"
+              className="rounded-lg bg-metam-purple px-7 py-3.5 font-metam-sans text-[15px] font-semibold text-metam-bg transition-transform metam-anim hover:-translate-y-0.5"
+            >
+              {accueil.cta}
+            </Link>
+            <Link
+              href="/exemples/autonome/prestations"
+              className="rounded-lg border border-metam-border-dark px-7 py-3.5 font-metam-sans text-[15px] font-semibold text-metam-ink transition-colors metam-anim hover:border-metam-purple"
+            >
+              {prestationsLabel}
+            </Link>
+          </div>
         </div>
-        <PlaceholderImage
-          icon="💈"
-          label="Photo du salon"
-          color="violet"
-          className="aspect-[4/3] w-full"
+        <div
+          className="min-h-[280px] bg-cover bg-center grayscale"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1100&q=80&auto=format&fit=crop')",
+          }}
+          role="img"
+          aria-label={`Intérieur du salon ${business.name}`}
         />
-      </div>
+      </section>
+
+      {/* HIGHLIGHTS STRIP */}
+      <section className="border-y border-metam-border bg-metam-bg-alt">
+        <div className="mx-auto grid max-w-content gap-6 px-5 py-10 sm:grid-cols-3 md:px-8">
+          {accueil.highlights.map((h) => (
+            <div key={h.text} className="flex items-center gap-3">
+              <span className="text-xl" aria-hidden>
+                {h.icon}
+              </span>
+              <span className="font-metam-sans text-[15px] font-medium text-metam-ink">
+                {h.text}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* PHILOSOPHIE — distingue ce plan de Machine, mis en évidence */}
+      <section className="bg-metam-dark px-5 py-14 text-center md:px-8">
+        <p className="mx-auto flex max-w-2xl flex-wrap items-center justify-center gap-3 font-metam-sans text-lg font-semibold leading-relaxed text-metam-bg sm:text-xl">
+          <span className="text-2xl" aria-hidden>
+            🖐️
+          </span>
+          <span className="text-metam-purple-soft">{accueil.philosophy}</span>
+        </p>
+      </section>
 
       {/* Fiche Google Business mise en avant — mention, pas un vrai back-office. */}
-      <div className="mt-16 flex flex-wrap items-center gap-4 rounded-xl border border-arcade-border bg-arcade-card p-5 sm:p-6">
-        <span
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-arcade-border-thick bg-jaune text-2xl"
-          aria-hidden
-        >
-          ⭐
-        </span>
-        <div>
-          <p className="font-terminal text-lg font-bold text-arcade-cream">
-            Fiche Google Business
-          </p>
-          <p className="font-terminal text-base text-arcade-tan">
-            {business.googleRating} · {business.googleReviews} avis — mise en
-            avant directement depuis le site.
-          </p>
+      <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-20">
+        <div className="flex flex-wrap items-center gap-4 rounded-xl border border-metam-border bg-metam-bg-alt p-5 sm:p-6">
+          <span
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-metam-purple text-xl text-metam-bg"
+            aria-hidden
+          >
+            ⭐
+          </span>
+          <div>
+            <p className="font-metam-display text-lg font-semibold text-metam-ink">
+              Fiche Google Business
+            </p>
+            <p className="font-metam-sans text-[15px] text-metam-muted">
+              {business.googleRating} · {business.googleReviews} avis — mise
+              en avant directement depuis le site.
+            </p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -7,45 +7,48 @@ export default function AutonomeContactPage() {
   const { contact, business } = autonomeDemo;
   const [sent, setSent] = useState(false);
   const field =
-    "w-full rounded-xl border-2 border-arcade-border-thick bg-arcade-bg-alt px-4 py-3 font-terminal text-lg text-arcade-cream placeholder-arcade-taupe focus:border-arcade-orange focus:outline-none";
+    "w-full rounded-lg border border-metam-border-dark bg-metam-bg px-4 py-3 font-metam-sans text-[15px] text-metam-ink placeholder-metam-muted-light focus:border-metam-purple focus:outline-none";
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <div>
-          <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
-            <span className="h-2 w-2 rounded-full bg-violet" aria-hidden />
+          <span className="inline-flex items-center gap-2 font-metam-sans text-[13px] font-semibold uppercase tracking-[1.5px] text-metam-purple">
+            <span
+              className="h-2 w-2 rounded-full bg-metam-purple"
+              aria-hidden
+            />
             {contact.eyebrow}
-          </p>
-          <h1 className="mt-6 font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
+          </span>
+          <h1 className="mt-5 font-metam-display text-4xl font-bold tracking-tight text-metam-ink sm:text-5xl">
             {contact.title}
           </h1>
-          <p className="mt-4 font-terminal text-xl text-arcade-tan">
+          <p className="mt-4 font-metam-sans text-lg text-metam-muted">
             {contact.subtitle}
           </p>
 
           <div className="mt-8 space-y-3">
-            <div className="flex items-center gap-3 rounded-xl border border-arcade-border bg-arcade-card p-4">
-              <span className="text-xl" aria-hidden>
+            <div className="flex items-center gap-3 rounded-lg border border-metam-border bg-metam-bg-alt p-4">
+              <span className="text-lg" aria-hidden>
                 📍
               </span>
-              <span className="font-terminal text-base text-arcade-tan">
+              <span className="font-metam-sans text-[15px] text-metam-muted">
                 {business.address}
               </span>
             </div>
-            <div className="flex items-center gap-3 rounded-xl border border-arcade-border bg-arcade-card p-4">
-              <span className="text-xl" aria-hidden>
+            <div className="flex items-center gap-3 rounded-lg border border-metam-border bg-metam-bg-alt p-4">
+              <span className="text-lg" aria-hidden>
                 🕒
               </span>
-              <span className="font-terminal text-base text-arcade-tan">
+              <span className="font-metam-sans text-[15px] text-metam-muted">
                 {business.hours}
               </span>
             </div>
-            <div className="flex items-center gap-3 rounded-xl border border-arcade-border bg-arcade-card p-4">
-              <span className="text-xl" aria-hidden>
+            <div className="flex items-center gap-3 rounded-lg border border-metam-border bg-metam-bg-alt p-4">
+              <span className="text-lg" aria-hidden>
                 ⭐
               </span>
-              <span className="font-terminal text-base text-arcade-tan">
+              <span className="font-metam-sans text-[15px] text-metam-muted">
                 {business.googleRating} sur Google ({business.googleReviews}{" "}
                 avis)
               </span>
@@ -53,36 +56,27 @@ export default function AutonomeContactPage() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border-2 border-arcade-border-thick bg-arcade-card">
-          <div className="flex items-center gap-2 border-b-2 border-arcade-border-thick bg-arcade-bg px-3.5 py-2.5">
-            <span
-              className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-corail"
-              aria-hidden
-            />
-            <span
-              className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-jaune"
-              aria-hidden
-            />
-            <span
-              className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-teal"
-              aria-hidden
-            />
-            <span className="ml-2 font-mono text-[0.62rem] text-arcade-taupe">
-              rendez-vous.form
+        <div className="overflow-hidden rounded-2xl border border-metam-border-dark bg-metam-bg shadow-[0_30px_80px_rgba(20,20,26,0.12)]">
+          <div className="flex items-center gap-2 border-b border-metam-border bg-metam-bg-alt px-4 py-3">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" aria-hidden />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]" aria-hidden />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#28C840]" aria-hidden />
+            <span className="ml-2 font-metam-sans text-[13px] text-metam-muted-light">
+              rendezvous.salon-marguerite.fr
             </span>
           </div>
           {sent ? (
-            <div className="flex min-h-[18rem] flex-col items-center justify-center p-8 text-center">
+            <div className="metam-pop flex min-h-[18rem] flex-col items-center justify-center p-8 text-center">
               <span
-                className="flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-arcade-border-thick bg-violet text-2xl text-arcade-bg"
+                className="flex h-14 w-14 items-center justify-center rounded-full bg-metam-purple text-2xl text-metam-bg"
                 aria-hidden
               >
                 ✓
               </span>
-              <h2 className="mt-4 font-pixel text-sm leading-relaxed text-arcade-cream">
+              <h2 className="mt-4 font-metam-display text-xl font-bold text-metam-ink">
                 Demande envoyée !
               </h2>
-              <p className="mt-2 max-w-xs font-terminal text-lg text-arcade-tan">
+              <p className="mt-2 max-w-xs font-metam-sans text-[15px] text-metam-muted">
                 Le salon revient vers vous rapidement pour confirmer.
               </p>
             </div>
@@ -119,7 +113,7 @@ export default function AutonomeContactPage() {
               />
               <button
                 type="submit"
-                className="w-full rounded-xl border-2 border-arcade-border-thick bg-violet px-6 py-3.5 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[4px_4px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
+                className="w-full rounded-lg bg-metam-purple px-6 py-3.5 font-metam-sans text-[15px] font-semibold text-metam-bg transition-transform metam-anim hover:-translate-y-0.5"
               >
                 {contact.submit}
               </button>

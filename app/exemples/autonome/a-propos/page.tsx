@@ -1,4 +1,3 @@
-import PlaceholderImage from "@/components/exemples/PlaceholderImage";
 import { autonomeDemo } from "@/content/exemples/autonome";
 
 export default function AutonomeAProposPage() {
@@ -6,26 +5,29 @@ export default function AutonomeAProposPage() {
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
-      <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
-        <span className="h-2 w-2 rounded-full bg-jaune" aria-hidden />
+      <span className="inline-flex items-center gap-2 font-metam-sans text-[13px] font-semibold uppercase tracking-[1.5px] text-metam-purple">
+        <span className="h-2 w-2 rounded-full bg-metam-purple" aria-hidden />
         {aPropos.eyebrow}
-      </p>
-      <h1 className="mt-6 max-w-2xl font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
+      </span>
+      <h1 className="mt-5 max-w-2xl font-metam-display text-4xl font-bold tracking-tight text-metam-ink sm:text-5xl">
         {aPropos.title}
       </h1>
 
-      <div className="mt-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-        <PlaceholderImage
-          icon="👥"
-          label="Photo de l'équipe / du lieu"
-          color="teal"
-          className="aspect-[4/3] w-full"
+      <div className="mt-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:items-center">
+        <div
+          className="aspect-[4/3] w-full rounded-xl border border-metam-border bg-cover bg-center grayscale"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=900&q=80&auto=format&fit=crop')",
+          }}
+          role="img"
+          aria-label="Photo de l'équipe / du lieu"
         />
         <div className="space-y-4">
           {aPropos.body.map((p, i) => (
             <p
               key={i}
-              className="font-terminal text-xl leading-relaxed text-arcade-tan"
+              className="font-metam-sans text-lg leading-relaxed text-metam-muted"
             >
               {p}
             </p>
@@ -37,12 +39,12 @@ export default function AutonomeAProposPage() {
         {aPropos.values.map((v) => (
           <div
             key={v.title}
-            className="h-full rounded-xl border border-arcade-border bg-arcade-card p-5"
+            className="h-full rounded-xl border border-metam-border bg-metam-bg-alt p-5"
           >
-            <h3 className="font-pixel text-sm leading-snug text-arcade-cream">
+            <h3 className="font-metam-display text-base font-bold text-metam-ink">
               {v.title}
             </h3>
-            <p className="mt-2 font-terminal text-base leading-relaxed text-arcade-tan">
+            <p className="mt-2 font-metam-sans text-[15px] leading-relaxed text-metam-muted">
               {v.text}
             </p>
           </div>
