@@ -1,52 +1,53 @@
-import PlaceholderImage from "@/components/exemples/PlaceholderImage";
 import { machineDemo } from "@/content/exemples/machine";
+
+// Photo d'ambiance salon de toilettage (Unsplash, licence libre) — jamais
+// reprise de la maquette "Table & Braise" (hors sujet pour Au Poil).
+const TEAM_PHOTO =
+  "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&q=80&auto=format&fit=crop";
 
 export default function MachineAProposPage() {
   const { aPropos } = machineDemo;
 
   return (
-    <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
-      <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
-        <span className="h-2 w-2 rounded-full bg-corail" aria-hidden />
-        {aPropos.eyebrow}
-      </p>
-      <h1 className="mt-6 max-w-2xl font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
-        {aPropos.title}
-      </h1>
-
-      <div className="mt-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-        <PlaceholderImage
-          icon="👥"
-          label="Photo de l'équipe / du lieu"
-          color="teal"
-          className="aspect-[4/3] w-full"
+    <section className="px-5 py-16 md:px-8 md:py-24">
+      <div className="mx-auto grid max-w-content gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
+        <div
+          className="aspect-[4/3] rounded-md bg-cover bg-center"
+          style={{ backgroundImage: `url('${TEAM_PHOTO}')` }}
+          role="img"
+          aria-label="Toiletteur au travail chez Au Poil"
         />
-        <div className="space-y-4">
-          {aPropos.body.map((p, i) => (
-            <p
-              key={i}
-              className="font-terminal text-xl leading-relaxed text-arcade-tan"
-            >
-              {p}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-14 grid gap-5 sm:grid-cols-3">
-        {aPropos.values.map((v) => (
-          <div
-            key={v.title}
-            className="h-full rounded-xl border border-arcade-border bg-arcade-card p-5"
-          >
-            <h3 className="font-pixel text-sm leading-relaxed text-arcade-cream">
-              {v.title}
-            </h3>
-            <p className="mt-3 font-terminal text-base leading-relaxed text-arcade-tan">
-              {v.text}
-            </p>
+        <div>
+          <span className="font-braise-sans text-[13px] uppercase tracking-[3px] text-braise-orange">
+            {aPropos.eyebrow}
+          </span>
+          <h1 className="mt-4 font-braise-display text-3xl leading-tight text-braise-ink sm:text-4xl">
+            {aPropos.title}
+          </h1>
+          <div className="mt-6 space-y-4">
+            {aPropos.body.map((p, i) => (
+              <p
+                key={i}
+                className="font-braise-sans text-[17px] leading-relaxed text-braise-muted"
+              >
+                {p}
+              </p>
+            ))}
           </div>
-        ))}
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-3">
+            {aPropos.values.map((v) => (
+              <div key={v.title}>
+                <h3 className="font-braise-display text-xl text-braise-ink">
+                  {v.title}
+                </h3>
+                <p className="mt-2 font-braise-sans text-sm leading-relaxed text-braise-muted">
+                  {v.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

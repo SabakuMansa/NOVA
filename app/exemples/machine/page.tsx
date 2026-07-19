@@ -2,100 +2,212 @@ import Link from "next/link";
 import NotifFeed from "@/components/v3/NotifFeed";
 import { machineDemo } from "@/content/exemples/machine";
 
+// Photo d'ambiance salon de toilettage (Unsplash, licence libre) — jamais
+// reprise de la maquette "Table & Braise" (photos de restaurant hors sujet
+// pour Au Poil) : recherche dédiée sur un thème neutre/cohérent.
+const HERO_PHOTO =
+  "https://images.unsplash.com/photo-1516371535707-512a1e83bb9a?w=1600&q=80&auto=format&fit=crop";
+
+const TAG_COLORS: Record<string, string> = {
+  avis: "bg-braise-orange/20 text-braise-orange",
+  résa: "bg-braise-teal/20 text-braise-teal",
+  contact: "bg-braise-muted-light/20 text-braise-muted-light",
+};
+
+// Labels courts des automatisations actives, dérivés du même triptyque que
+// le commentaire d'en-tête de content/exemples/machine.ts (relance avis
+// Google post-réservation, confirmation auto de réservation, réponse auto à
+// une demande de contact) — aucune donnée inventée, juste re-présentée en
+// liste de bascules pour coller au patron "Automatisations actives" de la
+// maquette.
+const ACTIVE_AUTOMATIONS = [
+  { icon: "⭐", label: "Relance avis Google après rendez-vous" },
+  { icon: "✅", label: "Confirmation automatique de réservation" },
+  { icon: "📩", label: "Réponse automatique aux demandes de contact" },
+];
+
 export default function MachineAccueilPage() {
-  const { accueil, business, liveFeed } = machineDemo;
+  const { accueil, business, liveFeed, espaceAdmin } = machineDemo;
+  const dashboardTab = espaceAdmin.tabs.find((t) => t.id === "tableau-de-bord");
 
   return (
-    <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
-      <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
-        <div>
-          <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
-            <span className="h-2 w-2 rounded-full bg-corail" aria-hidden />
+    <>
+      {/* Hero plein cadre — photo + dégradé sombre, patron repris de la
+          maquette "Table & Braise" (palette/typo seulement). */}
+      <section className="relative flex min-h-[80vh] items-center">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `linear-gradient(90deg, rgba(28,24,21,0.85) 0%, rgba(28,24,21,0.45) 55%, rgba(28,24,21,0.15) 100%), url('${HERO_PHOTO}')`,
+          }}
+          role="img"
+          aria-label="Chien détendu pendant une séance de toilettage"
+        />
+        <div className="relative max-w-xl px-5 py-20 text-braise-bg md:px-16">
+          <span className="font-braise-sans text-[13px] uppercase tracking-[3px] text-braise-orange">
             {accueil.eyebrow}
-          </p>
-          <h1 className="mt-6 font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
+          </span>
+          <h1 className="mt-5 font-braise-display text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">
             {accueil.title}
           </h1>
-          <p className="mt-5 max-w-lg font-terminal text-xl leading-relaxed text-arcade-tan">
+          <p className="mt-6 max-w-md font-braise-sans text-lg leading-relaxed text-braise-bg/85">
             {accueil.subtitle}
           </p>
-          <Link
-            href="/exemples/machine/contact"
-            className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-arcade-border-thick bg-corail px-6 py-3.5 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[4px_4px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
-          >
-            {accueil.cta} →
-          </Link>
-          <ul className="mt-10 space-y-3">
-            {accueil.highlights.map((h) => (
-              <li
-                key={h.text}
-                className="flex items-center gap-3 font-terminal text-base text-arcade-tan"
-              >
-                <span className="text-lg" aria-hidden>
-                  {h.icon}
-                </span>
-                {h.text}
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-8 inline-flex items-center gap-2 rounded-xl border-2 border-arcade-border-thick bg-corail/10 px-4 py-3 font-terminal text-lg text-arcade-cream">
-            <span aria-hidden>🔔</span>
-            {accueil.philosophy}
-          </p>
-        </div>
-
-        {/* Flux d'activité qui se remplit tout seul, sans clic — la mise en
-            scène centrale du plan Machine (contraste avec la photo statique
-            mise en avant sur /exemples/autonome). */}
-        <div className="mx-auto w-full max-w-md overflow-hidden rounded-2xl border-2 border-arcade-border-thick bg-arcade-card">
-          <div className="flex items-center gap-2 border-b-2 border-arcade-border-thick bg-arcade-bg px-3.5 py-2.5">
-            <span
-              className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-orange"
-              aria-hidden
-            />
-            <span
-              className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-gold"
-              aria-hidden
-            />
-            <span
-              className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-tan"
-              aria-hidden
-            />
-            <span className="ml-2 truncate font-mono text-[0.62rem] text-arcade-taupe">
-              {business.name} — activité
-            </span>
-            <span className="ml-auto rounded-md bg-corail px-2 py-0.5 font-mono text-[0.55rem] font-bold uppercase text-arcade-bg">
-              live
-            </span>
+          <div className="mt-8 flex flex-wrap gap-3.5">
+            <Link
+              href="/exemples/machine/contact"
+              className="rounded-md bg-braise-rust px-7 py-3.5 font-braise-sans text-[15px] font-semibold text-white transition-transform hover:-translate-y-0.5"
+            >
+              {accueil.cta} →
+            </Link>
+            <Link
+              href="/exemples/machine/prestations"
+              className="rounded-md border border-braise-bg/40 px-7 py-3.5 font-braise-sans text-[15px] font-semibold text-braise-bg transition-colors hover:border-braise-bg"
+            >
+              Voir les prestations
+            </Link>
           </div>
-          <div className="p-4 sm:p-5">
-            <NotifFeed events={liveFeed} />
-            <p className="mt-4 border-t-2 border-dashed border-arcade-border pt-3 font-mono text-[0.6rem] uppercase tracking-wide text-arcade-muted">
-              Pendant ce temps, personne au salon n&apos;a rien fait.
+        </div>
+      </section>
+
+      {/* Bandeau d'atouts — patron 3 colonnes repris de la grille "La carte"
+          de la maquette, contenu 100% réel (aucun vocabulaire restaurant). */}
+      <section className="grid gap-8 border-b border-braise-ink/10 px-5 py-12 sm:grid-cols-3 md:px-8 md:py-14">
+        {accueil.highlights.map((h) => (
+          <div key={h.text} className="flex items-center gap-3">
+            <span className="text-2xl" aria-hidden>
+              {h.icon}
+            </span>
+            <p className="font-braise-sans text-[15px] leading-snug text-braise-muted">
+              {h.text}
+            </p>
+          </div>
+        ))}
+      </section>
+
+      {/* Section automatisations / tableau de bord — le cœur du plan
+          Machine, patron repris tel quel de la maquette (fond sombre, carte
+          "Tableau de bord" + carte "Notifications"), recoloré en braise-*. */}
+      <section className="bg-braise-dark px-5 py-16 text-braise-bg md:px-16 md:py-24">
+        <div className="mx-auto max-w-content">
+          <div className="mb-11 max-w-2xl">
+            <span className="font-braise-sans text-[13px] uppercase tracking-[3px] text-braise-orange">
+              Plan Machine · Automatisations
+            </span>
+            <h2 className="mt-4 font-braise-display text-3xl leading-tight sm:text-4xl">
+              {accueil.philosophy}
+            </h2>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+            {/* Tableau de bord */}
+            <div className="rounded-2xl border border-braise-border-dark bg-braise-dark-card p-6 sm:p-7">
+              <div className="mb-6 flex items-center justify-between">
+                <span className="font-braise-sans text-base font-semibold">
+                  Tableau de bord
+                </span>
+                <span className="inline-flex items-center gap-1.5 font-braise-mono text-xs text-braise-teal">
+                  <span
+                    className="h-1.5 w-1.5 animate-pulse rounded-full bg-braise-teal"
+                    aria-hidden
+                  />
+                  en direct
+                </span>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {dashboardTab?.stats?.map((s) => (
+                  <div
+                    key={s.label}
+                    className="rounded-xl bg-braise-dark p-4"
+                  >
+                    <p className="font-braise-mono text-[1.9rem] font-bold leading-none">
+                      {s.value}
+                    </p>
+                    <p className="mt-2 font-braise-sans text-[13px] leading-snug text-braise-muted-light">
+                      {s.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              {dashboardTab?.statsNote && (
+                <p className="mt-5 font-braise-sans text-xs leading-relaxed text-braise-muted-light">
+                  {dashboardTab.statsNote}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-6">
+              {/* Notifications — flux en direct, logique/animation NotifFeed
+                  inchangée, seules les couleurs sont recolorées via props. */}
+              <div className="rounded-2xl border border-braise-border-dark bg-braise-dark-card p-5 sm:p-6">
+                <p className="mb-4 font-braise-sans text-base font-semibold">
+                  Notifications
+                </p>
+                <NotifFeed
+                  events={liveFeed}
+                  tagColors={TAG_COLORS}
+                  itemClassName="border-braise-border-dark bg-braise-dark"
+                  textClassName="text-braise-bg/90"
+                />
+              </div>
+
+              {/* Automatisations actives — bascules statiques, patron repris
+                  de la maquette (toggle "on" teal), contenu dérivé des
+                  automatisations réellement décrites pour ce plan. */}
+              <div className="rounded-2xl border border-braise-border-dark bg-braise-dark-card p-5 sm:p-6">
+                <p className="mb-3 font-braise-sans text-base font-semibold">
+                  Automatisations actives
+                </p>
+                <ul>
+                  {ACTIVE_AUTOMATIONS.map((a, i) => (
+                    <li
+                      key={a.label}
+                      className={`flex items-center justify-between gap-3 py-2.5 ${
+                        i < ACTIVE_AUTOMATIONS.length - 1
+                          ? "border-b border-braise-border-dark"
+                          : ""
+                      }`}
+                    >
+                      <span className="flex items-center gap-2.5 font-braise-sans text-[13px] text-braise-bg/85">
+                        <span aria-hidden>{a.icon}</span>
+                        {a.label}
+                      </span>
+                      <span
+                        className="relative h-[22px] w-10 shrink-0 rounded-full bg-braise-teal"
+                        role="img"
+                        aria-label="Automatisation activée"
+                      >
+                        <span className="absolute right-0.5 top-0.5 h-[18px] w-[18px] rounded-full bg-white" />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Fiche Google Business mise en avant — mention, pas un vrai back-office. */}
+      <section className="mx-auto max-w-content px-5 py-14 md:px-8 md:py-16">
+        <div className="flex flex-wrap items-center gap-4 rounded-lg border border-braise-ink/10 bg-braise-ink/5 p-5 sm:p-6">
+          <span
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-braise-rust text-xl text-white"
+            aria-hidden
+          >
+            ⭐
+          </span>
+          <div>
+            <p className="font-braise-display text-lg text-braise-ink">
+              Fiche Google Business
+            </p>
+            <p className="font-braise-sans text-[15px] text-braise-muted">
+              {business.googleRating} · {business.googleReviews} avis — mise
+              en avant directement depuis le site.
             </p>
           </div>
         </div>
-      </div>
-
-      {/* Fiche Google Business mise en avant — mention, pas un vrai back-office. */}
-      <div className="mt-16 flex flex-wrap items-center gap-4 rounded-xl border border-arcade-border bg-arcade-card p-5 sm:p-6">
-        <span
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-arcade-border-thick bg-corail text-2xl"
-          aria-hidden
-        >
-          ⭐
-        </span>
-        <div>
-          <p className="font-pixel text-xs leading-relaxed text-arcade-cream">
-            Fiche Google Business
-          </p>
-          <p className="mt-1 font-terminal text-lg text-arcade-tan">
-            {business.googleRating} · {business.googleReviews} avis — mise en
-            avant directement depuis le site.
-          </p>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
