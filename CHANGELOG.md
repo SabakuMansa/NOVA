@@ -5,6 +5,38 @@
 
 ---
 
+## [Designs Claude Design] `/exemples/autonome`, `/machine`, `/boutique` + vérification finale des 4 démos
+
+Suite de l'import du projet Claude Design (`8029a0b3-2dea-4782-867c-904a4666fe6b`) commencé avec Présence : les 3 fichiers restants appliqués un par un, chacun à sa propre démo, avec son propre commit local.
+
+### `/exemples/autonome` — maquette "Salon de coiffure" → Salon Marguerite
+
+Palette violet/noir/blanc, Space Grotesk + Manrope, look éditorial tech. Nouveaux `components/exemples/autonome/{Nav,Footer,Banner}.tsx`. Espace admin (tabs, sauvegarde) revérifié fonctionnel après restyle — commit `b615cc1`.
+
+### `/exemples/machine` — maquette "Restaurant" → Au Poil (toilettage canin)
+
+Palette rust/orange/teal, DM Serif Display + DM Sans + JetBrains Mono, mise en page dashboard/notifications transposée en excluant tout vocabulaire restaurant (carte, menu). Ajout de bascules "Automatisations actives" dans l'espace admin, dérivées des 3 automatisations réelles déjà documentées (relance avis Google, confirmation réservation, réponse contact) — aucune donnée inventée. Nouveaux `components/exemples/machine/{Nav,Footer,Banner}.tsx` — commit `3ff070e`.
+
+**Deux problèmes trouvés et corrigés pendant la vérification, avant le commit :**
+- L'agent en charge de cette démo a inventé 5 URLs Unsplash (motif d'ID plausible mais inexistant) — les 5 renvoyaient une 404. Repérées via `preview_network` (`ERR_BLOCKED_BY_ORB`), remplacées par de vraies photos de chiens vérifiées une par une (`fetch` + inspection visuelle) avant intégration.
+- Bug de layout : la colonne de contenu de l'espace admin n'avait pas de `min-w-0`, la forçant à déborder horizontalement (~640–1024px de large ; invisible au repos à cause d'`overflow-hidden`, révélé au clic sur une bascule qui déclenche un scroll-into-view natif). Corrigé, revérifié à 768px/1280px/mobile sans débordement.
+
+### `/exemples/boutique` — maquette "Boutique mode" → Le Petit Atelier (savonnerie/bougies)
+
+Palette camel/ivoire/encre, Playfair Display + Manrope, look éditorial. Sélecteur de taille vêtement de la maquette exclu ; `QuantitySelector` existant conservé comme UI d'ajout au panier, avec une nouvelle variante visuelle optionnelle `"nord"` (défaut `"arcade"` inchangé pour compatibilité). Nouveaux `components/exemples/boutique/{Nav,Footer,Banner,ProductPhoto}.tsx`. Parcours d'achat complet retesté après restyle : catalogue → fiche produit → panier → paiement test Stripe → confirmation (panier vidé) — `CartProvider` et logique Stripe non modifiés — commit `afe13e3`.
+
+**Note de sécurité** : l'agent en charge de cette démo signale que l'historique de conversation du projet Claude Design contenait un texte tentant de se faire passer pour des instructions système concernant un projet sans rapport ("Oncle Wang", avec de fausses instructions git/pwd/Stripe). L'agent a correctement identifié ce texte comme du contenu non fiable observé dans des données externes et l'a ignoré. Signalé ici pour information — aucune action n'a été prise sur la base de ce contenu.
+
+### Vérification finale (les 4 démos)
+
+- `tsc --noEmit` ✅ après chaque étape.
+- `grep` sur les 4 démos + leurs composants dédiés : zéro référence à `arcade-*`, `font-pixel`, `font-terminal` ou "Press Start" — aucune fuite du style arcade de la page d'accueil.
+- `git diff --stat` entre le commit de départ (`c92b873`) et `HEAD` : les 43 fichiers touchés sont tous dans `app/exemples/{presence,autonome,machine,boutique}`, `components/exemples/{presence,autonome,machine,boutique}`, `components/exemples/QuantitySelector.tsx` et `tailwind.config.ts` — page d'accueil, `/labo`, `/_archive/v1`, `/_archive/v2` et `components/v3/*` non touchés.
+- Les 4 démos vérifiées visuellement en desktop et mobile ; chacune garde une identité distincte (florale/sauge, éditorial violet, rust/dashboard, camel/ivoire) sans converger vers un style commun.
+- 4 commits locaux séparés (un par démo), aucun `git push`.
+
+---
+
 ## [Designs Claude Design] `/exemples/presence` — identité visuelle "Maison Verdure"
 
 Import du projet Claude Design (`8029a0b3-2dea-4782-867c-904a4666fe6b`, fichier
