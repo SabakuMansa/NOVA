@@ -5,6 +5,69 @@
 
 ---
 
+## [Designs Claude Design] `/exemples/presence` — identité visuelle "Maison Verdure"
+
+Import du projet Claude Design (`8029a0b3-2dea-4782-867c-904a4666fe6b`, fichier
+`01 - Fleuriste (Présence).dc.html`) appliqué comme référence visuelle
+(palette, typographie, mise en page, ambiance) à la démo Présence. Contenu
+réel inchangé (nom, adresse, horaires, avis Google, textes) — seule
+l'habillage change. Style propre à cette page, sans lien avec le style arcade
+de la page d'accueil ni avec les 3 autres démos.
+
+### Ajouté
+
+- **`tailwind.config.ts`** : 4 nouveaux jeux de tokens couleur/police
+  (`fleur-*`, `metam-*`, `braise-*`, `nord-*`) pour les 4 démos, ajoutés en
+  une seule fois avant toute délégation pour éviter les conflits d'édition
+  concurrente sur ce fichier partagé. Seul `fleur-*` est utilisé pour
+  l'instant (Présence) ; les 3 autres seront consommés par les prochaines
+  démos.
+- **`components/exemples/presence/{Nav,Footer,Banner}.tsx`** (nouveaux,
+  propres à cette démo — la structure de la maquette ne correspond pas aux
+  composants partagés `ExempleNav`/`ExempleFooter`/`ExempleBanner`
+  existants) : en-tête sticky flouté avec monogramme + nom en serif, liens
+  actifs colorés, dernier lien en pastille pleine (Contact) ; pied de page
+  sombre avec nom/adresse/horaires réels ; bandeau "exemple concret" avec
+  lien retour vers `/#plans`.
+- **`app/exemples/presence/layout.tsx`** : chargement de Cormorant Garamond
+  + Nunito Sans via `next/font/google`, scindé par segment (n'affecte ni la
+  homepage ni les 3 autres démos).
+
+### Modifié (style uniquement, contenu réel préservé)
+
+- **`app/exemples/presence/page.tsx`** : hero 2 colonnes (texte + vraie
+  photo Unsplash de vitrine), section fiche Google Business restylée.
+- **`app/exemples/presence/presentation/page.tsx`** : 2 colonnes
+  photo/texte, grille de 3 valeurs.
+- **`app/exemples/presence/galerie/page.tsx`** : 4 vraies photos Unsplash
+  associées aux 4 items réels de la galerie (icône + libellé conservés en
+  légende). Photo initialement reprise de la maquette pour "Poteries &
+  accessoires" ne correspondait pas au sujet (paysage de montagne) —
+  remplacée par une photo de plante en pot en cours de vérification
+  visuelle.
+- **`app/exemples/presence/contact/page.tsx`** : logique du formulaire
+  strictement inchangée (mêmes champs `required`, même `onSubmit`, même
+  état `sent`) — habillage uniquement (fond sage, formulaire 2 colonnes,
+  état de succès avec badge circulaire).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅.
+- Les 4 pages (accueil, présentation, galerie, contact) vérifiées
+  visuellement en desktop et mobile (375×812) via l'outil navigateur —
+  aucun débordement, nav mobile empilée lisible.
+- Formulaire de contact testé fonctionnellement de bout en bout (remplissage
+  des 3 champs, soumission, état "Message envoyé !" confirmé à l'écran) —
+  aucune régression sur la logique existante.
+- Aucune animation en boucle/auto-déclenchée sur cette page (seules des
+  micro-transitions au survol) — pas de garde `prefers-reduced-motion`
+  nécessaire.
+- Page d'accueil, `/labo`, `/_archive/v1`, `/_archive/v2` et les 3 autres
+  démos non touchés (seuls les fichiers listés ci-dessus modifiés/créés).
+- **Tout reste local** — aucun `git push`, aucun déploiement.
+
+---
+
 ## [Nettoyage du code] Audit préalable — ce qui va être touché ou non
 
 **Avant toute modification.** Checkpoint Git : `HEAD` était déjà propre et

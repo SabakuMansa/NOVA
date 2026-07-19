@@ -7,45 +7,31 @@ export default function PresenceContactPage() {
   const { contact, business } = presenceDemo;
   const [sent, setSent] = useState(false);
   const field =
-    "w-full rounded-xl border-2 border-arcade-border-thick bg-arcade-card px-4 py-3 font-terminal text-lg text-arcade-cream placeholder-arcade-taupe/70 transition-colors focus:outline-none focus:border-arcade-orange";
+    "w-full rounded-md border-none bg-fleur-sage-light px-4 py-3.5 font-fleur-sans text-[15px] text-fleur-bg placeholder-fleur-bg/60 transition-colors focus:outline-none focus:ring-2 focus:ring-fleur-bg/40";
 
   return (
-    <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
-      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+    <section className="bg-fleur-sage px-5 py-16 text-fleur-bg md:px-8 md:py-24">
+      <div className="mx-auto grid max-w-content gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
-          <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
-            <span className="h-2 w-2 rounded-full bg-jaune" aria-hidden />
-            {contact.eyebrow}
-          </p>
-          <h1 className="mt-6 font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
+          <h1 className="font-fleur-display text-3xl font-medium leading-tight sm:text-4xl">
             {contact.title}
           </h1>
-          <p className="mt-4 font-terminal text-xl text-arcade-tan">
+          <p className="mt-5 max-w-sm font-fleur-sans text-lg text-fleur-bg/85">
             {contact.subtitle}
           </p>
 
-          <div className="mt-8 space-y-3">
-            <div className="flex items-center gap-3 rounded-xl border border-arcade-border bg-arcade-card p-4">
-              <span className="text-xl" aria-hidden>
-                📍
-              </span>
-              <span className="font-terminal text-base text-arcade-taupe">
-                {business.address}
-              </span>
+          <div className="mt-9 flex flex-col gap-4 font-fleur-sans text-[15px]">
+            <div className="flex gap-3">
+              <span className="text-fleur-bg/60">Adresse</span>
+              <span>{business.address}</span>
             </div>
-            <div className="flex items-center gap-3 rounded-xl border border-arcade-border bg-arcade-card p-4">
-              <span className="text-xl" aria-hidden>
-                🕒
-              </span>
-              <span className="font-terminal text-base text-arcade-taupe">
-                {business.hours}
-              </span>
+            <div className="flex gap-3">
+              <span className="text-fleur-bg/60">Horaires</span>
+              <span>{business.hours}</span>
             </div>
-            <div className="flex items-center gap-3 rounded-xl border border-arcade-border bg-arcade-card p-4">
-              <span className="text-xl" aria-hidden>
-                ⭐
-              </span>
-              <span className="font-terminal text-base text-arcade-taupe">
+            <div className="flex gap-3">
+              <span className="text-fleur-bg/60">Google</span>
+              <span>
                 {business.googleRating} sur Google ({business.googleReviews}{" "}
                 avis)
               </span>
@@ -53,75 +39,56 @@ export default function PresenceContactPage() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border-2 border-arcade-border-thick bg-arcade-card">
-          <div className="flex items-center gap-2 border-b-2 border-arcade-border-thick bg-arcade-bg px-3.5 py-2.5">
+        {sent ? (
+          <div className="flex min-h-[18rem] flex-col items-center justify-center rounded-md bg-fleur-sage-light/40 p-8 text-center">
             <span
-              className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-orange"
+              className="flex h-14 w-14 items-center justify-center rounded-full bg-fleur-bg text-2xl text-fleur-sage"
               aria-hidden
-            />
-            <span
-              className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-gold"
-              aria-hidden
-            />
-            <span
-              className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-tan"
-              aria-hidden
-            />
-            <span className="ml-2 font-mono text-[0.62rem] text-arcade-taupe">
-              contact.form
-            </span>
-          </div>
-          {sent ? (
-            <div className="flex min-h-[18rem] flex-col items-center justify-center p-8 text-center">
-              <span
-                className="flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-arcade-border-thick bg-teal text-2xl text-arcade-bg"
-                aria-hidden
-              >
-                ✓
-              </span>
-              <h2 className="mt-4 font-pixel text-sm text-arcade-cream">
-                Message envoyé !
-              </h2>
-              <p className="mt-2 max-w-xs font-terminal text-lg text-arcade-tan">
-                On revient vers vous rapidement.
-              </p>
-            </div>
-          ) : (
-            <form
-              className="space-y-4 p-6"
-              onSubmit={(e) => {
-                e.preventDefault();
-                setSent(true);
-              }}
             >
-              <input
-                required
-                placeholder={contact.fields.name}
-                autoComplete="name"
-                className={field}
-              />
-              <input
-                required
-                type="email"
-                placeholder={contact.fields.email}
-                autoComplete="email"
-                className={field}
-              />
-              <textarea
-                required
-                rows={4}
-                placeholder={contact.fields.message}
-                className={`${field} resize-none`}
-              />
-              <button
-                type="submit"
-                className="w-full rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-6 py-3.5 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[5px_5px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
-              >
-                {contact.submit}
-              </button>
-            </form>
-          )}
-        </div>
+              ✓
+            </span>
+            <h2 className="mt-4 font-fleur-display text-xl">
+              Message envoyé !
+            </h2>
+            <p className="mt-2 max-w-xs font-fleur-sans text-[15px] text-fleur-bg/80">
+              On revient vers vous rapidement.
+            </p>
+          </div>
+        ) : (
+          <form
+            className="flex flex-col gap-3.5"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSent(true);
+            }}
+          >
+            <input
+              required
+              placeholder={contact.fields.name}
+              autoComplete="name"
+              className={field}
+            />
+            <input
+              required
+              type="email"
+              placeholder={contact.fields.email}
+              autoComplete="email"
+              className={field}
+            />
+            <textarea
+              required
+              rows={4}
+              placeholder={contact.fields.message}
+              className={`${field} resize-none`}
+            />
+            <button
+              type="submit"
+              className="mt-1 rounded-full bg-fleur-bg py-3.5 font-fleur-sans text-[15px] font-bold text-fleur-sage transition-transform hover:-translate-y-0.5"
+            >
+              {contact.submit}
+            </button>
+          </form>
+        )}
       </div>
     </section>
   );

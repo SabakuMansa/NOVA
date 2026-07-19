@@ -1,52 +1,51 @@
-import PlaceholderImage from "@/components/exemples/PlaceholderImage";
 import { presenceDemo } from "@/content/exemples/presence";
 
 export default function PresencePresentationPage() {
   const { presentation } = presenceDemo;
 
   return (
-    <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
-      <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
-        <span className="h-2 w-2 rounded-full bg-violet" aria-hidden />
-        {presentation.eyebrow}
-      </p>
-      <h1 className="mt-6 max-w-2xl font-pixel text-lg leading-relaxed tracking-tight text-arcade-cream sm:text-2xl md:text-3xl">
-        {presentation.title}
-      </h1>
-
-      <div className="mt-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-        <PlaceholderImage
-          icon="🌿"
-          label="Photo de l'équipe / du lieu"
-          color="teal"
-          className="aspect-[4/3] w-full"
+    <section className="bg-fleur-bg-alt px-5 py-16 md:px-8 md:py-24">
+      <div className="mx-auto grid max-w-content gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-16">
+        <div
+          className="aspect-[4/5] rounded-md bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1487070183336-b863922373d4?w=800&q=80&auto=format&fit=crop')",
+          }}
+          role="img"
+          aria-label="Atelier floral de Maison Verdure"
         />
-        <div className="space-y-4">
-          {presentation.body.map((p, i) => (
-            <p
-              key={i}
-              className="font-terminal text-xl leading-relaxed text-arcade-tan"
-            >
-              {p}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-14 grid gap-5 sm:grid-cols-3">
-        {presentation.values.map((v) => (
-          <div
-            key={v.title}
-            className="h-full rounded-xl border border-arcade-border bg-arcade-card p-5"
-          >
-            <h3 className="font-pixel text-sm leading-snug text-arcade-cream">
-              {v.title}
-            </h3>
-            <p className="mt-2 font-terminal text-base leading-relaxed text-arcade-tan">
-              {v.text}
-            </p>
+        <div>
+          <span className="font-fleur-sans text-[13px] uppercase tracking-[3px] text-fleur-olive">
+            {presentation.eyebrow}
+          </span>
+          <h1 className="mt-4 font-fleur-display text-3xl font-medium leading-tight text-fleur-ink-dark sm:text-4xl">
+            {presentation.title}
+          </h1>
+          <div className="mt-6 space-y-4">
+            {presentation.body.map((p, i) => (
+              <p
+                key={i}
+                className="font-fleur-sans text-[17px] leading-relaxed text-fleur-muted"
+              >
+                {p}
+              </p>
+            ))}
           </div>
-        ))}
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-3">
+            {presentation.values.map((v) => (
+              <div key={v.title}>
+                <h3 className="font-fleur-display text-xl font-medium text-fleur-ink-dark">
+                  {v.title}
+                </h3>
+                <p className="mt-2 font-fleur-sans text-sm leading-relaxed text-fleur-muted">
+                  {v.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
