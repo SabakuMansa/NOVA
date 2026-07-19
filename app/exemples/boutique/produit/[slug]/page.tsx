@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import PlaceholderImage from "@/components/exemples/PlaceholderImage";
+import ProductPhoto from "@/components/exemples/boutique/ProductPhoto";
 import { boutiqueDemo } from "@/content/exemples/boutique";
 import AddToCartButton from "./AddToCartButton";
 
@@ -18,24 +18,23 @@ export default function BoutiqueProduitPage({
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-        <PlaceholderImage
-          icon={product.icon}
-          label={product.category}
-          color={product.color}
+        <ProductPhoto
+          slug={product.slug}
+          label={product.name}
+          width={1000}
           className="aspect-square w-full"
         />
         <div>
-          <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
-            <span className="h-2 w-2 rounded-full bg-jaune" aria-hidden />
+          <span className="font-nord-sans text-[13px] uppercase tracking-[0.22em] text-nord-camel">
             {product.category}
-          </p>
-          <h1 className="mt-6 font-pixel text-xl tracking-tight text-arcade-cream sm:text-2xl">
+          </span>
+          <h1 className="mt-5 font-nord-display text-3xl text-nord-ink sm:text-4xl">
             {product.name}
           </h1>
-          <p className="mt-4 font-mono text-2xl font-bold text-arcade-gold">
+          <p className="mt-4 font-nord-sans text-2xl font-semibold text-nord-ink">
             {product.price}€
           </p>
-          <p className="mt-5 max-w-md font-terminal text-xl leading-relaxed text-arcade-tan">
+          <p className="mt-5 max-w-md font-nord-sans text-lg leading-relaxed text-nord-muted">
             {product.description}
           </p>
 

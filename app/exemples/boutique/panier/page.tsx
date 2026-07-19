@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import PlaceholderImage from "@/components/exemples/PlaceholderImage";
+import ProductPhoto from "@/components/exemples/boutique/ProductPhoto";
 import QuantitySelector from "@/components/exemples/QuantitySelector";
 import { useCart } from "@/components/exemples/CartContext";
 import { boutiqueDemo } from "@/content/exemples/boutique";
@@ -53,22 +53,23 @@ export default function BoutiquePanierPage() {
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
-      <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
-        <span className="h-2 w-2 rounded-full bg-jaune" aria-hidden />
+      <span className="font-nord-sans text-[13px] uppercase tracking-[0.22em] text-nord-camel">
         {panier.eyebrow}
-      </p>
-      <h1 className="mt-6 font-pixel text-2xl tracking-tight text-arcade-cream sm:text-3xl">
+      </span>
+      <h1 className="mt-4 font-nord-display text-4xl text-nord-ink sm:text-5xl">
         {panier.title}
       </h1>
 
       {lines.length === 0 ? (
-        <div className="mt-10 flex flex-col items-center gap-4 rounded-xl border border-arcade-border bg-arcade-card p-10 text-center">
-          <p className="font-terminal text-xl text-arcade-tan">{panier.empty}</p>
+        <div className="mt-10 flex flex-col items-center gap-4 border border-nord-border bg-nord-bg-alt p-10 text-center">
+          <p className="font-nord-sans text-lg text-nord-muted">
+            {panier.empty}
+          </p>
           <Link
             href="/exemples/boutique/catalogue"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-arcade-border-thick bg-jaune px-6 py-3 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[3px_3px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
+            className="inline-flex items-center justify-center gap-2 border border-nord-ink bg-nord-ink px-6 py-3 font-nord-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-nord-bg transition-colors hover:bg-transparent hover:text-nord-ink"
           >
-            {panier.emptyCta} →
+            {panier.emptyCta}
           </Link>
         </div>
       ) : (
@@ -77,18 +78,19 @@ export default function BoutiquePanierPage() {
             {lines.map(({ item, product }) => (
               <div
                 key={item.slug}
-                className="flex flex-wrap items-center gap-4 rounded-xl border border-arcade-border bg-arcade-card p-4"
+                className="flex flex-wrap items-center gap-4 border-b border-nord-border pb-4"
               >
-                <PlaceholderImage
-                  icon={product!.icon}
-                  color={product!.color}
+                <ProductPhoto
+                  slug={product!.slug}
+                  label={product!.name}
+                  width={200}
                   className="h-20 w-20 shrink-0"
                 />
                 <div className="min-w-[10rem] flex-1">
-                  <p className="font-terminal text-base font-bold text-arcade-cream">
+                  <p className="font-nord-display text-base text-nord-ink">
                     {product!.name}
                   </p>
-                  <p className="font-mono text-sm text-arcade-taupe">
+                  <p className="font-nord-sans text-sm text-nord-muted">
                     {product!.price}€ / unité
                   </p>
                 </div>
@@ -96,14 +98,15 @@ export default function BoutiquePanierPage() {
                   <QuantitySelector
                     value={item.qty}
                     onChange={(qty) => updateQty(item.slug, qty)}
+                    variant="nord"
                   />
-                  <span className="w-16 shrink-0 text-right font-mono text-sm font-bold text-arcade-gold">
+                  <span className="w-16 shrink-0 text-right font-nord-sans text-sm font-semibold text-nord-ink">
                     {(product!.price * item.qty).toFixed(2)}€
                   </span>
                   <button
                     type="button"
                     onClick={() => removeItem(item.slug)}
-                    className="shrink-0 font-mono text-xs font-bold text-arcade-taupe underline underline-offset-2 hover:text-arcade-cream"
+                    className="shrink-0 font-nord-sans text-xs uppercase tracking-wide text-nord-muted underline underline-offset-2 hover:text-nord-ink"
                   >
                     Retirer
                   </button>
@@ -112,46 +115,27 @@ export default function BoutiquePanierPage() {
             ))}
           </div>
 
-          <div className="h-fit overflow-hidden rounded-2xl border-2 border-arcade-border-thick bg-arcade-card">
-            <div className="flex items-center gap-2 border-b-2 border-arcade-border-thick bg-arcade-bg px-3.5 py-2.5">
-              <span
-                className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-orange"
-                aria-hidden
-              />
-              <span
-                className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-gold"
-                aria-hidden
-              />
-              <span
-                className="h-3 w-3 rounded-full border-2 border-arcade-border-thick bg-arcade-tan"
-                aria-hidden
-              />
-              <span className="ml-2 font-mono text-[0.62rem] text-arcade-taupe">
-                paiement.checkout
-              </span>
+          <div className="h-fit border border-nord-border bg-nord-bg-alt p-6">
+            <div className="flex items-center justify-between font-nord-display text-lg text-nord-ink">
+              <span>Total</span>
+              <span>{total.toFixed(2)}€</span>
             </div>
-            <div className="p-6">
-              <div className="flex items-center justify-between font-pixel text-base text-arcade-cream">
-                <span>Total</span>
-                <span className="font-mono text-arcade-gold">{total.toFixed(2)}€</span>
-              </div>
-              <button
-                type="button"
-                onClick={handleCheckout}
-                disabled={loading}
-                className="mt-6 w-full rounded-xl border-2 border-arcade-border-thick bg-jaune px-6 py-3.5 font-pixel text-[0.65rem] leading-relaxed text-arcade-bg shadow-[4px_4px_0_#FFD23F] transition-transform hover:-translate-y-0.5 disabled:opacity-60"
-              >
-                {loading ? "…" : panier.submit}
-              </button>
-              {error && (
-                <p className="mt-3 font-terminal text-base font-bold text-corail">
-                  {error}
-                </p>
-              )}
-              <p className="mt-4 font-mono text-[0.65rem] uppercase leading-relaxed tracking-wide text-arcade-muted">
-                {panier.testModeNote}
+            <button
+              type="button"
+              onClick={handleCheckout}
+              disabled={loading}
+              className="mt-6 w-full border border-nord-ink bg-nord-ink px-6 py-3.5 font-nord-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-nord-bg transition-colors hover:bg-transparent hover:text-nord-ink disabled:opacity-60"
+            >
+              {loading ? "…" : panier.submit}
+            </button>
+            {error && (
+              <p className="mt-3 font-nord-sans text-sm font-semibold text-red-700">
+                {error}
               </p>
-            </div>
+            )}
+            <p className="mt-4 font-nord-sans text-[0.7rem] uppercase leading-relaxed tracking-wide text-nord-muted-light">
+              {panier.testModeNote}
+            </p>
           </div>
         </div>
       )}

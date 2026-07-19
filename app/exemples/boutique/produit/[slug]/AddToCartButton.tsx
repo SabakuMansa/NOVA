@@ -13,14 +13,14 @@ export default function AddToCartButton({ slug }: { slug: string }) {
   return (
     <div className="mt-8">
       <div className="flex items-center gap-3">
-        <QuantitySelector value={qty} onChange={setQty} />
+        <QuantitySelector value={qty} onChange={setQty} variant="nord" />
         <button
           type="button"
           onClick={() => {
             addItem(slug, qty);
             setAdded(true);
           }}
-          className="flex-1 rounded-xl border-2 border-arcade-border-thick bg-jaune px-6 py-3 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[4px_4px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
+          className="flex-1 border border-nord-ink bg-nord-ink px-6 py-3 font-nord-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-nord-bg transition-colors hover:bg-transparent hover:text-nord-ink"
         >
           {added ? "✓ Ajouté au panier" : "Ajouter au panier"}
         </button>
@@ -28,7 +28,7 @@ export default function AddToCartButton({ slug }: { slug: string }) {
       {added && (
         <Link
           href="/exemples/boutique/panier"
-          className="mt-3 block text-center font-mono text-sm font-bold text-arcade-cream underline underline-offset-2"
+          className="mt-3 block text-center font-nord-sans text-sm font-semibold text-nord-ink underline underline-offset-2"
         >
           Voir le panier →
         </Link>

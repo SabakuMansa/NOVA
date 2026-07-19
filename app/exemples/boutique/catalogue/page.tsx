@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import PlaceholderImage from "@/components/exemples/PlaceholderImage";
+import ProductPhoto from "@/components/exemples/boutique/ProductPhoto";
 import QuantitySelector from "@/components/exemples/QuantitySelector";
 import { useCart } from "@/components/exemples/CartContext";
 import { boutiqueDemo } from "@/content/exemples/boutique";
@@ -31,14 +31,13 @@ export default function BoutiqueCataloguePage() {
 
   return (
     <section className="mx-auto max-w-content px-5 py-16 md:px-8 md:py-24">
-      <p className="inline-flex items-center gap-2 rounded-full border-2 border-arcade-border-thick bg-arcade-card px-3.5 py-1.5 font-mono text-[0.65rem] uppercase tracking-wide text-arcade-taupe shadow-[2px_2px_0_#000000]">
-        <span className="h-2 w-2 rounded-full bg-jaune" aria-hidden />
+      <span className="font-nord-sans text-[13px] uppercase tracking-[0.22em] text-nord-camel">
         {catalogue.eyebrow}
-      </p>
-      <h1 className="mt-6 font-pixel text-2xl tracking-tight text-arcade-cream sm:text-3xl">
+      </span>
+      <h1 className="mt-4 font-nord-display text-4xl text-nord-ink sm:text-5xl">
         {catalogue.title}
       </h1>
-      <p className="mt-4 max-w-xl font-terminal text-xl text-arcade-tan">
+      <p className="mt-4 max-w-xl font-nord-sans text-lg text-nord-muted">
         {catalogue.subtitle}
       </p>
 
@@ -48,10 +47,10 @@ export default function BoutiqueCataloguePage() {
             key={c}
             type="button"
             onClick={() => setActiveCategory(c)}
-            className={`rounded-full border-2 border-arcade-border-thick px-4 py-1.5 font-mono text-sm font-bold transition-colors ${
+            className={`border px-4 py-1.5 font-nord-sans text-[13px] uppercase tracking-[0.08em] transition-colors ${
               activeCategory === c
-                ? "bg-jaune text-arcade-bg"
-                : "bg-arcade-card text-arcade-tan hover:bg-arcade-bg-alt"
+                ? "border-nord-ink bg-nord-ink text-nord-bg"
+                : "border-nord-border text-nord-muted hover:border-nord-ink hover:text-nord-ink"
             }`}
           >
             {c}
@@ -59,31 +58,27 @@ export default function BoutiqueCataloguePage() {
         ))}
       </div>
 
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-10 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
         {visible.map((p) => (
-          <div
-            key={p.slug}
-            className="flex flex-col rounded-xl border border-arcade-border bg-arcade-card p-4"
-          >
+          <div key={p.slug} className="flex flex-col">
             <Link href={`/exemples/boutique/produit/${p.slug}`}>
-              <PlaceholderImage
-                icon={p.icon}
-                label={p.category}
-                color={p.color}
-                className="aspect-square w-full"
+              <ProductPhoto
+                slug={p.slug}
+                label={p.name}
+                className="aspect-[4/5] w-full"
               />
             </Link>
             <Link
               href={`/exemples/boutique/produit/${p.slug}`}
-              className="mt-4 font-terminal text-lg font-bold text-arcade-cream hover:underline"
+              className="mt-4 font-nord-display text-lg text-nord-ink hover:underline"
             >
               {p.name}
             </Link>
-            <p className="mt-1 font-terminal text-base text-arcade-taupe">
+            <p className="mt-1 font-nord-sans text-sm leading-relaxed text-nord-muted">
               {p.description}
             </p>
             <div className="mt-4 flex items-center justify-between gap-2">
-              <span className="font-mono text-lg font-bold text-arcade-gold">
+              <span className="font-nord-sans text-base font-semibold text-nord-ink">
                 {p.price}€
               </span>
               <QuantitySelector
@@ -91,12 +86,13 @@ export default function BoutiqueCataloguePage() {
                 onChange={(qty) =>
                   setQuantities((q) => ({ ...q, [p.slug]: qty }))
                 }
+                variant="nord"
               />
             </div>
             <button
               type="button"
               onClick={() => handleAdd(p.slug)}
-              className="mt-3 w-full rounded-xl border-2 border-arcade-border-thick bg-jaune px-4 py-2 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[3px_3px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
+              className="mt-3 w-full border border-nord-ink bg-nord-ink px-4 py-2.5 font-nord-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-nord-bg transition-colors hover:bg-transparent hover:text-nord-ink"
             >
               {justAdded === p.slug ? "✓ Ajouté" : "Ajouter"}
             </button>
