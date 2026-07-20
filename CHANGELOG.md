@@ -5,6 +5,69 @@
 
 ---
 
+## [Fix] Image de prévisualisation (Open Graph) obsolète
+
+`app/opengraph-image.tsx` reflétait encore l'ancienne identité "geek
+coloré" (fond crème, blobs aurora, wordmark violet, accroche "Pendant que
+vous êtes en plein service…") — jamais mis à jour lors du passage à
+l'identité pixel arcade actuelle (V3Nav/V3Hero), ni lors du rebranding
+K1000 Studio (le texte avait été renommé mais pas le design lui-même).
+
+### Corrigé
+
+- **Fond** : crème clair → sombre anthracite (`#17130D`, dégradé radial
+  identique au panneau Hero réel), cohérent avec le reste du site.
+- **Wordmark** : monogramme "K" (fond doré, bordure épaisse, ombre portée
+  dure) + "K1000" crème + ".studio" **orange** (`#FF7A00`, plus violet) —
+  calqué exactement sur `components/v3/Nav.tsx`, y compris le bandeau
+  bezel "1P 00000 · INSERT COIN · HI 99999" repris du haut de la Nav
+  réelle.
+- **Police** : Press Start 2P (titres/wordmark) et VT323 (texte courant)
+  — les vraies polices du site, chargées depuis des fichiers locaux
+  (`public/fonts/PressStart2P-Regular.ttf`, `VT323-Regular.ttf`,
+  téléchargés depuis Google Fonts) via l'option `fonts` d'`ImageResponse`.
+  Plus de police système de substitution.
+- **Titre** : remplacé par le texte réellement affiché dans le Hero du
+  site (`v3hero.titleA/titleEm/titleB` dans `content/v3.ts` — "Vos futurs
+  clients vous cherchent déjà. **Assurez-vous** qu'ils vous trouvent."),
+  vérifié dans le contenu plutôt que deviné. L'ancienne accroche "Pendant
+  que vous êtes en plein service, votre site bosse." ne correspond plus à
+  aucun texte actuellement affiché sur le site et a été retirée de
+  l'image (elle reste la baseline `description` des metadata OG/Twitter,
+  cohérente avec le slogan produit).
+- **Métadonnées associées** (`app/layout.tsx`) : `title`, `description`,
+  `openGraph.title/description`, `twitter.title/description` déjà
+  cohérents avec "K1000 Studio" depuis le rebranding précédent — vérifiés,
+  aucune mention "NOVA" résiduelle trouvée.
+
+### Bugs Satori rencontrés et corrigés en cours de route
+
+- `width: "fit-content"` non supporté par Satori (moteur derrière
+  `ImageResponse`) → remplacé par `alignSelf: "flex-start"` sur le badge
+  eyebrow.
+- `display: "inline"` non supporté (valeurs autorisées : `flex` / `block`
+  / `none` / `-webkit-box`) → `flex` partout.
+- Mélanger du texte brut et un `<span>` coloré imbriqué dans un seul flux
+  ne se met pas à la ligne correctement (le span déborde au lieu de
+  wrapper) → titre reconstruit en deux lignes explicites (une par phrase
+  réelle) plutôt qu'un seul paragraphe à retour automatique.
+
+### Vérification effectuée
+
+- `tsc --noEmit` ✅, `npm run build` ✅ (route `/opengraph-image` générée
+  sans erreur, 1200×630 confirmé).
+- Rendu visuel vérifié en navigateur (`/opengraph-image` en local) :
+  fond sombre, wordmark identique à la Nav réelle, titre exact, aucun
+  débordement ni texte coupé.
+- **Non vérifié** : rendu via un outil de partage de lien externe
+  (opengraph.xyz, Facebook/LinkedIn debugger) — ces outils nécessitent
+  une URL publique pour aller chercher l'image, ce que `localhost` ne
+  permet pas. Cette étape suppose un déploiement (push) préalable, non
+  demandé explicitement pour cette tâche — à faire une fois le fix
+  poussé/déployé.
+
+---
+
 ## [Rebranding] NOVA Studio → K1000 Studio
 
 Rebranding complet du site, à la demande explicite (cette tâche autorise
