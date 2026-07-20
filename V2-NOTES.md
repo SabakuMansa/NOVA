@@ -59,7 +59,7 @@ l'original.
 
 - Nav/Footer avec de vrais liens de page au lieu d'ancres.
 - Smooth scroll (Lenis) sur tout `/v2`.
-- Transition d'entrée de page via `template.tsx` (fade + léger slide, easing NOVA
+- Transition d'entrée de page via `template.tsx` (fade + léger slide, easing K1000
   `[0.22,1,0.36,1]`, jamais de rebond).
 - Un seul moment signature palier 3 : le hero de `/v2` reprend le shader WebGL
   « braises » déjà construit et **vérifié** pour `/signature` (réactif au curseur),

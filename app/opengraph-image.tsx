@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 // Image de partage (réseaux sociaux / messageries) — identité v3 « geek coloré ».
 // Générée statiquement au build, 100 % maison.
-export const alt = "NOVA Studio — Votre site bosse pendant que vous servez";
+export const alt = "K1000 Studio — Votre site bosse pendant que vous servez";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -78,7 +78,7 @@ export default function OpengraphImage() {
             fontWeight: 800,
           }}
         >
-          N
+          K
         </div>
         <div
           style={{
@@ -88,7 +88,7 @@ export default function OpengraphImage() {
             display: "flex",
           }}
         >
-          NOVA<span style={{ color: "#6C5CE7" }}>.studio</span>
+          K1000<span style={{ color: "#6C5CE7" }}>.studio</span>
         </div>
       </div>
 

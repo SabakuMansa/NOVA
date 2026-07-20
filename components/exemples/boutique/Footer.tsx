@@ -23,7 +23,7 @@ export default function BoutiqueFooter({
         {address} · {hours}
       </p>
       <p className="mt-6 font-nord-sans text-[0.65rem] uppercase tracking-wide text-nord-bg/40">
-        Site d&apos;exemple réalisé avec le {planLabel} de NOVA Studio ·
+        Site d&apos;exemple réalisé avec le {planLabel} de K1000 Studio ·
         Hébergement inclus
       </p>
     </footer>

@@ -27,7 +27,7 @@ export const v3nav = {
   ],
   // "#contact" n'existe plus (section retirée) — mailto direct vers le
   // vrai email déjà validé, pas de lien mort.
-  cta: { label: "Audit gratuit", href: "mailto:bonjour@nova-studio.fr" },
+  cta: { label: "Audit gratuit", href: "mailto:bonjour@k1000studio.fr" },
 };
 
 export const v3hero = {
@@ -40,7 +40,7 @@ export const v3hero = {
     "Je gère des restaurants en Île-de-France. J'y ai vu trop de commerces excellents avec une image en ligne qui ne leur ressemble pas. Je construis des vitrines numériques à la hauteur de votre commerce.",
   ctaPrimary: {
     label: "Réserver un audit gratuit (15 min)",
-    href: "mailto:bonjour@nova-studio.fr",
+    href: "mailto:bonjour@k1000studio.fr",
   },
   ctaSecondary: { label: "Voir les plans", href: "#plans" },
 };
@@ -181,7 +181,7 @@ export const v3fondateur = {
   ctaHref: "/qui-je-suis",
   // Contenu complet — utilisé sur la page dédiée /qui-je-suis.
   pageIntro:
-    "Je gère plusieurs restaurants en Île-de-France. NOVA Studio n'est pas né d'une étude de marché, mais d'un constat direct : gérer un commerce au quotidien avec des outils numériques mal pensés, ça use. Alors j'ai commencé par construire les miens — puis ceux d'autres commerçants.",
+    "Je gère plusieurs restaurants en Île-de-France. K1000 Studio n'est pas né d'une étude de marché, mais d'un constat direct : gérer un commerce au quotidien avec des outils numériques mal pensés, ça use. Alors j'ai commencé par construire les miens — puis ceux d'autres commerçants.",
   points: [
     "Un dimanche soir, pas de webmaster à qui écrire pour changer un horaire.",
     "Un client qui appelle parce que le site affiche encore l'ancienne info.",
@@ -200,5 +200,5 @@ export const v3footer = {
   tagline: "Studio digital — Île-de-France",
   blurb:
     "Des sites et des outils qui bossent pour les commerces locaux, construits par un restaurateur en activité.",
-  copyright: "© 2026 NOVA Studio. Fait avec sérieux (et un peu de sauce).",
+  copyright: "© 2026 K1000 Studio. Fait avec sérieux (et un peu de sauce).",
 };

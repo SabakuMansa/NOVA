@@ -6,7 +6,7 @@ import SmoothScroll from "@/components/v2/SmoothScroll";
 
 // Espace isolé de démonstration : non indexé tant qu'il n'est pas validé.
 export const metadata: Metadata = {
-  title: { default: "NOVA Studio", template: "%s · NOVA Studio" },
+  title: { default: "K1000 Studio", template: "%s · K1000 Studio" },
   robots: { index: false, follow: false },
   metadataBase: new URL(seo.siteUrl),
 };

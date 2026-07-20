@@ -1,6 +1,6 @@
-# NOVA Studio — Site vitrine
+# K1000 Studio — Site vitrine
 
-Site vitrine de **NOVA Studio**, studio digital local (Île-de-France) qui conçoit
+Site vitrine de **K1000 Studio**, studio digital local (Île-de-France) qui conçoit
 des sites et outils numériques pour les commerces de proximité.
 
 Fondateur restaurateur en activité → positionnement « un commerçant qui comprend
@@ -122,11 +122,10 @@ ou un tarif sans jamais toucher à un composant.
 
 ## ⚠️ Placeholder à remplacer avant mise en ligne définitive
 
-« NOVA Studio » est encore un **nom de code** dans certains endroits :
+Le nom de marque (« K1000 Studio ») et le domaine (`k1000studio.fr`) sont
+désormais définitifs (`seo.siteUrl`, `content/site.ts`). Restent encore
+des placeholders :
 
-- **`seo.siteUrl`** (`content/site.ts`) : domaine placeholder
-  (`https://nova-studio.fr`) → mettre le vrai domaine (utilisé par le sitemap,
-  robots, OG, canonical, JSON-LD).
 - **Coordonnées de contact** (`content/v3.ts` → `v3contact`) : email/téléphone d'exemple.
 - **`lib/reviews/businesses.ts`** : un seul commerce fictif de démonstration
   (« La Table du Marché ») — à remplacer par la config réelle de chaque

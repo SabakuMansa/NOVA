@@ -14,7 +14,7 @@ export type ReviewJobStatus =
   | "error" // tentative d'envoi échouée
   | "canceled"; // désinscrit avant l'envoi
 
-/** Jetons de marque du commerçant — l'email reprend SA charte, pas celle de NOVA. */
+/** Jetons de marque du commerçant — l'email reprend SA charte, pas celle de K1000. */
 export interface BusinessBrand {
   primary: string; // couleur d'accent (bouton CTA)
   ink: string; // couleur de texte principale

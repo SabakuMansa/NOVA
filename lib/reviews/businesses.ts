@@ -1,7 +1,7 @@
 /**
  * Registre des commerces branchés sur le module "Relance avis Google".
  *
- * En production réelle, chaque site commerçant NOVA Studio fournirait ses
+ * En production réelle, chaque site commerçant K1000 Studio fournirait ses
  * propres jetons de marque (couleurs/police) et son propre lien d'avis
  * Google — ce fichier serait alors alimenté par la config de CE commerce
  * précis, pas une liste en dur. Pour la démo, un seul commerce fictif

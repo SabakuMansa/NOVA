@@ -407,7 +407,7 @@ export default function ShatterPortal() {
             data-paint="text"
             className="font-mono text-[0.7rem] font-bold uppercase tracking-[0.2em] text-jaune"
           >
-            NOVA.studio / labo
+            K1000.studio / labo
           </p>
           <h1
             data-paint="text"

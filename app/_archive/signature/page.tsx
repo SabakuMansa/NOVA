@@ -18,7 +18,7 @@ export default function SignaturePage() {
       <div className="relative z-10 flex min-h-screen flex-col justify-center px-5 py-24 md:px-10">
         <div className="mx-auto w-full max-w-content">
           <p className="sig-word font-mono text-[0.7rem] uppercase tracking-eyebrow text-moutarde">
-            NOVA Studio · Pièce signature
+            K1000 Studio · Pièce signature
           </p>
 
           <div className="mt-8">

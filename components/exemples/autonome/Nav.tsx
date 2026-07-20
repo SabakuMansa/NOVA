@@ -8,7 +8,7 @@ import { autonomeDemo } from "@/content/exemples/autonome";
  * Nav du site fictif "Salon Marguerite" (/exemples/autonome) — style propre à
  * cette démo (référence visuelle : maquette Claude Design "02 - Salon de
  * coiffure (Autonome)", alias "Studio.Métamorphose"), distinct des 3 autres
- * démos et de l'arcade NOVA Studio. Wordmark + puce violette décorative,
+ * démos et de l'arcade K1000 Studio. Wordmark + puce violette décorative,
  * liens texte, CTA "Prendre RDV" séparé de la liste `nav` (comme dans la
  * maquette d'origine où le CTA n'appartient pas à la nav elle-même) —
  * réutilise le texte réel `accueil.cta`, jamais de copie inventée.

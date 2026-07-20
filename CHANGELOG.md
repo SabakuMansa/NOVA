@@ -1,7 +1,80 @@
-# Journal des modifications — NOVA Studio
+# Journal des modifications — K1000 Studio
 
 > Session de travail autonome (nuit). **Tout est strictement local, aucun `git push`.**
 > À relire au matin avant toute mise en production.
+
+---
+
+## [Rebranding] NOVA Studio → K1000 Studio
+
+Rebranding complet du site, à la demande explicite (cette tâche autorise
+`git push` et le déploiement, contrairement à la règle par défaut du reste
+de cette session).
+
+### Contenu et code
+
+- Wordmark du header (`components/v3/Nav.tsx`, `app/opengraph-image.tsx`,
+  et les wordmarks des versions archivées `components/Nav.tsx`,
+  `components/v2/Nav.tsx`, `components/Footer.tsx`, `components/v2/Footer.tsx`,
+  `components/v3/Sections.tsx`, `components/labo/ShatterPortal.tsx`) :
+  monogramme "N" → "K", "NOVA(.studio)" → "K1000(.studio)". Style pixel
+  arcade + effet glitch/typewriter du Hero strictement inchangés — seul le
+  texte change.
+- Toutes les mentions textuelles ("NOVA Studio", copyright, footer, bio
+  fondateur) remplacées dans `content/site.ts`, `content/v3.ts`,
+  `app/layout.tsx`, `components/JsonLd.tsx`, `app/qui-je-suis/page.tsx`,
+  `app/labo/page.tsx`, `app/error.tsx`, les 4 démos `/exemples/*`
+  (bannières, footers, metadata de chaque `layout.tsx`) et les pages
+  archivées (`_archive/v2`, `_archive/signature`, `_archive/v3-layout`) —
+  inclus à la demande explicite malgré la règle habituelle de ne jamais
+  toucher aux archives.
+- Métadonnées Open Graph / Twitter Card et données structurées Schema.org
+  (JSON-LD) mises à jour : `name`, `legalName`, `title`, `description`,
+  `og:title`, `twitter:title`.
+- `package.json` (`name: "k1000-studio"`), `.claude/launch.json`
+  (config nommée `k1000-dev`), commentaire de `tailwind.config.ts`.
+- Domaine placeholder `nova-studio.fr` remplacé partout par le domaine
+  définitif `k1000studio.fr` (`seo.siteUrl`, emails `bonjour@…`, JSON-LD
+  `url`/`image`) — la note "nom de code, à remplacer avant mise en ligne"
+  dans `content/site.ts`, `README.md` et `components/JsonLd.tsx` est levée :
+  K1000 Studio / k1000studio.fr sont désormais définitifs.
+- Clés `localStorage`/`sessionStorage` internes renommées pour cohérence :
+  `nova-exemples-boutique-cart` → `k1000-exemples-boutique-cart`
+  (`CartContext.tsx`), `nova-exemples-boutique-delivery` →
+  `k1000-exemples-boutique-delivery` (`DeliveryTracking.tsx`).
+- Documentation interne : `README.md`, `README-delivery.md`,
+  `README-reviews.md`, `INSPIRATION.md`, `SIGNATURE-NOTES.md`,
+  `V2-NOTES.md` — toutes les mentions "NOVA" remplacées, à l'exception de
+  3 références historiques factuelles délibérément conservées (identifiants
+  réels d'artefacts externes à un instant précis du passé, pas des mentions
+  de marque à jour) : l'ancienne URL de déploiement Vercel
+  `nova-sigma-khaki.vercel.app` et le nom du projet/fichier Claude Design
+  importé ("NOVA Studio Visual Identity", `NOVA Studio - Site.dc.html`) —
+  les réécrire aurait rendu ces entrées factuellement fausses.
+- `package-lock.json` régénéré (`npm install`) pour refléter le nouveau nom.
+
+### Vérification effectuée
+
+- Recherche exhaustive `\bnova\b` (insensible à la casse) sur tout le
+  dépôt (hors `node_modules`, `.git`, `.next`) : confirmée vide, à
+  l'exception des 3 références historiques documentées ci-dessus.
+- `tsc --noEmit` ✅, `npm run build` ✅ (exit 0, aucune erreur), 46+ pages
+  générées.
+- Vérification visuelle en navigateur : wordmark (page d'accueil + image
+  Open Graph), titres d'onglet, JSON-LD, page `/qui-je-suis`, démo
+  `/exemples/boutique` — "K1000" présent, "NOVA" absent partout où testé.
+
+### Dépôt et déploiement
+
+- **Dépôt GitHub** renommé : `SabakuMansa/NOVA` → `SabakuMansa/k1000-studio`
+  (via `gh repo rename`, remote local mis à jour automatiquement).
+- **Push** effectué sur `origin/main` (seule tâche de toute la session où
+  le push a été explicitement autorisé par l'utilisateur).
+- **Vercel** : CLI non installée/authentifiée dans cet environnement —
+  renommage du projet et ajout des domaines (`k1000studio.fr` principal,
+  `k1000.fr` et `k1000studio.com` en redirection 301) documentés comme
+  étapes manuelles dans `DEPLOIEMENT.md`, avec les instructions DNS
+  registrar correspondantes.
 
 ---
 
@@ -396,7 +469,7 @@ invisible.
 ## [Chantier 1] Référencement (SEO technique)
 
 **Ce qui a été fait**
-- `<title>` enrichi et local : « NOVA Studio — Création de sites internet pour
+- `<title>` enrichi et local : « K1000 Studio — Création de sites internet pour
   commerçants, Île-de-France ».
 - `<meta description>` réécrite avec les cibles locales (restaurants, boutiques,
   artisans ; Saint-Maur-des-Fossés, Suresnes, Val-de-Marne, Hauts-de-Seine).
@@ -420,7 +493,7 @@ et donner aux moteurs/réseaux sociaux des métadonnées propres et structurées
 - `npx tsc --noEmit` OK.
 
 > ⚠️ **À faire au matin** : `seo.siteUrl` (`content/site.ts`) pointe encore sur le
-> domaine placeholder `https://nova-studio.fr`. Il alimente canonical, OG, sitemap et
+> domaine placeholder `https://k1000studio.fr`. Il alimente canonical, OG, sitemap et
 > JSON-LD → à remplacer par le vrai domaine (ou l'URL Vercel actuelle) avant indexation.
 
 ---
@@ -520,7 +593,7 @@ code/README/API. Aucun chiffre de commission non vérifié affiché.
   `[0.22,1,0.36,1]`, ~2,5 s/étape) → « Livré ». Bouton **« Revoir la démo »** pour
   rejouer (jamais d'état figé).
 - Mention discrète sous le widget : « Démonstration simplifiée à titre d'exemple… ».
-- Palette NOVA uniquement, **aucune mention « Uber »/« livreur » du prestataire**.
+- Palette K1000 uniquement, **aucune mention « Uber »/« livreur » du prestataire**.
 
 **Vérification** : cycle complet testé dans Chrome (déclenchement → progression auto →
 « Livré » → relance), layout OK en mobile 390px (aucun débordement), 0 erreur console,
@@ -537,7 +610,7 @@ build de prod OK.
 - La course n'est créée qu'à l'ouverture du suivi → le visiteur **voit toujours la
   progression en direct** (l'horloge de démo démarre à ce moment-là).
 - 100 % sandbox : aucune vraie commande, aucun paiement, aucun appel externe. Palette
-  NOVA. On parle d'« un livreur »/« coursier », **jamais** du prestataire technique.
+  K1000. On parle d'« un livreur »/« coursier », **jamais** du prestataire technique.
 
 **Vérification** : parcours complet testé dans Chrome (menu → panier → devis 5,54 € →
 commande → suivi qui progresse « En préparation » → « Coursier en route » → « Livré »),
@@ -678,7 +751,7 @@ restaurateurs.
 - **Qonto (FR)** — modèle de ton FR moderne pour non-tech : fragments nominaux
   (« Fini la paperasse »), impératif/infinitif dans les CTA, zéro jargon bancaire.
 
-**Mécanique de ton retenue** (forme, pas vocabulaire — la cible NOVA n'est pas dev)
+**Mécanique de ton retenue** (forme, pas vocabulaire — la cible K1000 n'est pas dev)
 - Une idée par phrase, phrases courtes, fragments nominaux autorisés
   (« Des prix affichés. Oui, vraiment. »).
 - Personnalité par la question rhétorique + le problème vécu, pas par le gag gratuit.
@@ -782,7 +855,7 @@ même logique que l'archivage v1/v2 :
 ### 4. Nouvelle page « Qui je suis »
 
 - **`app/qui-je-suis/page.tsx`** créée : présente le fondateur en détail
-  (gérant de plusieurs restaurants en Île-de-France, à l'origine de NOVA
+  (gérant de plusieurs restaurants en Île-de-France, à l'origine de K1000
   Studio suite à ce constat vécu). Reste factuel — aucune date ni détail
   inventé au-delà de ce qui était déjà établi ailleurs sur le site.
   Contenu piloté par de nouveaux champs sur `v3fondateur`
@@ -1867,7 +1940,7 @@ panier, paiement), pas le même jeu de pages que les 3 démos précédentes :
 ### Panier — `components/exemples/CartContext.tsx` (nouveau)
 
 Seul vrai bout d'infrastructure nouveau de cette page : Context React +
-persistance `localStorage` (clé `nova-exemples-boutique-cart`, dédiée à
+persistance `localStorage` (clé `k1000-exemples-boutique-cart`, dédiée à
 cette démo, aucune collision possible avec un autre module). Expose
 `addItem`/`removeItem`/`updateQty`/`clear`/`count`/`total`. Le layout
 `/exemples/boutique` enveloppe toutes ses pages dans `<CartProvider>`.
@@ -2125,7 +2198,7 @@ classe `uppercase` est retirée précisément pour éviter le bug de glyphe
 
 ### Nav — conversion complète
 
-`components/v3/Nav.tsx` : logo ("N" + "NOVA.studio"), liens desktop et
+`components/v3/Nav.tsx` : logo ("K" + "K1000.studio"), liens desktop et
 mobile, CTA "Audit gratuit" (desktop + mobile) tous passés en
 `font-pixel`, casse naturelle préservée ("Le constat", "Ce que ça fait" —
 contient un ç, vérifié sans problème de rendu).
@@ -2206,7 +2279,7 @@ fausser le résultat), Lighthouse mobile par défaut :
 | SEO | 100 |
 
 Léger recul de 2 points en performance, entièrement expliqué : l'élément
-LCP devient le logo Nav ("NOVA.studio", maintenant en `font-pixel`) au
+LCP devient le logo Nav ("K1000.studio", maintenant en `font-pixel`) au
 lieu d'un texte en police système — délai de rendu de l'élément ~540 ms
 pendant que la police pixel se charge, malgré `display: "swap"` déjà
 configuré sur toutes les polices dans `app/layout.tsx` (donc pas de FOIT,
@@ -2498,7 +2571,7 @@ footer restent donc visibles sur le site, pas perdus.
 La section Contact retirée portait le seul point d'entrée vers le
 formulaire d'audit ; plusieurs CTA du site y pointaient
 (`#contact`/`/#contact`). Plutôt que de laisser des liens morts,
-chacun a été redirigé vers `mailto:bonjour@nova-studio.fr` — l'email
+chacun a été redirigé vers `mailto:bonjour@k1000studio.fr` — l'email
 réel déjà validé dans le contenu (`v3contact.email`), pas une valeur
 inventée :
 
@@ -2681,7 +2754,7 @@ cohérence globale en naviguant d'une page à l'autre").
   plus dense — onglets qui deviennent défilables horizontalement,
   champs toujours lisibles) et Boutique/catalogue : `scrollWidth` =
   375px exact partout, aucun débordement.
-- Cohérence de navigation croisée : bandeau "← Retour aux plans NOVA
+- Cohérence de navigation croisée : bandeau "← Retour aux plans K1000
   Studio" (`ExempleBanner`) toujours vers `/#plans`, liens "Voir un
   exemple concret" de La Carte toujours valides (`exampleHref` non
   modifié dans `content/v3.ts`).

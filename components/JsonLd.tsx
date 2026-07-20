@@ -3,8 +3,8 @@ import { seo } from "@/content/site";
 /**
  * Données structurées Schema.org (JSON-LD).
  * Type ProfessionalService : activité de service, zone desservie Île-de-France.
- * Volontairement SANS adresse postale / SIRET tant que « NOVA Studio » est un
- * nom de code — à compléter le moment venu (address, priceRange, openingHours…).
+ * Volontairement SANS adresse postale / SIRET pour l'instant — à compléter le
+ * moment venu (address, priceRange, openingHours…).
  */
 export default function JsonLd() {
   const data = {

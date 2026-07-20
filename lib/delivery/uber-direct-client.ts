@@ -9,7 +9,7 @@
  *
  * Ce client n'est instancié qu'en mode "live". Voir README-delivery.md : le
  * passage en "live" suppose que le commerçant a validé son onboarding Uber
- * Direct — NOVA Studio ne peut pas l'activer unilatéralement.
+ * Direct — K1000 Studio ne peut pas l'activer unilatéralement.
  */
 
 import type {

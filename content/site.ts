@@ -1,11 +1,11 @@
 /**
- * Contenu éditorial de NOVA Studio.
+ * Contenu éditorial de K1000 Studio.
  * Tout le texte du site vit ici : pour modifier une phrase, un prix ou une offre,
  * il suffit d'éditer ce fichier — aucun composant à toucher.
  */
 
 export const nav = {
-  brand: "NOVA Studio",
+  brand: "K1000 Studio",
   links: [
     { label: "L'approche", href: "#approche" },
     { label: "La méthode", href: "#methode" },
@@ -472,7 +472,7 @@ export const contact = {
   title: "Parlons de votre commerce, pas de technique.",
   subtitle: "Audit gratuit, sans engagement. Réponse sous 24h.",
   intro: "Dites-m'en un peu sur votre commerce. Le reste, on le voit ensemble.",
-  email: "bonjour@nova-studio.fr",
+  email: "bonjour@k1000studio.fr",
   phone: "06 12 34 56 78",
   fields: {
     name: "Votre nom",
@@ -486,7 +486,7 @@ export const contact = {
 };
 
 export const footer = {
-  brand: "NOVA Studio",
+  brand: "K1000 Studio",
   tagline: "Studio digital local — Île-de-France",
   blurb:
     "Des sites et des outils digitaux pensés pour les commerces locaux, par un restaurateur en activité.",
@@ -517,19 +517,18 @@ export const footer = {
     { label: "Mentions légales", href: "#" },
     { label: "Confidentialité", href: "#" },
   ],
-  copyright: "© 2026 NOVA Studio. Conçu en Île-de-France.",
+  copyright: "© 2026 K1000 Studio. Conçu en Île-de-France.",
 };
 
 /* ------------------------------------------------------------------ *
- * SEO / identité — ⚠️ « NOVA Studio » est un nom de code.            *
- * Remplace ces valeurs par les vraies (domaine, nom, email…) avant   *
- * la mise en ligne. Aucune adresse postale n'est inventée ici.       *
+ * SEO / identité — « K1000 Studio », domaine principal k1000studio.fr *
+ * (k1000.fr et k1000studio.com en redirection). Aucune adresse       *
+ * postale n'est inventée ici.                                        *
  * ------------------------------------------------------------------ */
 export const seo = {
-  // ⚠️ Domaine placeholder — à remplacer par le vrai nom de domaine.
-  siteUrl: "https://nova-studio.fr",
-  name: "NOVA Studio",
-  legalName: "NOVA Studio",
+  siteUrl: "https://k1000studio.fr",
+  name: "K1000 Studio",
+  legalName: "K1000 Studio",
   shortDescription:
     "Studio digital local qui conçoit des sites et outils numériques pour les commerces de proximité d'Île-de-France.",
   areaServed: "Île-de-France",

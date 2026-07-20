@@ -1,4 +1,4 @@
-# INSPIRATION — Refonte NOVA Studio niveau Awwwards
+# INSPIRATION — Refonte K1000 Studio niveau Awwwards
 
 Recherche menée le 13/07/2026. Sources : navigation réelle sur awwwards.com
 (Sites of the Day) + analyse directe des 6 sites fournis + références déjà
@@ -14,19 +14,19 @@ inventée.
   Levitas » (la performance par la légèreté, pas la surenchère).
 - **Mémorable** : titres serif à **coupures de ligne dramatiques** et tailles
   variées qui créent un rythme ; fond sombre, retenue totale, beaucoup de blanc.
-- **Adaptable à NOVA** : oui, directement. La philosophie « léger > surpuissant »
-  est EXACTEMENT le discours NOVA (un site qui travaille > un site qui épate).
+- **Adaptable à K1000** : oui, directement. La philosophie « léger > surpuissant »
+  est EXACTEMENT le discours K1000 (un site qui travaille > un site qui épate).
   Le traitement typographique du hero (grandes lignes coupées avec intention)
   est transposable sans nuire à la lisibilité.
 
 ### 2. Vectr — vectrfl.com (SOTD + Developer Award)
 - **Sujet** : plateforme B2B de staffing industriel (environnements nucléaires).
-  Le plus proche de NOVA en positionnement : **service B2B sérieux, pas une
+  Le plus proche de K1000 en positionnement : **service B2B sérieux, pas une
   startup lifestyle**.
 - **Mémorable** : process en **4 étapes numérotées** ultra-scannable, monochrome
   assumé, aesthetic fonctionnelle qui inspire confiance.
 - **Adaptable** : la leçon = un site B2B peut gagner un SOTD avec de la CLARTÉ
-  élevée au rang d'esthétique. Le process NOVA (6 étapes) peut devenir une pièce
+  élevée au rang d'esthétique. Le process K1000 (6 étapes) peut devenir une pièce
   maîtresse visuelle, pas juste une liste.
 
 ### 3. LunaSol — lunasol-ts.webflow.io (SOTD)
@@ -34,7 +34,7 @@ inventée.
   organisé en **5 sections temporelles (Sunrise → Dusk)** qui suivent le rituel
   d'une journée.
 - **Mémorable** : le scroll raconte une journée ; chaque section a sa lumière.
-- **Adaptable — idée forte pour NOVA** : raconter **« la journée d'un
+- **Adaptable — idée forte pour K1000** : raconter **« la journée d'un
   commerçant »** en scroll narratif : *le matin (mise en place) → le midi (coup
   de feu) → l'après-midi (le creux) → le soir (la caisse)* — et à chaque moment,
   montrer ce que le site fait pendant ce temps (réservations qui tombent,
@@ -45,7 +45,7 @@ inventée.
 - **Sujet** : huile d'avocat premium — de la FOOD grand public, ton chaleureux.
 - **Mémorable** : personas d'abonnement nommés (« The Casual Cook », « The Home
   Chef », « The Host ») ; tableaux comparatifs assumés ; palette terreuse.
-- **Adaptable** : la palette terroir NOVA est validée par ce SOTD food. Les
+- **Adaptable** : la palette terroir K1000 est validée par ce SOTD food. Les
   personas nommés résonnent avec les 3 formules de La Carte (déjà nommées).
   Confirme qu'on peut être chaleureux ET primé.
 
@@ -63,13 +63,13 @@ inventée.
   monochrome éditorial.
 - **Adaptable** : partiellement. La rigueur de curation (numérotation, index)
   peut nourrir la présentation du process/portfolio, mais le froid total ne
-  colle pas au « premium humain » de NOVA.
+  colle pas au « premium humain » de K1000.
 
 ### 7. Julien Calot — juliencalot.com (SOTD)
 - **Sujet** : portfolio d'artiste plasticien.
 - **Mémorable** : galerie filtrable (par série / par couleur), l'œuvre au
   centre, chrome minimal.
-- **Adaptable** : peu directement (pas de galerie chez NOVA), mais la leçon
+- **Adaptable** : peu directement (pas de galerie chez K1000), mais la leçon
   « le chrome s'efface devant le contenu » vaut pour La Carte : le menu doit
   rester la star.
 
@@ -83,7 +83,7 @@ inventée.
 
 ---
 
-## Synthèse — ce que ces 8 sites disent pour NOVA
+## Synthèse — ce que ces 8 sites disent pour K1000
 
 1. **La clarté peut être l'esthétique** (Vectr) : pas besoin de sacrifier la
    conversion pour l'award. Les jurys récompensent la retenue exécutée
@@ -96,7 +96,7 @@ inventée.
 4. **L'ancrage local revendiqué** (Neue Montréal) transforme une contrainte
    (studio local) en signature éditoriale.
 5. **La palette terroir est validée** par des SOTD food (Lula) — on pousse
-   l'identité NOVA, on n'en change pas.
+   l'identité K1000, on n'en change pas.
 6. **Un seul moment WebGL** (Minh Pham/Iventions), le reste en scroll narratif
    soigné (By-Kin) : c'est le ratio gagnant perf/spectacle.
 
@@ -107,7 +107,7 @@ Le client a tranché en phase de questions :
   un peu geek, c'est plus mon univers ». Analyse : fond crème clair, accents
   vifs multiples (corail, teal, jaune, violet), illustrations flat maison,
   touches monospace/terminal, boutons ronds épais, personnalité dev-friendly
-  chaleureuse. On ne clone pas AppSignal : on construit la version NOVA de ce
+  chaleureuse. On ne clone pas AppSignal : on construit la version K1000 de ce
   langage (« geek de quartier » — la tech qui bosse pour le commerce).
 - **Technique** : équilibré — 1 seul moment WebGL (architecture perf déjà
   vérifiée : pause hors écran, chargement différé, fallback CSS mobile),
@@ -129,7 +129,7 @@ du discours, l'habillage devient geek et coloré.
 
 **« Le site qui travaille pendant votre journée »** — one-page (ou multi-pages)
 structuré comme la journée d'un commerçant, du matin au soir : chaque « heure »
-est une section avec sa lumière (la palette NOVA passe de la nappe claire du
+est une section avec sa lumière (la palette K1000 passe de la nappe claire du
 matin au café brûlé du soir), et montre le digital en train de bosser pendant
 que le commerçant vit sa vraie journée. La Carte reste le moment central
 (le midi — le coup de feu). Le hero WebGL « braises » existant devient la

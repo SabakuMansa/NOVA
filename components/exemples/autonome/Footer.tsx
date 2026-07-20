@@ -24,7 +24,7 @@ export default function AutonomeFooter({
         {address} · {hours}
       </p>
       <p className="mt-5 font-metam-sans text-xs uppercase tracking-wide text-metam-muted-light/60">
-        Site d&apos;exemple réalisé avec le {planLabel} de NOVA Studio ·
+        Site d&apos;exemple réalisé avec le {planLabel} de K1000 Studio ·
         Hébergement inclus
       </p>
     </footer>

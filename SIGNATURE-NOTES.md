@@ -1,6 +1,6 @@
 # Section signature `/signature` — notes de conception
 
-Pièce maîtresse isolée pour tester le plafond design de NOVA Studio (niveau Awwwards).
+Pièce maîtresse isolée pour tester le plafond design de K1000 Studio (niveau Awwwards).
 **N'affecte pas** la page d'accueil : route dédiée `/signature`, composants sous
 `components/signature/`.
 
@@ -11,7 +11,7 @@ Pièce maîtresse isolée pour tester le plafond design de NOVA Studio (niveau A
 | **By-Kin** (Awwwards SOTD + Developer Award + FWA) | Typographie éditoriale assumée, scroll « pondéré », transitions qui ne s'affichent jamais pour elles-mêmes → **retenue**, pas de gadget. |
 | **Iventions / Minh Pham** (Three.js + GSAP) | WebGL **atmosphérique** (lumière, matière) plutôt que spectacle ; motion « layered over WebGL » avec restraint. → un fond génératif discret, pas un jouet 3D. |
 | **Mat Voyce** (Awwwards SOTD, GSAP SOTY nominee) | Typo cinétique **timeline-driven** où « l'animation ne bloque jamais la lecture ». → révélation par mots, texte lisible en permanence. |
-| **Obys** | La typo comme système visuel central (lettres qui scale/split/morph). → pousser la typo serif de NOVA. |
+| **Obys** | La typo comme système visuel central (lettres qui scale/split/morph). → pousser la typo serif de K1000. |
 | **Bruno Simon** (Awwwards SOTM) | Three.js + physics, mais c'est un cas « portfolio-jeu » → **hors périmètre** ici (trop, pas le message commerçant). |
 
 **Constat transverse (Hon Tran, Studio Meyer)** : la typo cinétique « démo » ne
@@ -21,7 +21,7 @@ soignent le fallback `prefers-reduced-motion`, et tiennent **60fps**.
 
 ## Parti-pris retenu — « L'ardoise vivante »
 
-On réinterprète **l'ardoise / le menu du studio** (déjà présents dans la DA NOVA) en
+On réinterprète **l'ardoise / le menu du studio** (déjà présents dans la DA K1000) en
 version temps réel :
 
 - **Fond WebGL (palier 3)** : un shader plein écran sur base **café brûlé**, avec une

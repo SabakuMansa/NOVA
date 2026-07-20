@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 /**
  * Mini navigation du site FICTIF présenté dans `/exemples/*` — volontairement
- * distincte de <V3Nav/> (celle de NOVA Studio elle-même) : ce composant
+ * distincte de <V3Nav/> (celle de K1000 Studio elle-même) : ce composant
  * représente le site que le commerçant recevrait, pas celui de l'agence.
  * Restylé le 16/07 en pixel arcade (cohérence DA sitewide) — reste un
  * composant à part de <V3Nav/>, mêmes tokens de couleur/police seulement.

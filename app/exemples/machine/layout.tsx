@@ -37,7 +37,7 @@ const jetBrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: `Exemple — Plan Machine (${machineDemo.business.name})`,
   description:
-    "Exemple concret de ce qu'inclut le plan Machine de NOVA Studio : tout Autonome, plus automatisations visibles et tableau de bord.",
+    "Exemple concret de ce qu'inclut le plan Machine de K1000 Studio : tout Autonome, plus automatisations visibles et tableau de bord.",
   robots: {
     index: false,
     follow: false,

@@ -47,7 +47,7 @@ const config: Config = {
         "arcade-muted": "#6F6555", // texte quaternaire, très discret
 
         // Palettes des 4 démos /exemples/* — import maquettes Claude Design
-        // du 17/07 ("Designs Nova pour exemples"), une par démo, jamais
+        // du 17/07 ("Designs K1000 pour exemples"), une par démo, jamais
         // partagées entre elles ni avec l'arcade/homepage. Préfixes liés au
         // nom fictif de chaque maquette (pas au nom du plan) pour rester
         // lisibles indépendamment du contenu réel de la démo.

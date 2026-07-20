@@ -5,7 +5,7 @@ import { seo } from "@/content/site";
 // non validé pour remplacer le site principal.
 export const metadata: Metadata = {
   metadataBase: new URL(seo.siteUrl),
-  title: "NOVA Studio — Votre site bosse pendant que vous servez",
+  title: "K1000 Studio — Votre site bosse pendant que vous servez",
   description:
     "Sites et outils numériques pour commerces locaux d'Île-de-France, construits par un restaurateur en activité. Réservations, avis, commandes : ça tourne tout seul.",
   robots: { index: false, follow: false },

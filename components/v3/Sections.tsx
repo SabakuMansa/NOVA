@@ -241,7 +241,7 @@ export function V3Plans() {
                   </ul>
 
                   <a
-                    href="mailto:bonjour@nova-studio.fr"
+                    href="mailto:bonjour@k1000studio.fr"
                     className={`mt-auto block rounded border-2 py-3 text-center font-pixel text-[0.55rem] transition-transform hover:-translate-y-0.5 ${
                       p.featured
                         ? "border-arcade-border-thick bg-arcade-orange text-arcade-bg shadow-[3px_3px_0_#FFD23F]"
@@ -326,10 +326,10 @@ export function V3Footer() {
         <div>
           <div className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-arcade-border-thick bg-arcade-gold font-pixel text-xs text-arcade-bg">
-              N
+              K
             </span>
             <span className="font-pixel text-xs tracking-tight text-arcade-cream">
-              NOVA<span className="text-arcade-orange">.studio</span>
+              K1000<span className="text-arcade-orange">.studio</span>
             </span>
           </div>
           <p className="mt-3 max-w-sm font-terminal text-base leading-relaxed text-arcade-taupe">

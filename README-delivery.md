@@ -20,7 +20,7 @@ Si `DELIVERY_MODE` est **absent**, le module se comporte comme en `demo`
 
 ## Passer en mode `live` — prérequis
 
-⚠️ **NOVA Studio ne peut pas activer le mode live unilatéralement.** Le passage
+⚠️ **K1000 Studio ne peut pas activer le mode live unilatéralement.** Le passage
 en `live` suppose que **le commerçant lui-même** a validé son inscription
 Uber Direct :
 

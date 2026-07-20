@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Accueil",
   description: seo.shortDescription,
   alternates: { canonical: "/v2" },
-  openGraph: { title: "NOVA Studio", description: seo.shortDescription, url: "/v2" },
+  openGraph: { title: "K1000 Studio", description: seo.shortDescription, url: "/v2" },
 };
 
 const LINKS = [

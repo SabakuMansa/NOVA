@@ -27,7 +27,7 @@ const nunitoSans = Nunito_Sans({
 export const metadata: Metadata = {
   title: `Exemple — Plan Présence (${presenceDemo.business.name})`,
   description:
-    "Exemple concret de ce qu'inclut le plan Présence de NOVA Studio : site 3-4 pages, fiche Google Business, formulaire de contact.",
+    "Exemple concret de ce qu'inclut le plan Présence de K1000 Studio : site 3-4 pages, fiche Google Business, formulaire de contact.",
   robots: {
     index: false,
     follow: false,

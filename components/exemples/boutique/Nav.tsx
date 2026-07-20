@@ -8,7 +8,7 @@ import { useCart } from "@/components/exemples/CartContext";
  * Nav du site fictif "Le Petit Atelier" (/exemples/boutique) — style propre
  * à cette démo (référence visuelle : maquette Claude Design "04 - Boutique
  * mode (Boutique)" — DA éditoriale mode, appliquée ici visuellement à une
- * savonnerie/bougies), distinct des 3 autres démos et de l'arcade NOVA
+ * savonnerie/bougies), distinct des 3 autres démos et de l'arcade K1000
  * Studio. Le dernier lien de `links` (Panier) est rendu comme une icône de
  * panier avec badge de comptage plutôt qu'un simple lien texte — affordance
  * déjà présente dans la maquette (icône panier + compteur).

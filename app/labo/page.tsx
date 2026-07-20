@@ -11,7 +11,7 @@ import ShatterPortal from "@/components/labo/ShatterPortal";
 
 export const metadata: Metadata = {
   title: "Labo — expérience 01",
-  description: "Terrain de jeu technique NOVA Studio. Rien à vendre ici.",
+  description: "Terrain de jeu technique K1000 Studio. Rien à vendre ici.",
   robots: {
     index: false,
     follow: false,

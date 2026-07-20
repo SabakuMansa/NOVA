@@ -31,7 +31,7 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: `Exemple — Plan Boutique (${boutiqueDemo.business.name})`,
   description:
-    "Exemple concret de ce qu'inclut le plan Boutique de NOVA Studio : catalogue, panier, paiement en ligne (Stripe, mode test).",
+    "Exemple concret de ce qu'inclut le plan Boutique de K1000 Studio : catalogue, panier, paiement en ligne (Stripe, mode test).",
   robots: {
     index: false,
     follow: false,

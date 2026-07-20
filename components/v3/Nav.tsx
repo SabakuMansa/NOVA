@@ -66,10 +66,10 @@ export default function V3Nav() {
         >
           <a href="/" className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-arcade-border-thick bg-arcade-gold font-pixel text-xs text-arcade-bg shadow-[2px_2px_0_#2C241A]">
-              N
+              K
             </span>
             <span className="font-pixel text-xs tracking-tight text-arcade-cream">
-              NOVA<span className="text-arcade-orange">.studio</span>
+              K1000<span className="text-arcade-orange">.studio</span>
             </span>
           </a>
 

@@ -55,7 +55,7 @@ export default function Nav() {
       >
         <a href="#top" className="group flex items-baseline gap-2">
           <span className="font-display text-2xl leading-none tracking-tight">
-            NOVA
+            K1000
           </span>
           <span className="font-mono text-[0.62rem] uppercase tracking-eyebrow text-lie">
             Studio

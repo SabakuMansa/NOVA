@@ -11,7 +11,7 @@ export default function PageHeader({ label }: { label: string }) {
       <div className="mx-auto max-w-content px-5 py-10 md:px-8 md:py-14">
         <Reveal>
           <p className="font-mono text-[0.62rem] uppercase tracking-eyebrow text-lie">
-            NOVA Studio
+            K1000 Studio
           </p>
           <h1 className="mt-2 font-display text-3xl text-cafe sm:text-4xl">
             {label}

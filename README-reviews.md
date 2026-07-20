@@ -36,7 +36,7 @@ Absentes → comportement `demo` / `memory`, sans erreur.
 
 ## Passer en mode `live` — prérequis
 
-⚠️ **NOVA Studio ne peut pas activer le mode live unilatéralement.** Avant de
+⚠️ **K1000 Studio ne peut pas activer le mode live unilatéralement.** Avant de
 basculer `EMAIL_MODE=live` :
 
 1. Créer un compte [Resend](https://resend.com) (le commerçant, ou l'agence

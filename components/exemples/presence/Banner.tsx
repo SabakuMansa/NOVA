@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 /**
- * Bandeau de contexte NOVA Studio (chrome méta, pas la marque du commerce
+ * Bandeau de contexte K1000 Studio (chrome méta, pas la marque du commerce
  * fictif) — recoloré dans la palette "fleur" pour ne jamais retomber sur
  * l'arcade, cohérent avec le principe déjà établi sur les autres démos.
  */
@@ -16,7 +16,7 @@ export default function PresenceBanner({ planLabel }: { planLabel: string }) {
         href="/#plans"
         className="font-fleur-sans text-[0.68rem] uppercase tracking-wide text-fleur-bg/55 underline underline-offset-2 hover:text-fleur-bg"
       >
-        ← Retour aux plans NOVA Studio
+        ← Retour aux plans K1000 Studio
       </Link>
     </div>
   );

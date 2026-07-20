@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr] md:gap-8">
           <div>
             <div className="flex items-baseline gap-2">
-              <span className="font-display text-2xl leading-none">NOVA</span>
+              <span className="font-display text-2xl leading-none">K1000</span>
               <span className="font-mono text-[0.62rem] uppercase tracking-eyebrow text-lie">
                 Studio
               </span>

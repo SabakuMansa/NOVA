@@ -55,8 +55,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(seo.siteUrl),
   title: {
     default:
-      "NOVA Studio — Sites internet pour commerçants qui bossent tout seuls, Île-de-France",
-    template: "%s · NOVA Studio",
+      "K1000 Studio — Sites internet pour commerçants qui bossent tout seuls, Île-de-France",
+    template: "%s · K1000 Studio",
   },
   description:
     "Pendant que vous êtes en plein service, votre site bosse : réservations, avis, commandes. Sites et outils numériques pour commerces locaux — restaurants, boutiques, artisans — de Saint-Maur-des-Fossés à Suresnes (Val-de-Marne, Hauts-de-Seine), construits par un restaurateur en activité.",
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   authors: [{ name: seo.name }],
   openGraph: {
-    title: "NOVA Studio — Votre site bosse pendant que vous servez",
+    title: "K1000 Studio — Votre site bosse pendant que vous servez",
     description:
       "Réservations, avis, commandes : ça tourne tout seul. Par un restaurateur en activité, pour les commerces locaux d'Île-de-France.",
     url: seo.siteUrl,
@@ -87,7 +87,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NOVA Studio — Votre site bosse pendant que vous servez",
+    title: "K1000 Studio — Votre site bosse pendant que vous servez",
     description:
       "Réservations, avis, commandes : ça tourne tout seul. Par un restaurateur en activité, pour les commerces locaux d'Île-de-France.",
   },

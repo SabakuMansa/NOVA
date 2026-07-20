@@ -10,7 +10,7 @@ import {
 /** Clé sessionStorage utilisée pour transmettre l'id de course du panier
  *  à la page de confirmation (survit à la redirection Stripe/mock, sans
  *  passer par une query string). */
-export const DELIVERY_STORAGE_KEY = "nova-exemples-boutique-delivery";
+export const DELIVERY_STORAGE_KEY = "k1000-exemples-boutique-delivery";
 
 /**
  * Suivi de course, réutilisant tel quel le module /lib/delivery (mêmes

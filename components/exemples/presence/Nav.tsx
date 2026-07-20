@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 /**
  * Nav du site fictif "Maison Verdure" (/exemples/presence) — style propre à
  * cette démo (référence visuelle : maquette Claude Design "01 - Fleuriste
- * (Présence)"), distinct des 3 autres démos et de l'arcade NOVA Studio.
+ * (Présence)"), distinct des 3 autres démos et de l'arcade K1000 Studio.
  * Dernier lien de `links` traité comme le CTA rempli (Contact), les autres
  * en liens texte — même liste de contenu que ExempleNav, juste un rendu
  * différent.

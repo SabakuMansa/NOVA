@@ -14,7 +14,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("NOVA Studio — erreur de rendu :", error);
+    console.error("K1000 Studio — erreur de rendu :", error);
   }, [error]);
 
   return (

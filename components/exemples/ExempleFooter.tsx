@@ -22,7 +22,7 @@ export default function ExempleFooter({
         {address} · {hours}
       </p>
       <p className="mt-4 font-mono text-[0.58rem] uppercase tracking-wide text-arcade-muted">
-        Site d&apos;exemple réalisé avec le {planLabel} de NOVA Studio ·
+        Site d&apos;exemple réalisé avec le {planLabel} de K1000 Studio ·
         Hébergement inclus
       </p>
     </footer>

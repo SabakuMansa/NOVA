@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 /**
- * Bandeau de contexte NOVA Studio (chrome méta, pas la marque du commerce
+ * Bandeau de contexte K1000 Studio (chrome méta, pas la marque du commerce
  * fictif) — recoloré dans la palette "nord" pour ne jamais retomber sur
  * l'arcade, même principe que les autres démos (voir Présence/Autonome/
  * Machine).
@@ -17,7 +17,7 @@ export default function BoutiqueBanner({ planLabel }: { planLabel: string }) {
         href="/#plans"
         className="font-nord-sans text-[0.68rem] uppercase tracking-wide text-nord-bg/55 underline underline-offset-2 hover:text-nord-bg"
       >
-        ← Retour aux plans NOVA Studio
+        ← Retour aux plans K1000 Studio
       </Link>
     </div>
   );

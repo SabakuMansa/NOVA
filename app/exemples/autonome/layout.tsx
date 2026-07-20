@@ -29,7 +29,7 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: `Exemple — Plan Autonome (${autonomeDemo.business.name})`,
   description:
-    "Exemple concret de ce qu'inclut le plan Autonome de NOVA Studio : site complet sur-mesure, espace admin, prise de rendez-vous, SEO local.",
+    "Exemple concret de ce qu'inclut le plan Autonome de K1000 Studio : site complet sur-mesure, espace admin, prise de rendez-vous, SEO local.",
   robots: {
     index: false,
     follow: false,

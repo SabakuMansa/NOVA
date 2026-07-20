@@ -1,4 +1,4 @@
-// Shaders de « l'ardoise vivante » — braises dérivantes dans la palette NOVA,
+// Shaders de « l'ardoise vivante » — braises dérivantes dans la palette K1000,
 // réactives au pointeur. Écrit à la main (pas de dépendance shader externe).
 
 export const vertexShader = /* glsl */ `
@@ -17,7 +17,7 @@ export const fragmentShader = /* glsl */ `
   uniform vec2  uMouse; // 0..1
   uniform vec2  uRes;
 
-  // Palette NOVA (linéaire approx).
+  // Palette K1000 (linéaire approx).
   const vec3 CAFE     = vec3(0.180, 0.145, 0.129);
   const vec3 MOUTARDE = vec3(0.784, 0.608, 0.235);
   const vec3 LIE      = vec3(0.478, 0.180, 0.180);

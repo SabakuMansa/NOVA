@@ -53,7 +53,7 @@ export default function V2Nav() {
               onDarkHero ? "text-nappe" : "text-cafe"
             }`}
           >
-            NOVA
+            K1000
           </span>
           <span
             className={`font-mono text-[0.62rem] uppercase tracking-eyebrow transition-colors ${

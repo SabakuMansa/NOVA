@@ -24,7 +24,7 @@ export default function MachineFooter({
         {address} · {hours}
       </p>
       <p className="mt-4 font-braise-sans text-xs uppercase tracking-wide text-braise-bg/40">
-        Site d&apos;exemple réalisé avec le {planLabel} de NOVA Studio ·
+        Site d&apos;exemple réalisé avec le {planLabel} de K1000 Studio ·
         Hébergement inclus
       </p>
     </footer>
