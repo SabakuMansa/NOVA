@@ -5,8 +5,21 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ProductPhoto from "@/components/exemples/boutique/ProductPhoto";
 import QuantitySelector from "@/components/exemples/QuantitySelector";
+import DeliveryOption, {
+  type ReceptionMode,
+} from "@/components/exemples/boutique/DeliveryOption";
+import { DELIVERY_STORAGE_KEY } from "@/components/exemples/boutique/DeliveryTracking";
 import { useCart } from "@/components/exemples/CartContext";
 import { boutiqueDemo } from "@/content/exemples/boutique";
+import type { Address, DeliveryQuote } from "@/lib/delivery/types";
+
+// Adresse réelle de la boutique (footer, fiche business) — point de retrait
+// pour le devis de livraison.
+const PICKUP_ADDRESS: Address = {
+  street: "14 rue Nationale",
+  postalCode: "92100",
+  city: "Boulogne-Billancourt",
+};
 
 export default function BoutiquePanierPage() {
   const { panier } = boutiqueDemo;
@@ -14,6 +27,9 @@ export default function BoutiquePanierPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mode, setMode] = useState<ReceptionMode>("retrait");
+  const [quote, setQuote] = useState<DeliveryQuote | null>(null);
+  const [dropoff, setDropoff] = useState<Address | null>(null);
 
   const lines = items
     .map((it) => ({
@@ -22,10 +38,43 @@ export default function BoutiquePanierPage() {
     }))
     .filter((l) => l.product);
 
+  const handleQuote = (q: DeliveryQuote | null, d: Address | null) => {
+    setQuote(q);
+    setDropoff(d);
+  };
+
+  const deliveryFee = mode === "livraison" && quote ? quote.feeCents / 100 : 0;
+  const grandTotal = total + deliveryFee;
+  const checkoutDisabled =
+    loading || (mode === "livraison" && (!quote || !dropoff));
+
   const handleCheckout = async () => {
     setLoading(true);
     setError(null);
     try {
+      if (mode === "livraison") {
+        if (!quote || !dropoff) {
+          setError("Merci d'estimer la livraison avant de continuer.");
+          return;
+        }
+        const createRes = await fetch("/api/delivery/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            quoteId: quote.id,
+            pickup: PICKUP_ADDRESS,
+            dropoff,
+            orderReference: `BOUTIQUE-${Date.now()}`,
+          }),
+        });
+        const job = await createRes.json();
+        if (!createRes.ok)
+          throw new Error(job.error || "Création de la course impossible.");
+        sessionStorage.setItem(DELIVERY_STORAGE_KEY, job.id);
+      } else {
+        sessionStorage.removeItem(DELIVERY_STORAGE_KEY);
+      }
+
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -44,8 +93,10 @@ export default function BoutiquePanierPage() {
       // Pas de clé Stripe configurée : mode démo, confirmation simulée.
       clear();
       router.push("/exemples/boutique/confirmation");
-    } catch {
-      setError("Impossible de contacter le serveur de paiement.");
+    } catch (e) {
+      setError(
+        e instanceof Error ? e.message : "Impossible de contacter le serveur de paiement.",
+      );
     } finally {
       setLoading(false);
     }
@@ -116,15 +167,38 @@ export default function BoutiquePanierPage() {
           </div>
 
           <div className="h-fit border border-nord-border bg-nord-bg-alt p-6">
-            <div className="flex items-center justify-between font-nord-display text-lg text-nord-ink">
-              <span>Total</span>
-              <span>{total.toFixed(2)}€</span>
+            <DeliveryOption
+              pickup={PICKUP_ADDRESS}
+              mode={mode}
+              onModeChange={setMode}
+              quote={quote}
+              onQuote={handleQuote}
+            />
+
+            <div className="mt-5 space-y-1.5">
+              {mode === "livraison" && quote && (
+                <>
+                  <div className="flex items-center justify-between font-nord-sans text-sm text-nord-muted">
+                    <span>Sous-total</span>
+                    <span>{total.toFixed(2)}€</span>
+                  </div>
+                  <div className="flex items-center justify-between font-nord-sans text-sm text-nord-muted">
+                    <span>Livraison</span>
+                    <span>{deliveryFee.toFixed(2)}€</span>
+                  </div>
+                </>
+              )}
+              <div className="flex items-center justify-between font-nord-display text-lg text-nord-ink">
+                <span>Total</span>
+                <span>{grandTotal.toFixed(2)}€</span>
+              </div>
             </div>
+
             <button
               type="button"
               onClick={handleCheckout}
-              disabled={loading}
-              className="mt-6 w-full border border-nord-ink bg-nord-ink px-6 py-3.5 font-nord-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-nord-bg transition-colors hover:bg-transparent hover:text-nord-ink disabled:opacity-60"
+              disabled={checkoutDisabled}
+              className="mt-6 w-full border border-nord-ink bg-nord-ink px-6 py-3.5 font-nord-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-nord-bg transition-colors hover:bg-transparent hover:text-nord-ink disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-nord-ink disabled:hover:text-nord-bg"
             >
               {loading ? "…" : panier.submit}
             </button>

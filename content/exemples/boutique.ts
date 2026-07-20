@@ -2,11 +2,16 @@
  * Contenu du site fictif "Le Petit Atelier" — exemple concret du plan
  * **Boutique** (dès 3200€, voir `v3plans` dans content/v3.ts).
  *
- * Périmètre STRICTEMENT limité à ce que couvre ce plan : tout ce qui est
- * dans Autonome, PLUS catalogue produits, fiches produits, panier et
- * paiement en ligne (Stripe, mode test uniquement sur cette démo), suivi
- * de commandes. Ne JAMAIS mettre en avant ici le module Commande &
- * Livraison directe (Uber Direct) — vendu séparément, hors sujet.
+ * Périmètre : tout ce qui est dans Autonome, PLUS catalogue produits,
+ * fiches produits, panier et paiement en ligne (Stripe, mode test
+ * uniquement sur cette démo), suivi de commandes.
+ *
+ * Le module Commande & Livraison directe (vendu séparément du plan
+ * Boutique) est illustré au panier en mode démo (`DELIVERY_MODE=demo`,
+ * cf. lib/delivery/) — décision prise le 20/07 pour montrer concrètement
+ * à un prospect à quoi ressemblerait son intégration dans un vrai
+ * parcours d'achat. Voir components/exemples/boutique/{DeliveryOption,
+ * DeliveryTracking}.tsx.
  */
 
 export type BoutiqueProduct = {

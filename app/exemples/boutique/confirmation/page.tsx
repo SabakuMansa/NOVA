@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DeliveryConfirmation from "@/components/exemples/boutique/DeliveryConfirmation";
 import { boutiqueDemo } from "@/content/exemples/boutique";
 
 export default function BoutiqueConfirmationPage() {
@@ -21,6 +22,7 @@ export default function BoutiqueConfirmationPage() {
       <p className="mt-4 max-w-md font-nord-sans text-lg text-nord-muted">
         {confirmation.subtitle}
       </p>
+      <DeliveryConfirmation />
       <Link
         href="/exemples/boutique/catalogue"
         className="mt-8 inline-flex items-center justify-center gap-2 border border-nord-ink bg-nord-ink px-6 py-3.5 font-nord-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-nord-bg transition-colors hover:bg-transparent hover:text-nord-ink"

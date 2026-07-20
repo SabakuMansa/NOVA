@@ -5,6 +5,77 @@
 
 ---
 
+## [Exemple] Livraison directe au panier de `/exemples/boutique`
+
+Ajout d'une démonstration du module Commande & Livraison directe
+(`/lib/delivery/`, mode `demo` uniquement) au panier de la démo Boutique
+— pour montrer concrètement à un prospect à quoi ressemblerait son
+intégration dans un vrai parcours d'achat.
+
+**Décision produit à noter** : `content/exemples/boutique.ts` contenait
+depuis une session précédente une note "Ne JAMAIS mettre en avant ici le
+module Commande & Livraison directe — vendu séparément, hors sujet".
+Conflit signalé avant toute modification ; confirmé explicitement que la
+règle ne s'applique pas ici (exemple de boutique en ligne). Le
+commentaire du fichier a été mis à jour en conséquence.
+
+### Ajouté
+
+- **`components/exemples/boutique/DeliveryOption.tsx`** : choix "Retrait
+  en boutique" / "Livraison à domicile" au panier, saisie d'adresse,
+  devis via `/api/delivery/quote` (réutilisé tel quel, aucune nouvelle
+  logique). Message aligné sur l'argument commercial déjà établi
+  ailleurs sur le site : "vous ne payez que le coût de la course —
+  aucune commission prélevée sur votre vente". Aucune mention de la
+  marque technique (grep vérifié sur tous les fichiers touchés).
+- **`components/exemples/boutique/DeliveryTracking.tsx`** : suivi de
+  course (préparation → coursier en route → livré), réutilise tel quel
+  `/api/delivery/status` et les types/labels de `lib/delivery/types`
+  (`STATUS_LABELS`, `DELIVERY_TIMELINE`) — calque de l'habillage sur
+  `components/delivery/DeliveryTracker.tsx` existant, seule la DA change
+  (palette `nord-*`). Exporte `DELIVERY_STORAGE_KEY`.
+- **`components/exemples/boutique/DeliveryConfirmation.tsx`** : îlot
+  client qui lit (et consomme) l'id de course déposé en sessionStorage
+  avant la redirection Stripe/mock — n'affiche rien si "Retrait en
+  boutique" a été choisi.
+
+### Modifié
+
+- **`app/exemples/boutique/panier/page.tsx`** : ajout du choix de mode
+  de réception, recalcul du total (sous-total + livraison) une fois le
+  devis obtenu, création de la course (`/api/delivery/create`) avant le
+  checkout existant quand la livraison est choisie. Comportement du
+  retrait strictement inchangé (même appel `/api/checkout`, même
+  redirection).
+- **`app/exemples/boutique/confirmation/page.tsx`** : ajout du composant
+  de suivi, affiché uniquement si une course a été créée.
+- **`content/exemples/boutique.ts`** : commentaire d'en-tête mis à jour
+  (cf. décision produit ci-dessus).
+
+### Vérifications effectuées
+
+- `tsc --noEmit` ✅, `next lint` ✅ (0 erreur, 0 avertissement).
+- Parcours complet testé au navigateur : ajout au panier → panier →
+  "Livraison à domicile" → adresse saisie → devis obtenu (7,75€,
+  ~29 min, message "aucune commission" affiché) → total recalculé
+  (8,00€ + 7,75€ = 15,75€) → "Passer au paiement" → confirmation avec
+  suivi animé jusqu'à "Livré" (les 3 étapes cochées après ~24s, conforme
+  aux délais du fournisseur de démo).
+- Parcours "Retrait en boutique" revérifié après l'ajout : mode par
+  défaut, comportement de checkout identique à avant, aucun suivi
+  affiché sur la confirmation.
+- `document.body.innerText` vérifié sans "uber" (insensible à la casse)
+  sur panier (mode retrait et livraison) et confirmation ; grep du code
+  source confirme zéro mention dans tous les fichiers créés/modifiés.
+- Mobile (375×812) : toggle et champs d'adresse vérifiés sans
+  débordement.
+- Point pulsant de l'étape en cours (`animate-pulse`) couvert par la
+  règle CSS globale `prefers-reduced-motion` déjà en place — aucune
+  animation continue supplémentaire ajoutée.
+- **Tout reste local** — aucun `git push`, aucun déploiement.
+
+---
+
 ## [Designs Claude Design] `/exemples/autonome`, `/machine`, `/boutique` + vérification finale des 4 démos
 
 Suite de l'import du projet Claude Design (`8029a0b3-2dea-4782-867c-904a4666fe6b`) commencé avec Présence : les 3 fichiers restants appliqués un par un, chacun à sa propre démo, avec son propre commit local.
