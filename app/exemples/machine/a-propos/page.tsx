@@ -1,9 +1,10 @@
 import { machineDemo } from "@/content/exemples/machine";
 
-// Photo d'ambiance salon de toilettage (Unsplash, licence libre) — jamais
-// reprise de la maquette "Table & Braise" (hors sujet pour Au Poil).
+// Photo d'ambiance restaurant (Unsplash, licence libre) — distincte des
+// placeholders du design handoff "Restaurant-ChezMargot" (jamais réutilisés
+// tels quels pour Chez Fernand).
 const TEAM_PHOTO =
-  "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&q=80&auto=format&fit=crop";
+  "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80&auto=format&fit=crop";
 
 export default function MachineAProposPage() {
   const { aPropos } = machineDemo;
@@ -15,7 +16,7 @@ export default function MachineAProposPage() {
           className="aspect-[4/3] rounded-md bg-cover bg-center"
           style={{ backgroundImage: `url('${TEAM_PHOTO}')` }}
           role="img"
-          aria-label="Toiletteur au travail chez Au Poil"
+          aria-label="Ambiance en salle chez Chez Fernand"
         />
         <div>
           <span className="font-braise-sans text-[13px] uppercase tracking-[3px] text-braise-orange">

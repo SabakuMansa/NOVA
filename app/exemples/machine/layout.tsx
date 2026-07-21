@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, DM_Serif_Display, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Playfair_Display, Work_Sans } from "next/font/google";
 import MachineBanner from "@/components/exemples/machine/Banner";
 import MachineFooter from "@/components/exemples/machine/Footer";
 import MachineNav from "@/components/exemples/machine/Nav";
@@ -7,20 +7,25 @@ import { machineDemo } from "@/content/exemples/machine";
 
 // Polices propres à cette démo, chargées uniquement pour les routes sous
 // /exemples/machine (next/font scinde par segment) — n'affectent ni la
-// homepage arcade, ni les 3 autres démos. Trio repris de la maquette Claude
-// Design "03 - Restaurant (Machine)" : serif display pour les titres, sans
-// pour le corps, mono pour les indicateurs live et les chiffres du tableau
-// de bord.
-const dmSerifDisplay = DM_Serif_Display({
-  weight: "400",
+// homepage arcade, ni les 3 autres démos. Univers "bistrot parisien
+// traditionnel" (design handoff hifi du 21/07, ex-"Chez Margot" → "Chez
+// Fernand") : Playfair Display remplace DM Serif Display pour les titres et
+// l'ardoise, Work Sans remplace DM Sans pour le corps/UI — mêmes noms de
+// variable CSS (--font-braise-display / --font-braise-sans), donc tout le
+// reste de la démo (Nav/Footer/sous-pages) hérite automatiquement de la
+// nouvelle typo sans changement supplémentaire. JetBrains Mono reste chargé
+// pour les indicateurs "en direct" et les chiffres du tableau de bord,
+// toujours utilisés par cette page.
+const playfairDisplay = Playfair_Display({
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   subsets: ["latin"],
   variable: "--font-braise-display",
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  weight: ["400", "500", "600", "700"],
+const workSans = Work_Sans({
+  weight: ["300", "400", "500", "600"],
   subsets: ["latin"],
   variable: "--font-braise-sans",
   display: "swap",
@@ -52,7 +57,7 @@ export default function MachineDemoLayout({
 }) {
   return (
     <div
-      className={`${dmSerifDisplay.variable} ${dmSans.variable} ${jetBrainsMono.variable} min-h-screen bg-braise-bg font-braise-sans text-braise-ink`}
+      className={`${playfairDisplay.variable} ${workSans.variable} ${jetBrainsMono.variable} min-h-screen bg-braise-bg font-braise-sans text-braise-ink`}
     >
       <MachineBanner planLabel="Plan Machine" />
       <MachineNav

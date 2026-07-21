@@ -1,6 +1,16 @@
 /**
- * Contenu du site fictif "Au Poil" — exemple concret du plan
+ * Contenu du site fictif "Chez Fernand" — exemple concret du plan
  * **Machine** (dès 1990€, voir `v3plans` dans content/v3.ts).
+ *
+ * Univers recréé le 21/07 à partir du design handoff hifi (bistrot parisien
+ * traditionnel, palette bordeaux/or/ardoise) — voir
+ * .design-handoff-tmp/design_handoff_pages_demo/README.md. Le nom de la
+ * maquette source était « Chez Margot » ; conformément à la convention déjà
+ * établie sur ce projet (ne jamais reprendre le nom littéral d'une
+ * maquette), le commerce fictif s'appelle ici **Chez Fernand**. Changement
+ * d'identité commerçante complet (l'ancien "Au Poil", toiletteur canin, ne
+ * pouvait pas raisonnablement héberger une ardoise de plats bistrot) — voir
+ * le comparatif Autonome/Machine ci-dessous, qui reste inchangé.
  *
  * Différenciateur avec Autonome : ici le commerçant n'agit plus, le
  * système agit à sa place. Seules des automatisations réellement
@@ -24,7 +34,7 @@
 const automationEvents = [
   {
     icon: "⭐",
-    text: "Relance avis envoyée à Camille D. — 2 min après son rendez-vous",
+    text: "Relance avis envoyée à Camille D. — 2 min après son repas",
     tag: "avis",
   },
   {
@@ -39,7 +49,7 @@ const automationEvents = [
   },
   {
     icon: "⭐",
-    text: "Relance avis envoyée à Sophie B. — 2 min après son rendez-vous",
+    text: "Relance avis envoyée à Sophie B. — 2 min après son repas",
     tag: "avis",
   },
   {
@@ -56,31 +66,31 @@ const automationEvents = [
 
 export const machineDemo = {
   business: {
-    name: "Au Poil",
-    tagline: "Toilettage canin, en douceur",
+    name: "Chez Fernand",
+    tagline: "Bistrot de quartier, cuisine du marché",
     address: "21 rue de Paris, 94300 Vincennes",
-    hours: "Mardi–samedi · 9h–18h",
+    hours: "Mardi–samedi · 12h–14h30, 19h–22h30",
     googleRating: "4,9/5",
     googleReviews: 211,
   },
 
   nav: [
     { label: "Accueil", href: "/exemples/machine" },
-    { label: "Prestations", href: "/exemples/machine/prestations" },
+    { label: "La carte", href: "/exemples/machine/prestations" },
     { label: "Galerie", href: "/exemples/machine/galerie" },
     { label: "À propos", href: "/exemples/machine/a-propos" },
-    { label: "Contact", href: "/exemples/machine/contact" },
+    { label: "Réserver", href: "/exemples/machine/contact" },
     { label: "Espace admin", href: "/exemples/machine/espace-admin" },
   ],
 
   accueil: {
-    eyebrow: "Toilettage canin",
-    title: "Votre compagnon mérite le meilleur accueil.",
+    eyebrow: "Bistrot de quartier",
+    title: "La table des habitués, à deux pas de chez vous.",
     subtitle:
-      "Bain, tonte et soins pour chiens de toutes tailles, dans un cadre calme, au cœur de Vincennes.",
-    cta: "Prendre rendez-vous",
+      "Cuisine de bistrot généreuse et desserts maison, au cœur de Vincennes.",
+    cta: "Voir la carte",
     highlights: [
-      { icon: "🐾", text: "Toiletteurs formés, gestes doux" },
+      { icon: "🍷", text: "Cave et produits sélectionnés avec soin" },
       { icon: "🕒", text: "Horaires toujours à jour" },
       { icon: "📍", text: "En plein centre-ville de Vincennes" },
     ],
@@ -89,6 +99,45 @@ export const machineDemo = {
     // que le contraste avec /exemples/autonome saute aux yeux.
     philosophy:
       "Ici, vous ne faites rien — le site travaille pendant que vous êtes ailleurs.",
+
+    // Hero immersif "bistrot parisien traditionnel" (design handoff du
+    // 21/07) — recréation fidèle du hero du zip (mêmes proportions/textes),
+    // adaptée à l'identité fictive Chez Fernand / Vincennes plutôt qu'au
+    // "Chez Margot · Paris 11ᵉ" de la maquette.
+    heroBadge: "Cuisine de comptoir · Vincennes",
+    heroTitleRest: "La table",
+    heroTitleAccent: "des habitués",
+    heroQuote: "On y mange comme à la maison, en un peu mieux.",
+    heroImage:
+      "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1600&q=80&auto=format&fit=crop",
+    heroImageAlt:
+      "Salle du restaurant Chez Fernand, tables dressées en fin de service",
+
+    // Petit indicateur d'activité automatique affiché juste sous l'ardoise
+    // du jour — le module clé du zip est purement décoratif (une carte de
+    // menu), il ne montre aucune automatisation. Cette ligne rend visible,
+    // au plus près du module, que c'est le système qui agit seul (cf.
+    // philosophy ci-dessus et le distinguo Autonome/Machine du header).
+    automationHighlight: {
+      text: "Relance avis envoyée automatiquement à un client",
+      time: "il y a 2 min",
+    },
+  },
+
+  // Module clé "Ardoise du jour" — recréation quasi verbatim du zip (vrai
+  // contenu bistrot, directement réutilisable pour Chez Fernand). Date du
+  // zip conservée telle quelle : elle tombe justement un vrai mardi 21
+  // juillet.
+  ardoiseDuJour: {
+    title: "Ardoise du jour",
+    date: "Mardi 21 juillet",
+    items: [
+      { name: "Œuf mayo maison", price: "6 €" },
+      { name: "Blanquette de veau, riz", price: "19 €" },
+      { name: "Entrecôte, frites maison", price: "24 €" },
+      { name: "Tarte Tatin, crème", price: "8 €" },
+    ],
+    footer: "Menu déjeuner — 2 plats 23 € · 3 plats 29 €",
   },
 
   // Flux d'activité qui se remplit tout seul, sans clic — la mise en scène
@@ -97,28 +146,34 @@ export const machineDemo = {
   liveFeed: automationEvents,
 
   prestations: {
-    eyebrow: "Prestations",
-    title: "Nos prestations",
+    eyebrow: "La carte",
+    title: "Notre carte",
     subtitle:
-      "Des tarifs clairs, affichés — et mis à jour directement par le salon.",
+      "Des prix clairs, affichés — et mis à jour directement par le restaurant.",
+    // Le champ `duration` (hérité du plan grooming) sert ici de catégorie
+    // de plat — voir app/exemples/machine/prestations/page.tsx, qui
+    // l'affiche tel quel en sous-titre sous le nom du plat : aucune
+    // modification de structure nécessaire côté page.
     services: [
-      { name: "Bain complet", duration: "30 min", price: "25€" },
-      { name: "Toilettage intégral", duration: "1h", price: "48€" },
-      { name: "Tonte", duration: "45 min", price: "38€" },
-      { name: "Démêlage", duration: "20 min", price: "15€" },
-      { name: "Coupe des griffes", duration: "10 min", price: "10€" },
+      { name: "Œuf mayo maison", duration: "Entrée", price: "6€" },
+      { name: "Soupe à l'oignon gratinée", duration: "Entrée", price: "8€" },
+      { name: "Blanquette de veau, riz", duration: "Plat", price: "19€" },
+      { name: "Entrecôte, frites maison", duration: "Plat", price: "24€" },
+      { name: "Poulet rôti, purée maison", duration: "Plat", price: "18€" },
+      { name: "Tarte Tatin, crème", duration: "Dessert", price: "8€" },
+      { name: "Mousse au chocolat maison", duration: "Dessert", price: "7€" },
     ],
   },
 
   galerie: {
     eyebrow: "Galerie",
-    title: "Un aperçu du salon",
-    subtitle: "Quelques images de l'espace et de nos réalisations.",
+    title: "Un aperçu du restaurant",
+    subtitle: "Quelques images de la salle et de nos assiettes.",
     items: [
-      { icon: "🐩", label: "L'espace toilettage", color: "violet" },
-      { icon: "🛁", label: "Nos réalisations", color: "teal" },
-      { icon: "✂️", label: "Matériel de soin", color: "corail" },
-      { icon: "🧴", label: "Produits utilisés", color: "jaune" },
+      { icon: "🍽️", label: "La salle", color: "violet" },
+      { icon: "🍷", label: "La cave à vins", color: "teal" },
+      { icon: "🌿", label: "La terrasse", color: "corail" },
+      { icon: "👨‍🍳", label: "En cuisine", color: "jaune" },
     ] as { icon: string; label: string; color: "violet" | "teal" | "corail" | "jaune" }[],
   },
 
@@ -126,37 +181,37 @@ export const machineDemo = {
     eyebrow: "À propos",
     title: "Qui sommes-nous ?",
     body: [
-      "Au Poil, c'est une petite équipe de toiletteurs passionnés installée à Vincennes depuis plusieurs années.",
-      "On prend le temps de rassurer chaque animal avant de le manipuler — jamais dans la précipitation.",
+      "Chez Fernand, c'est une petite équipe passionnée installée à Vincennes depuis plusieurs années.",
+      "On cuisine des produits frais, achetés au marché le matin même, pour une carte qui change avec les saisons.",
     ],
     values: [
       {
-        title: "Douceur avant tout",
-        text: "Chaque rendez-vous commence par un temps d'adaptation, à l'écoute de l'animal.",
+        title: "Cuisine maison",
+        text: "Tout est préparé sur place, des sauces aux desserts, sans raccourci.",
       },
       {
-        title: "Équipe formée en continu",
-        text: "Techniques et bonnes pratiques suivies de près, race après race.",
+        title: "Produits du marché",
+        text: "Une carte qui suit les saisons et les arrivages, pas l'inverse.",
       },
       {
         title: "Ancrage local",
-        text: "Un salon de quartier, ouvert toute l'année, six jours sur sept.",
+        text: "Un bistrot de quartier, ouvert toute l'année, six jours sur sept.",
       },
     ],
   },
 
   contact: {
-    eyebrow: "Rendez-vous",
-    title: "Réservez votre créneau",
+    eyebrow: "Réservation",
+    title: "Réservez votre table",
     subtitle: "Confirmation automatique et immédiate — sans attendre personne.",
     fields: {
       name: "Votre nom",
       email: "Email",
-      service: "Prestation souhaitée",
-      message: "Un horaire qui vous arrange ?",
+      service: "Nombre de couverts",
+      message: "Une heure qui vous arrange ?",
     },
     submit: "Envoyer ma demande",
-    successTitle: "Confirmée automatiquement !",
+    successTitle: "Réservation confirmée automatiquement !",
     successText:
       "Vous recevez une confirmation immédiate par email — personne n'a eu besoin de la valider à la main.",
   },
@@ -201,9 +256,9 @@ export const machineDemo = {
         icon: "🕒",
         fields: [
           { label: "Lundi", value: "Fermé" },
-          { label: "Mardi", value: "9h00 – 18h00" },
-          { label: "Mercredi", value: "9h00 – 18h00" },
-          { label: "Samedi", value: "9h00 – 17h00" },
+          { label: "Mardi", value: "12h–14h30 / 19h–22h30" },
+          { label: "Mercredi", value: "12h–14h30 / 19h–22h30" },
+          { label: "Samedi", value: "12h–14h30 / 19h–22h30" },
         ],
       },
       {
@@ -211,18 +266,18 @@ export const machineDemo = {
         label: "Textes du site",
         icon: "📝",
         fields: [
-          { label: "Titre d'accueil", value: "Votre compagnon mérite le meilleur accueil." },
-          { label: "Sous-titre", value: "Bain, tonte et soins pour chiens de toutes tailles, à Vincennes." },
+          { label: "Titre d'accueil", value: "La table des habitués, à deux pas de chez vous." },
+          { label: "Sous-titre", value: "Cuisine de bistrot généreuse et desserts maison, à Vincennes." },
         ],
       },
       {
         id: "tarifs",
-        label: "Prestations & tarifs",
+        label: "Carte & tarifs",
         icon: "💶",
         fields: [
-          { label: "Bain complet", value: "25€" },
-          { label: "Toilettage intégral", value: "48€" },
-          { label: "Tonte", value: "38€" },
+          { label: "Menu déjeuner (2 plats)", value: "23€" },
+          { label: "Menu déjeuner (3 plats)", value: "29€" },
+          { label: "Entrecôte, frites maison", value: "24€" },
         ],
       },
       {

@@ -1,13 +1,14 @@
 import { machineDemo } from "@/content/exemples/machine";
 
-// Photos d'ambiance salon de toilettage (Unsplash, licence libre), une par
-// item réel de la galerie, dans l'ordre — recherche dédiée, jamais reprises
-// de la maquette "Table & Braise" (hors sujet pour un salon de toilettage).
+// Photos d'ambiance restaurant (Unsplash, licence libre), une par item réel
+// de la galerie, dans l'ordre — recherche dédiée, distinctes des photos du
+// design handoff "Restaurant-ChezMargot" (placeholders propres à la
+// maquette, jamais réutilisées telles quelles pour Chez Fernand).
 const PHOTOS = [
-  "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=700&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1544568100-847a948585b9?w=700&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1591160690555-5debfba289f0?w=700&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=700&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=700&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=700&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1493857671505-72967e2e2760?w=700&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1541014741259-de529411b96a?w=700&q=80&auto=format&fit=crop",
 ];
 
 export default function MachineGaleriePage() {
