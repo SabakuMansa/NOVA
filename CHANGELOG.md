@@ -5,6 +5,36 @@
 
 ---
 
+## [Feature] Page hub "Le Labo" (/labo) avec ses 2 premiers projets
+
+`/labo` devient une page hub listant les projets perso (ton plus brut,
+décontracté — pas la grille élaborée de "Mes réalisations"), cohérente
+avec la DA arcade du site (mêmes composants que `qui-je-suis` : `V3Nav`,
+`V3Footer`, `Reveal`). Toujours **noindex/nofollow**, absente de
+`v3nav.links` et de `app/sitemap.ts`, toujours disallow dans
+`app/robots.ts` — rien n'a changé côté SEO/nav.
+
+**Effet de bord nécessaire** : `/labo` hébergeait *directement* l'ancienne
+démo "portail qui se fissure façon verre" (`ShatterPortal`). Déplacée vers
+**`/labo/portail`** (même metadata noindex) pour libérer la route — rien
+n'est perdu, juste pas encore relié depuis le nouveau hub.
+
+Les 2 premiers projets listés (une carte cliquable + petit aperçu chacun,
+d'autres viendront s'ajouter avec le temps) :
+- **Les Mousquetaires** — lien externe vers le vrai site du club de foot
+  américain (`https://mousquetairesfootus.fr/`, `target="_blank"` +
+  `rel="noopener noreferrer"`), présenté comme un projet réel livré
+  bénévolement.
+- **Navigation spatiale — Tron** — lien interne vers `/labo/tron` (le
+  module de navigation spatiale néon déjà construit), présenté comme une
+  démonstration technique.
+
+Vérifié : les deux liens répondent (site externe 200, `/labo/tron` 200),
+attributs corrects sur le lien externe, `noindex` toujours en place,
+build + `tsc` clean, rendu desktop + mobile.
+
+---
+
 ## [Fix] Favicon rebrandé (NOVA « N » → K1000 « K » pixel arcade)
 
 Le favicon de l'onglet montrait encore le « N » de NOVA, oublié lors du
