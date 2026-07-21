@@ -42,7 +42,13 @@ export function createTronEngine(
   const q = QUALITY[opts.quality ?? "high"];
   const reduced = opts.reducedMotion ?? false;
   const worlds = opts.worlds;
-  const state: FlightState = createFlightState(0, 0);
+  // Spawn par défaut (0,0) — ou près de la dernière planète quittée si fourni
+  // (continuité au retour depuis une page réelle, cf. TronPreview).
+  const state: FlightState = createFlightState(
+    opts.spawn?.x ?? 0,
+    opts.spawn?.y ?? 0,
+    opts.spawn?.angle,
+  );
 
   // Entrées : clavier + tactile fusionnés (le tactile est inerte tant que le
   // HUD mobile ne le pilote pas). `pending*` = fronts externes (clic/boutons).
@@ -194,7 +200,7 @@ export function createTronEngine(
       nearest = inRange;
       opts.onProximity?.(nearest);
     }
-    if (inp.interact && nearest) opts.onLand?.(nearest.route ?? nearest.slug);
+    if (inp.interact && nearest) opts.onLand?.(nearest);
 
     // — RENDU —
     const view: View = {

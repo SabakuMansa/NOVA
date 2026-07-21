@@ -68,8 +68,11 @@ export interface TronEngineOptions {
   reducedMotion?: boolean;
   /** Appelé quand la planète à portée change (null = plus aucune). */
   onProximity?: (world: World | null) => void;
-  /** Appelé à l'atterrissage (Entrée/clic à portée). */
-  onLand?: (slug: string) => void;
+  /** Appelé à l'atterrissage (Entrée/clic à portée) avec la planète atterrie. */
+  onLand?: (world: World) => void;
   /** Appelé ~2×/s avec les FPS mesurés (HUD de debug). */
   onFps?: (fps: number) => void;
+  /** Position/cap initiaux du vaisseau — défaut (0,0), cap vers le haut.
+   *  Utilisé pour réapparaître près de la dernière planète quittée. */
+  spawn?: { x: number; y: number; angle?: number };
 }

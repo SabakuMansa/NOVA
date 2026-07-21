@@ -28,8 +28,8 @@ export interface FlightState {
   recenter: { t: number; x0: number; y0: number } | null;
 }
 
-export function createFlightState(x = 0, y = 0): FlightState {
-  return { x, y, vx: 0, vy: 0, angle: -Math.PI / 2, speed: 0, boundary: 0, recenter: null };
+export function createFlightState(x = 0, y = 0, angle = -Math.PI / 2): FlightState {
+  return { x, y, vx: 0, vy: 0, angle, speed: 0, boundary: 0, recenter: null };
 }
 
 /** Déclenche un recentrage progressif vers (0,0) sur `WORLD.RECENTER_TIME`. */

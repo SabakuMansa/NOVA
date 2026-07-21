@@ -5,6 +5,60 @@
 
 ---
 
+## [Feature] Tron : retour à l'espace + commandes tactiles
+
+Deux manques comblés sur l'expérience `/labo/tron` : un visiteur qui
+atterrit sur une page réelle n'avait aucun moyen d'y revenir, et le
+pilotage tactile n'avait pas de HUD.
+
+**Retour à l'espace**
+- Marqueur de session (`sessionStorage`) : `tron:visited` posé au moment
+  de l'atterrissage (juste avant de quitter `/labo/tron`, dans le `onLand`
+  de `components/labo/TronPreview.tsx`), lu par le nouveau
+  `components/transition/ReturnToSpaceButton.tsx` — bouton flottant
+  (bas-droite, style néon Tron) monté globalement dans `app/layout.tsx`
+  (à l'intérieur de `AirlockProvider`, pour `useAirlock()`).
+- N'apparaît QUE si ce marqueur est présent : un visiteur arrivé
+  directement (lien externe, recherche) ne le voit jamais — additif, zéro
+  régression sur la navigation classique du site. Masqué aussi sur
+  `/labo/tron` lui-même (déjà dans l'espace).
+- Clic ou touche `Échap` → rejoue le sas existant en sens inverse
+  (`airlock.enter("/labo/tron")`) : aucune nouvelle mécanique de
+  transition, l'`AirlockProvider` est symétrique par construction.
+
+**Réapparition près de la dernière planète**
+- `tron:lastPlanet` mémorise la planète quittée. Au retour dans l'espace,
+  `computeSpawn()` (dans `TronPreview.tsx`) place le vaisseau juste hors
+  de son `approachRadius` (×1,15), orienté vers l'espace ouvert — pas de
+  re-atterrissage immédiat, continuité de l'exploration. Sans marqueur
+  (première visite) : spawn par défaut (0,0), inchangé.
+- Nécessite que `onLand` reçoive la planète entière (pas seulement sa
+  route) : signature changée dans `components/tron/types.ts` et
+  `engine.ts` ; `TronEngineOptions.spawn?` + `createFlightState(x,y,angle)`
+  ajoutés pour piloter la position/cap initiaux du vaisseau.
+
+**Commandes tactiles**
+- État constaté avant travaux : la couche neutre (`touchInput.ts`) était
+  déjà écrite et fusionnée dans le moteur (`engine.touch`), mais **aucun
+  HUD** ne la pilotait — un visiteur mobile ne pouvait ni tourner ni
+  pousser.
+- Nouveau `components/labo/TronTouchControls.tsx` : joystick virtuel
+  (bas-gauche, pointer events + `setPointerCapture`) + bouton boost
+  presser-maintenir (bas-droite). Gros bouton « ATTERRIR » (bas-centre)
+  dans `TronPreview.tsx`, affiché seulement à portée d'une planète.
+  Détection `matchMedia("pointer: coarse")` — jamais affiché sur desktop ;
+  le rappel clavier (bas-gauche) est masqué en retour, remplacé par un FPS
+  discret en haut-gauche pour ne pas chevaucher le joystick.
+
+Vérifié : spawn par défaut inchangé sans marqueur ; respawn hors
+`approachRadius` confirmé (capture) ; bouton retour visible seulement
+avec marqueur + absent sur `/labo/tron` + absent en visite directe ; clic
+et `Échap` déclenchent tous deux le retour ; HUD tactile rendu en viewport
+mobile (375px), aucun chevauchement ; `tsc --noEmit` + build de
+production tous deux clean.
+
+---
+
 ## [Feature] "Le Labo" devient une vraie page du site (nav + indexable)
 
 Suite à un retour direct : "Le Labo" n'est plus une page cachée mais une

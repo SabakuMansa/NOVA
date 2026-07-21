@@ -10,6 +10,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { seo } from "@/content/site";
 import JsonLd from "@/components/JsonLd";
 import AirlockProvider from "@/components/transition/AirlockProvider";
+import ReturnToSpaceButton from "@/components/transition/ReturnToSpaceButton";
 import "./globals.css";
 
 const instrument = Instrument_Serif({
@@ -111,8 +112,13 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased">
         {/* Couche de transition « sas » persistante (survit à router.push).
-            Passthrough inerte hors transition — n'affecte aucune page. */}
-        <AirlockProvider>{children}</AirlockProvider>
+            Passthrough inerte hors transition — n'affecte aucune page.
+            ReturnToSpaceButton doit être un descendant (useAirlock()) ; il
+            reste lui-même invisible hors marqueur de session Tron. */}
+        <AirlockProvider>
+          <ReturnToSpaceButton />
+          {children}
+        </AirlockProvider>
         <JsonLd />
         <Analytics />
       </body>
