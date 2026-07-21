@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Playfair_Display } from "next/font/google";
+import { Space_Grotesk, Space_Mono, Work_Sans } from "next/font/google";
 import BoutiqueBanner from "@/components/exemples/boutique/Banner";
 import BoutiqueFooter from "@/components/exemples/boutique/Footer";
 import BoutiqueNav from "@/components/exemples/boutique/Nav";
@@ -8,22 +8,31 @@ import { boutiqueDemo } from "@/content/exemples/boutique";
 
 // Polices propres à cette démo, chargées uniquement pour les routes sous
 // /exemples/boutique (next/font scinde par segment) — n'affectent ni la
-// homepage arcade, ni les 3 autres démos. Choix calqués sur la maquette
-// Claude Design "04 - Boutique mode" : Playfair Display (serif éditorial,
-// pour les titres/logo) + Manrope (sans, confirmé dans le CSS de la
-// maquette : font-family: 'Manrope', sans-serif).
-const playfairDisplay = Playfair_Display({
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+// homepage arcade, ni les 3 autres démos. Univers "Unit—9" (design handoff
+// du 21/07, concept store urbain — appliqué visuellement au Petit Atelier) :
+// Space Grotesk + Work Sans remplacent Playfair Display/Manrope — mêmes
+// noms de variable CSS, donc catalogue/panier/produit/confirmation héritent
+// automatiquement de la nouvelle typo. Space Mono ajouté en 3e police pour
+// les labels/prix/flourish mono du hero et du module clé (appliqué via
+// inline style, jamais de token Tailwind dédié — voir accueil/page.tsx).
+const spaceGrotesk = Space_Grotesk({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-nord-display",
   display: "swap",
 });
 
-const manrope = Manrope({
-  weight: ["300", "400", "500", "600", "700"],
+const workSans = Work_Sans({
+  weight: ["300", "400", "500", "600"],
   subsets: ["latin"],
   variable: "--font-nord-sans",
+  display: "swap",
+});
+
+const spaceMono = Space_Mono({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-nord-mono",
   display: "swap",
 });
 
@@ -47,7 +56,7 @@ export default function BoutiqueDemoLayout({
   return (
     <CartProvider>
       <div
-        className={`${playfairDisplay.variable} ${manrope.variable} min-h-screen bg-nord-bg font-nord-sans text-nord-ink`}
+        className={`${spaceGrotesk.variable} ${workSans.variable} ${spaceMono.variable} min-h-screen bg-nord-bg font-nord-sans text-nord-ink`}
       >
         <BoutiqueBanner planLabel="Plan Boutique" />
         <BoutiqueNav

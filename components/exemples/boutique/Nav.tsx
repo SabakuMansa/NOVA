@@ -6,12 +6,17 @@ import { useCart } from "@/components/exemples/CartContext";
 
 /**
  * Nav du site fictif "Le Petit Atelier" (/exemples/boutique) — style propre
- * à cette démo (référence visuelle : maquette Claude Design "04 - Boutique
- * mode (Boutique)" — DA éditoriale mode, appliquée ici visuellement à une
- * savonnerie/bougies), distinct des 3 autres démos et de l'arcade K1000
- * Studio. Le dernier lien de `links` (Panier) est rendu comme une icône de
- * panier avec badge de comptage plutôt qu'un simple lien texte — affordance
- * déjà présente dans la maquette (icône panier + compteur).
+ * à cette démo, distinct des 3 autres démos et de l'arcade K1000 Studio.
+ * Recoloré le 21/07 sur l'univers "Unit—9" (design handoff, concept store
+ * urbain) : bandeau quasi-noir + accent vert acide, en valeurs Tailwind
+ * arbitraires (pas de nouveaux tokens dans tailwind.config.ts). Ce bandeau
+ * est partagé par toutes les sous-pages de la démo (catalogue/panier/
+ * produit/confirmation), qui gardent elles-mêmes la palette claire "nord-*"
+ * existante — seul le chrome (Nav/Footer/Banner) et l'accueil changent de
+ * palette, cf. brief du 21/07. Le dernier lien de `links` (Panier) est
+ * rendu comme une icône de panier avec badge de comptage plutôt qu'un
+ * simple lien texte — affordance déjà présente dans la maquette (icône
+ * panier + compteur).
  */
 export default function BoutiqueNav({
   businessName,
@@ -26,11 +31,11 @@ export default function BoutiqueNav({
   const navLinks = links.filter((l) => l !== cartLink);
 
   return (
-    <header className="sticky top-0 z-20 border-b border-nord-border bg-nord-bg/90 backdrop-blur-md">
+    <header className="sticky top-0 z-20 border-b border-[#26262a] bg-[#101012]/95 backdrop-blur-md">
       <nav className="mx-auto flex max-w-content flex-wrap items-center justify-between gap-x-6 gap-y-3 px-5 py-5 md:px-8">
         <Link
           href="/exemples/boutique"
-          className="whitespace-nowrap font-nord-display text-lg uppercase tracking-[0.12em] text-nord-ink sm:text-xl md:text-2xl"
+          className="whitespace-nowrap font-nord-display text-lg uppercase tracking-[0.12em] text-[#f2f2f0] sm:text-xl md:text-2xl"
         >
           {businessName}
         </Link>
@@ -41,8 +46,8 @@ export default function BoutiqueNav({
               href={l.href}
               className={`font-nord-sans text-[13px] uppercase tracking-[0.12em] transition-colors ${
                 pathname === l.href
-                  ? "text-nord-ink"
-                  : "text-nord-muted hover:text-nord-ink"
+                  ? "text-[#c8ff3d]"
+                  : "text-[#a9a9ad] hover:text-[#f2f2f0]"
               }`}
             >
               {l.label}
@@ -51,10 +56,10 @@ export default function BoutiqueNav({
           {cartLink && (
             <Link
               href={cartLink.href}
-              className="flex items-center gap-2 font-nord-sans text-[13px] uppercase tracking-[0.12em] text-nord-muted transition-colors hover:text-nord-ink"
+              className="flex items-center gap-2 font-nord-sans text-[13px] uppercase tracking-[0.12em] text-[#a9a9ad] transition-colors hover:text-[#f2f2f0]"
             >
               {cartLink.label}
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-nord-ink px-1.5 font-nord-sans text-[11px] font-semibold text-nord-bg">
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#c8ff3d] px-1.5 font-nord-sans text-[11px] font-semibold text-[#101012]">
                 {count}
               </span>
             </Link>

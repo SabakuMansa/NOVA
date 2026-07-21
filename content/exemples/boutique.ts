@@ -51,6 +51,36 @@ export const boutiqueDemo = {
       { icon: "🚚", text: "Livraison partout en France" },
       { icon: "🔒", text: "Paiement en ligne sécurisé" },
     ],
+    // Hero immersif "Unit—9" (design handoff du 21/07) — recréation fidèle
+    // du hero du zip (concept store urbain), adaptée à l'identité déjà
+    // établie du Petit Atelier (savonnerie/bougies, pas de streetwear).
+    // `cta` ci-dessus est réutilisé comme libellé du CTA secondaire (même
+    // principe que presenceDemo.accueil.cta pour "Au Petit Marché").
+    heroBadge: "// NOUVELLE FOURNÉE EN ATELIER",
+    heroTitleLine1: "FAIT MAIN",
+    heroTitleLine2: "SANS CHICHI",
+    heroCtaPrimary: "VOIR LE PRODUIT",
+    heroCoordinates: "48.83°N / 2.24°E",
+    heroLocation: "BOULOGNE-BILLANCOURT · ATELIER",
+    heroImage:
+      "https://images.unsplash.com/photo-1546552768-9e3a94b38a59?w=1200&q=80&auto=format&fit=crop",
+    heroImageAlt: "Savons artisanaux du Petit Atelier, mise en scène sombre",
+  },
+
+  // Module clé "Produit du moment" — recréation fidèle du module fiche
+  // produit + panier du zip (hoodie + sneakers), avec un vrai produit du
+  // catalogue (bougie) et un aperçu panier statique composé de 2 produits
+  // réels (voir accueil/page.tsx pour le calcul du total à partir de
+  // `products`, jamais de montant codé en dur ici).
+  produitVedette: {
+    label: "BOUGIE / CIRE DE SOJA",
+    slug: "bougie-bois-de-santal",
+    ctaLabel: "Ajouter au panier",
+    panierApercu: {
+      label: "PANIER · 2 ARTICLES",
+      itemSlug: "savon-lavande-provence",
+      itemQty: 2,
+    },
   },
 
   catalogue: {

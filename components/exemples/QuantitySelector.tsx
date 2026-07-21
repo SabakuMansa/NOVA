@@ -12,10 +12,22 @@ import { useEffect, useState } from "react";
  * pour rester confortables au tactile.
  *
  * `variant` sélectionne l'habillage visuel uniquement (comportement
- * identique) : "arcade" (défaut, historique) ou "nord" (démo Boutique,
- * maquette "Atelier Nord" — jamais de token arcade-* dans cette démo).
+ * identique) : "arcade" (défaut, historique), "nord" (démo Boutique,
+ * maquette "Atelier Nord" — jamais de token arcade-* dans cette démo) ou
+ * "unit9" (recréation hero+module "Unit—9" du 21/07 sur l'accueil de la
+ * même démo — palette sombre/vert acide en valeurs arbitraires, police
+ * Space Mono appliquée via `fontFamily` inline plutôt qu'un nouveau token
+ * Tailwind, cf. app/exemples/boutique/layout.tsx). Ajouté ici plutôt que
+ * forké en composant séparé : seul l'habillage change.
  */
-const VARIANTS = {
+type QuantitySelectorVariant = {
+  wrapper: string;
+  button: string;
+  input: string;
+  fontFamily?: string;
+};
+
+const VARIANTS: Record<"arcade" | "nord" | "unit9", QuantitySelectorVariant> = {
   arcade: {
     wrapper: "inline-flex items-center rounded-xl border-2 border-arcade-border-thick",
     button:
@@ -30,7 +42,15 @@ const VARIANTS = {
     input:
       "h-11 w-12 shrink-0 bg-transparent text-center font-nord-sans text-base font-medium text-nord-ink focus:bg-nord-bg-alt focus:outline-none",
   },
-} as const;
+  unit9: {
+    wrapper: "inline-flex items-center border border-[#3a3a40]",
+    button:
+      "flex h-11 w-11 shrink-0 items-center justify-center text-lg text-[#f2f2f0] transition-colors hover:text-[#c8ff3d]",
+    input:
+      "h-11 w-12 shrink-0 bg-transparent text-center text-base font-bold text-[#f2f2f0] focus:bg-[#18181c] focus:outline-none",
+    fontFamily: "var(--font-nord-mono)",
+  },
+};
 
 export default function QuantitySelector({
   value,
@@ -47,6 +67,9 @@ export default function QuantitySelector({
 }) {
   const [text, setText] = useState(String(value));
   const styles = VARIANTS[variant];
+  const fontStyle = styles.fontFamily
+    ? { fontFamily: styles.fontFamily }
+    : undefined;
 
   useEffect(() => {
     setText(String(value));
@@ -67,6 +90,7 @@ export default function QuantitySelector({
         type="button"
         onClick={() => onChange(Math.max(min, value - 1))}
         className={styles.button}
+        style={fontStyle}
         aria-label="Diminuer la quantité"
       >
         −
@@ -86,11 +110,13 @@ export default function QuantitySelector({
         }}
         aria-label="Quantité"
         className={styles.input}
+        style={fontStyle}
       />
       <button
         type="button"
         onClick={() => onChange(Math.min(max, value + 1))}
         className={styles.button}
+        style={fontStyle}
         aria-label="Augmenter la quantité"
       >
         +
