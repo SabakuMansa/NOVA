@@ -6,11 +6,12 @@ import { autonomeDemo } from "@/content/exemples/autonome";
 
 /**
  * Nav du site fictif "Salon Marguerite" (/exemples/autonome) — style propre à
- * cette démo (référence visuelle : maquette Claude Design "02 - Salon de
- * coiffure (Autonome)", alias "Studio.Métamorphose"), distinct des 3 autres
- * démos et de l'arcade K1000 Studio. Wordmark + puce violette décorative,
- * liens texte, CTA "Prendre RDV" séparé de la liste `nav` (comme dans la
- * maquette d'origine où le CTA n'appartient pas à la nav elle-même) —
+ * cette démo. Recoloré le 21/07 sur l'univers "Maison Doré" (design handoff
+ * hifi, salon haussmannien chic) : bandeau noir/or, Bodoni Moda pour le nom
+ * — palette en valeurs Tailwind arbitraires (pas de nouveaux tokens dans
+ * tailwind.config.ts, pour ne pas affecter les sous-pages de cette démo, qui
+ * gardent leur ancienne palette "metam" purple/blanc). Wordmark + puce or
+ * décorative, liens texte, CTA "Prendre RDV" séparé de la liste `nav` —
  * réutilise le texte réel `accueil.cta`, jamais de copie inventée.
  */
 export default function AutonomeNav({
@@ -23,14 +24,14 @@ export default function AutonomeNav({
   const pathname = usePathname();
 
   return (
-    <header className="metam-scope sticky top-0 z-20 border-b border-metam-border bg-metam-bg/95 backdrop-blur-sm">
+    <header className="metam-scope sticky top-0 z-20 border-b border-[#2a2118] bg-[#161310]/95 backdrop-blur-sm">
       <nav className="mx-auto flex max-w-content flex-wrap items-center justify-between gap-4 px-5 py-4 md:px-8">
         <Link
           href="/exemples/autonome"
-          className="flex items-center gap-2 font-metam-display text-lg font-bold uppercase tracking-tight text-metam-ink"
+          className="flex items-center gap-2 font-metam-display text-lg tracking-wide text-[#e7d9bf]"
         >
           <span
-            className="h-2 w-2 shrink-0 rounded-full bg-metam-purple"
+            className="h-2 w-2 shrink-0 rounded-full bg-[#b89968]"
             aria-hidden
           />
           {businessName}
@@ -42,8 +43,8 @@ export default function AutonomeNav({
               href={l.href}
               className={`font-metam-sans text-[14px] font-medium transition-colors metam-anim ${
                 pathname === l.href
-                  ? "text-metam-purple"
-                  : "text-metam-muted hover:text-metam-ink"
+                  ? "text-[#e0c48d]"
+                  : "text-[#cabfa6] hover:text-[#e7d9bf]"
               }`}
             >
               {l.label}
@@ -51,7 +52,7 @@ export default function AutonomeNav({
           ))}
           <Link
             href="/exemples/autonome/contact"
-            className="rounded-lg bg-metam-ink px-5 py-2.5 font-metam-sans text-[14px] font-semibold text-metam-bg transition-transform metam-anim hover:-translate-y-0.5"
+            className="rounded-sm bg-[#b89968] px-5 py-2.5 font-metam-sans text-[14px] font-semibold text-[#161310] transition-transform metam-anim hover:-translate-y-0.5"
           >
             {autonomeDemo.accueil.cta}
           </Link>

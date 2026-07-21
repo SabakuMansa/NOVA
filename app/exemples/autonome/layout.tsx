@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Manrope } from "next/font/google";
+import { Bodoni_Moda, Work_Sans, Cormorant_Garamond } from "next/font/google";
 import AutonomeBanner from "@/components/exemples/autonome/Banner";
 import AutonomeFooter from "@/components/exemples/autonome/Footer";
 import AutonomeNav from "@/components/exemples/autonome/Nav";
@@ -7,21 +7,33 @@ import { autonomeDemo } from "@/content/exemples/autonome";
 
 // Polices propres à cette démo, chargées uniquement pour les routes sous
 // /exemples/autonome (next/font scinde par segment) — n'affectent ni la
-// homepage arcade, ni les 3 autres démos. Choix : Space Grotesk (display,
-// géométrique et affirmée — le plus proche Google Fonts de la display sans
-// de la maquette "02 - Salon de coiffure") + Manrope (texte courant, même
-// famille que la maquette d'origine).
-const spaceGrotesk = Space_Grotesk({
-  weight: ["400", "500", "600", "700"],
+// homepage arcade, ni les 3 autres démos. Univers "Maison Doré" (design
+// handoff du 21/07, salon haussmannien chic) : Bodoni Moda + Work Sans
+// remplacent Space Grotesk/Manrope — mêmes noms de variable CSS, donc tout
+// le reste de la démo (Nav/Footer/sous-pages) hérite automatiquement de la
+// nouvelle typo. Cormorant Garamond ajoutée en 3e police, uniquement pour
+// le paragraphe d'accroche du hero (via style inline, cf. page.tsx) — pas
+// de nouveau token Tailwind, tailwind.config.ts reste intouché.
+const bodoniModa = Bodoni_Moda({
+  weight: "400",
+  style: ["normal", "italic"],
   subsets: ["latin"],
   variable: "--font-metam-display",
   display: "swap",
 });
 
-const manrope = Manrope({
-  weight: ["400", "500", "600", "700"],
+const workSans = Work_Sans({
+  weight: ["300", "400", "500", "600"],
   subsets: ["latin"],
   variable: "--font-metam-sans",
+  display: "swap",
+});
+
+const cormorantGaramond = Cormorant_Garamond({
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-metam-serif",
   display: "swap",
 });
 
@@ -44,7 +56,7 @@ export default function AutonomeDemoLayout({
 }) {
   return (
     <div
-      className={`${spaceGrotesk.variable} ${manrope.variable} metam-scope min-h-screen bg-metam-bg font-metam-sans text-metam-ink`}
+      className={`${bodoniModa.variable} ${workSans.variable} ${cormorantGaramond.variable} metam-scope min-h-screen bg-metam-bg font-metam-sans text-metam-ink`}
     >
       {/* Anime légèrement l'entrée du hero + les survols de cette démo ;
           désactivé sous prefers-reduced-motion, scopé à .metam-scope pour ne

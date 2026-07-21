@@ -9,6 +9,8 @@
  * ou e-commerce / panier / paiement (→ module Boutique en ligne).
  */
 
+type PlanningSlot = { text: string; free?: boolean; editable?: boolean };
+
 export const autonomeDemo = {
   business: {
     name: "Salon Marguerite",
@@ -44,6 +46,63 @@ export const autonomeDemo = {
     // /exemples/machine saute aux yeux dès le premier écran.
     philosophy:
       "Ici, c'est vous qui décidez et qui modifiez — en 2 minutes, sans coder.",
+
+    // Hero immersif "Maison Doré" (design handoff du 21/07) — recréation
+    // fidèle du hero du zip (salon haussmannien chic), adaptée à l'identité
+    // déjà établie de Salon Marguerite (Suresnes, pas de fausse date de
+    // fondation inventée — le zip mentionnait "depuis 1911", non repris).
+    heroBadge: "Salon de coiffure · Suresnes",
+    heroTitleRest: "L'élégance",
+    heroTitleAccent: "se cultive",
+    heroParagraph:
+      "Sous la verrière et les miroirs biseautés, notre équipe imagine avec vous la coupe et la couleur qui vous ressemblent.",
+    heroImage:
+      "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1400&q=80&auto=format&fit=crop",
+    heroImageAlt: "Intérieur chaleureux du salon Marguerite, à Suresnes",
+  },
+
+  // Module clé "Planning du mardi 21" — recréation fidèle du module
+  // "Espace salon" du zip (planning + stats), avec l'identité de Salon
+  // Marguerite. Aucun prénom de coiffeur n'étant déjà établi ailleurs dans
+  // ce contenu, "Camille" et "Nadia" sont deux prénoms plausibles inventés
+  // pour l'exemple (copie générique du zip, non liée à "Maison Doré").
+  // Un seul créneau (10:00 / Camille) porte `editable: true` : c'est celui
+  // recréé avec l'affordance d'édition manuelle (crayon → champ + bouton
+  // "Enregistrer"), cf. PlanningSlot dans app/exemples/autonome/page.tsx.
+  planningModule: {
+    eyebrow: "Espace salon",
+    title: "Planning du mardi 21",
+    badge: "7 rendez-vous",
+    staff: ["Camille", "Nadia"],
+    rows: [
+      {
+        time: "10:00",
+        slots: [
+          { text: "Mme Rey — Balayage", editable: true },
+          { text: "libre", free: true },
+        ] as PlanningSlot[],
+      },
+      {
+        time: "11:30",
+        slots: [
+          { text: "M. Aubert — Coupe" },
+          { text: "Mme Costa — Chignon" },
+        ] as PlanningSlot[],
+      },
+      {
+        time: "14:00",
+        slots: [
+          { text: "libre", free: true },
+          { text: "Mlle Ba — Coloration" },
+        ] as PlanningSlot[],
+      },
+    ],
+    stats: {
+      encaisseLabel: "Encaissé aujourd'hui",
+      encaisseValue: "1 240 €",
+      tauxLabel: "Taux de remplissage",
+      tauxValue: "92 %",
+    },
   },
 
   prestations: {
