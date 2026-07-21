@@ -195,7 +195,7 @@ export default function PlanetsPreview() {
       <Canvas
         flat // NoToneMapping : les couleurs procédurales stylisées ne doivent
         // pas passer par l'ACES filmic (qui les assombrit/désature).
-        dpr={[1, 1.75]}
+        dpr={[1, 2]}
         gl={{ antialias: true, powerPreference: "high-performance" }}
         camera={{ position: [0, 0, 9.5], fov: 45 }}
       >

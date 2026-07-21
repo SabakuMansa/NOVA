@@ -90,7 +90,9 @@ export const noiseGLSL = /* glsl */ `
   // FBM_MAX_OCTAVES via un break — permet de baisser la charge sur mobile.
   float fbm(vec3 p, int octaves) {
     const float LACUNARITY = 2.0; // facteur de fréquence entre octaves
-    const float GAIN = 0.5;       // facteur d'amplitude entre octaves
+    const float GAIN = 0.55;      // amplitude entre octaves — un peu > 0.5 pour
+                                  // donner plus de poids aux hautes fréquences
+                                  // (relief moins « flou », plus texturé)
     float sum = 0.0;
     float amp = 0.5;
     float freq = 1.0;

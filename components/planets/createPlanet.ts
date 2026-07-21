@@ -107,7 +107,7 @@ export function createPlanet(params: PlanetParams = {}): PlanetHandle {
   // Warp dérivé du seed : renforce la distinction entre planètes de même type.
   const warp = 0.1 + seedScalar(r.seed, 3) * 0.35;
   const nightStrength = 0.08;
-  const grain = 0.03;
+  const grain = 0.045; // micro-grain un peu plus présent = rendu moins « lisse »
 
   // Direction du soleil partagée par tous les matériaux (référence unique).
   const lightDir = new THREE.Vector3(1, 0.4, 0.6).normalize();

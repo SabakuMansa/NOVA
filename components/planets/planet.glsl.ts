@@ -88,25 +88,33 @@ export const fragmentShader = /* glsl */ `
     float hB = heightAt(normalize(nrm + bitang * eps));
     // Pas de bump sous l'eau (surface lisse) ; fort sur les terres.
     float land = step(uSeaLevel, h);
-    float bumpStrength = 1.4 * land;
+    float bumpStrength = 2.1 * land; // relief plus marqué (moins « lisse »)
     vec3 objN = normalize(nrm - (tang * (hT - h) + bitang * (hB - h)) * bumpStrength);
     // Rotation objet -> monde via la matrice fournie en uniform.
     outNormal = normalize(uModelMat3 * objN);
 
+    // Détail haute fréquence : casse l'aspect « flou » des grandes masses en
+    // ajoutant un grain de terrain net (montagnes/rides fines) sur la couleur.
+    float detail = fbm(nrm * (uFrequency * 5.0) + uSeed + 5.0, uOctaves); // ~[-1,1]
+    float detailN = detail * 0.5 + 0.5;
+
     if (h < uSeaLevel) {
       // Océan : plus sombre en profondeur, plus clair près des côtes.
-      float depth = smoothstep(uSeaLevel, uSeaLevel - 0.18, h);
-      vec3 shallow = uColorOcean * 1.25;
-      vec3 deep = uColorOcean * 0.55;
+      float depth = smoothstep(uSeaLevel, uSeaLevel - 0.16, h);
+      vec3 shallow = uColorOcean * 1.3;
+      vec3 deep = uColorOcean * 0.5;
       col = mix(shallow, deep, depth);
+      col *= 0.96 + 0.04 * detailN; // fines rides à la surface de l'eau
       specMask = 1.0; // l'eau brille (spéculaire côté jour)
     } else {
-      // Terres : rampe basse -> haute, avec gain pour marquer les sommets.
+      // Terres : rampe basse -> haute, transition resserrée = côtes plus nettes.
       float t = (h - uSeaLevel) / max(1.0 - uSeaLevel, 0.001);
-      float ramp = pow(t, 0.8);
-      col = mix(uColorLow, uColorHigh, smoothstep(0.0, 1.0, ramp));
-      // Liseré de côte légèrement plus clair juste au-dessus du niveau de la mer.
-      col = mix(col, uColorLow * 1.15, smoothstep(0.06, 0.0, t));
+      float ramp = pow(t, 0.7);
+      col = mix(uColorLow, uColorHigh, smoothstep(0.0, 0.9, ramp));
+      // Liseré de côte net juste au-dessus du niveau de la mer.
+      col = mix(col, uColorLow * 1.2, smoothstep(0.035, 0.0, t));
+      // Grain de terrain marqué (le plus gros contributeur au « piqué »).
+      col *= 0.8 + 0.2 * detailN;
       specMask = 0.0;
     }
   }
