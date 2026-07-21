@@ -77,12 +77,12 @@ export default function QuiJeSuisPage() {
 
           <Reveal delay={0.15} className="mt-14">
             <div className="flex flex-col items-start gap-4 rounded-xl border border-arcade-border bg-arcade-card p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-              <p className="font-pixel text-sm text-arcade-cream">
+              <p className="font-sans text-sm text-arcade-cream">
                 On regarde votre commerce ensemble ?
               </p>
               <Link
                 href="mailto:bonjour@k1000studio.fr"
-                className="shrink-0 rounded-lg border-2 border-arcade-border-thick bg-arcade-orange px-6 py-4 text-center font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[5px_5px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
+                className="shrink-0 rounded-lg border-2 border-arcade-border-thick bg-arcade-orange px-6 py-4 text-center font-sans text-[0.6rem] leading-relaxed text-arcade-bg shadow-[5px_5px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
               >
                 Réserver un audit gratuit →
               </Link>

@@ -30,8 +30,8 @@ export default function V3Nav() {
           (indépendant du compactage de la nav en dessous) pour rester lisible
           sur tout le site, pas seulement le Hero. Masqué sous `sm` : la
           consigne demande une barre mobile simplifiée (logo + menu). */}
-      <div className="hidden items-center justify-between border-b border-arcade-border bg-arcade-bg px-6 py-2 font-pixel text-[0.55rem] text-arcade-gold sm:flex md:px-8">
-        <span className="text-arcade-orange">
+      <div className="hidden items-center justify-between border-b border-arcade-border bg-arcade-bg px-6 py-2 text-[0.55rem] text-arcade-gold sm:flex md:px-8">
+        <span className="font-pixel text-arcade-orange">
           1P{" "}
           <span className="text-arcade-cream">
             {String(score).padStart(5, "0")}
@@ -40,13 +40,13 @@ export default function V3Nav() {
         <button
           type="button"
           onClick={() => setEasterEgg(true)}
-          className="arcade-blink hidden cursor-pointer md:inline hover:text-arcade-cream focus-visible:text-arcade-cream"
+          className="arcade-blink hidden cursor-pointer font-sans md:inline hover:text-arcade-cream focus-visible:text-arcade-cream"
           aria-haspopup="dialog"
           aria-label="Easter egg Insert Coin"
         >
           INSERT COIN
         </button>
-        <span className="text-arcade-orange">
+        <span className="font-pixel text-arcade-orange">
           HI <span className="text-arcade-cream">99999</span>
         </span>
       </div>
@@ -78,7 +78,7 @@ export default function V3Nav() {
               <a
                 key={l.href}
                 href={l.href}
-                className="font-pixel text-[0.6rem] text-arcade-taupe transition-colors hover:text-arcade-cream"
+                className="font-sans text-[0.6rem] text-arcade-taupe transition-colors hover:text-arcade-cream"
               >
                 {l.label}
               </a>
@@ -88,7 +88,7 @@ export default function V3Nav() {
           <div className="flex items-center gap-3">
             <a
               href={v3nav.cta.href}
-              className="hidden rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-4 py-2.5 font-pixel text-[0.6rem] text-arcade-bg shadow-[3px_3px_0_#2C241A] transition-transform hover:-translate-y-0.5 sm:inline-block"
+              className="hidden rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-4 py-2.5 font-sans text-[0.6rem] text-arcade-bg shadow-[3px_3px_0_#2C241A] transition-transform hover:-translate-y-0.5 sm:inline-block"
             >
               {v3nav.cta.label}
             </a>
@@ -129,7 +129,7 @@ export default function V3Nav() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-3 font-pixel text-[0.65rem] text-arcade-tan hover:bg-arcade-card"
+                className="rounded-lg px-3 py-3 font-sans text-[0.65rem] text-arcade-tan hover:bg-arcade-card"
               >
                 {l.label}
               </a>
@@ -137,7 +137,7 @@ export default function V3Nav() {
             <a
               href={v3nav.cta.href}
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-5 py-3.5 text-center font-pixel text-[0.65rem] text-arcade-bg shadow-[3px_3px_0_#2C241A]"
+              className="mt-2 rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-5 py-3.5 text-center font-sans text-[0.65rem] text-arcade-bg shadow-[3px_3px_0_#2C241A]"
             >
               {v3nav.cta.label}
             </a>

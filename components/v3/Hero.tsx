@@ -68,7 +68,7 @@ export default function V3Hero() {
               >
                 <a
                   href={v3hero.ctaPrimary.href}
-                  className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-arcade-border-thick bg-arcade-orange px-6 py-4 font-pixel text-[0.6rem] leading-relaxed text-arcade-bg shadow-[5px_5px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-arcade-border-thick bg-arcade-orange px-6 py-4 font-sans text-[0.6rem] leading-relaxed text-arcade-bg shadow-[5px_5px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
                 >
                   {v3hero.ctaPrimary.label}
                 </a>

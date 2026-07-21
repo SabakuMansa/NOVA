@@ -67,7 +67,7 @@ export default function InsertCoinOverlay({
         <button
           type="button"
           onClick={onClose}
-          className="rounded-xl border-2 border-arcade-border-thick bg-arcade-card px-6 py-3.5 font-pixel text-[0.6rem] text-arcade-cream transition-colors hover:text-arcade-gold"
+          className="rounded-xl border-2 border-arcade-border-thick bg-arcade-card px-6 py-3.5 font-sans text-[0.6rem] text-arcade-cream transition-colors hover:text-arcade-gold"
         >
           ÉCHAP — Fermer
         </button>

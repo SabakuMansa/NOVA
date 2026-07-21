@@ -242,7 +242,7 @@ export function V3Plans() {
 
                   <a
                     href="mailto:bonjour@k1000studio.fr"
-                    className={`mt-auto block rounded border-2 py-3 text-center font-pixel text-[0.55rem] transition-transform hover:-translate-y-0.5 ${
+                    className={`mt-auto block rounded border-2 py-3 text-center font-sans text-[0.55rem] transition-transform hover:-translate-y-0.5 ${
                       p.featured
                         ? "border-arcade-border-thick bg-arcade-orange text-arcade-bg shadow-[3px_3px_0_#FFD23F]"
                         : "border-arcade-border-thick text-arcade-cream"
@@ -288,7 +288,7 @@ export function V3Fondateur() {
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:items-center">
         <Reveal>
           <Eyebrow color="jaune">{v3fondateur.eyebrow}</Eyebrow>
-          <h2 className="mt-5 font-pixel text-base leading-relaxed tracking-tight text-arcade-cream sm:text-xl">
+          <h2 className="mt-5 font-sans text-base leading-relaxed tracking-tight text-arcade-cream sm:text-xl">
             {v3fondateur.title}
           </h2>
           <div className="mt-6 flex flex-wrap gap-2">

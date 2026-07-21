@@ -379,7 +379,7 @@ export default function SpaceInvadersGame() {
             <button
               type="button"
               onClick={resetGame}
-              className="rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-6 py-3 font-pixel text-[0.6rem] text-arcade-bg shadow-[4px_4px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
+              className="rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-6 py-3 font-sans text-[0.6rem] text-arcade-bg shadow-[4px_4px_0_#FFD23F] transition-transform hover:-translate-y-0.5"
             >
               Rejouer
             </button>
@@ -401,7 +401,7 @@ export default function SpaceInvadersGame() {
                 onPointerLeave={() => (gameRef.current.keys.left = false)}
                 onPointerCancel={() => (gameRef.current.keys.left = false)}
                 aria-label="Déplacer à gauche"
-                className="flex h-12 w-12 touch-none items-center justify-center rounded-xl border-2 border-arcade-border-thick bg-arcade-card font-pixel text-arcade-cream active:bg-arcade-bg-alt"
+                className="flex h-12 w-12 touch-none items-center justify-center rounded-xl border-2 border-arcade-border-thick bg-arcade-card font-sans text-arcade-cream active:bg-arcade-bg-alt"
               >
                 ◀
               </button>
@@ -412,7 +412,7 @@ export default function SpaceInvadersGame() {
                 onPointerLeave={() => (gameRef.current.keys.right = false)}
                 onPointerCancel={() => (gameRef.current.keys.right = false)}
                 aria-label="Déplacer à droite"
-                className="flex h-12 w-12 touch-none items-center justify-center rounded-xl border-2 border-arcade-border-thick bg-arcade-card font-pixel text-arcade-cream active:bg-arcade-bg-alt"
+                className="flex h-12 w-12 touch-none items-center justify-center rounded-xl border-2 border-arcade-border-thick bg-arcade-card font-sans text-arcade-cream active:bg-arcade-bg-alt"
               >
                 ▶
               </button>
@@ -421,7 +421,7 @@ export default function SpaceInvadersGame() {
               type="button"
               onPointerDown={tryFire}
               aria-label="Tirer"
-              className="flex h-12 touch-none items-center justify-center rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-6 font-pixel text-[0.6rem] text-arcade-bg shadow-[3px_3px_0_#FFD23F] active:translate-y-0.5"
+              className="flex h-12 touch-none items-center justify-center rounded-xl border-2 border-arcade-border-thick bg-arcade-orange px-6 font-sans text-[0.6rem] text-arcade-bg shadow-[3px_3px_0_#FFD23F] active:translate-y-0.5"
             >
               TIR
             </button>

@@ -5,6 +5,86 @@
 
 ---
 
+## [Fix] Police pixel arcade recadrée — trop généralisée, illisible par endroits
+
+Une session précédente avait explicitement étendu `font-pixel` (Press
+Start 2P) à la Nav, aux boutons et aux titres de cartes "sitewide" (voir
+tâches #71–73 de l'historique). Avec le recul, ça dépasse l'usage prévu
+(le commentaire de `tailwind.config.ts` dit lui-même : "Réservées au Hero
++ à 'La Carte'... jamais utilisées ailleurs") et rend plusieurs zones
+peu lisibles. Recadrage à cette règle d'origine.
+
+**Contrainte respectée** : uniquement le `font-family` a changé
+(`font-pixel` → `font-sans`, Work Sans déjà utilisé ailleurs sur le
+site) — aucune couleur, taille, espacement ni mise en page touchés.
+
+### Repassé en `font-sans` (navigation, boutons, phrases de contenu)
+
+- **`components/v3/Nav.tsx`** : lien "INSERT COIN" (bouton réel du
+  bandeau bezel — "1P"/"HI" restent en pixel, ce sont des labels non
+  interactifs), liens de nav desktop et mobile, CTA "Audit gratuit"
+  (desktop + mobile).
+- **`components/v3/Hero.tsx`** : bouton CTA principal ("Réserver un
+  audit gratuit").
+- **`components/v3/Sections.tsx`** : bouton "Démarrer avec {plan}" sur
+  chaque carte de "La Carte" ; titre de la section Fondateur (teaser
+  homepage — phrase complète, pas un badge court).
+- **`app/qui-je-suis/page.tsx`** : phrase "On regarde votre commerce
+  ensemble ?" (contenu conversationnel, pas un badge) et son bouton CTA.
+- **`components/v3/InsertCoinOverlay.tsx`** : bouton "ÉCHAP — Fermer".
+- **`components/v3/SpaceInvadersGame.tsx`** : bouton "Rejouer", les deux
+  boutons directionnels ◀/▶ et le bouton "TIR" (contrôles tactiles du
+  mini-jeu — ce sont de vrais boutons, même règle que le reste du site).
+
+### Laissé en `font-pixel` (usage désormais strictement limité)
+
+- Wordmark "K1000.studio" + monogramme (Nav, Footer) — partout.
+- Titre du Hero (`v3hero.titleA/Em/B`) et titre de "La Carte"
+  (`v3plans.title`) — les deux grands titres d'accroche explicitement
+  autorisés.
+- Question du Verdict (même traitement que "La Carte", classes
+  identiques) et sa réponse défilante (`TypewriterAnswer`) — duo qui
+  fait office de titre d'accroche principal de la page.
+- H1 de `/qui-je-suis` — mêmes classes exactes que le titre de "La
+  Carte"/Verdict (même famille de "grands titres"), traité en
+  cohérence plutôt que la version teaser plus petite sur la homepage.
+- Badges/labels courts : eyebrows ("Studio digital · Île-de-France",
+  "Les plans", "Qui suis-je"...), bandeau bezel "1P/HI"/"SELECT YOUR
+  PLAN"/"CREDIT", badge "Le plus choisi", noms de plans ("Présence",
+  "Autonome", "Machine", "Boutique"), prix ("690€"...), "Insert Coin"
+  (overlay), "Game over"/score/vies (HUD du mini-jeu) — tous non
+  interactifs ou strictement courts, conformes à la règle "éventuellement
+  de courts labels/badges".
+
+### Non touché
+
+- **`components/exemples/ExempleNav.tsx` / `ExempleFooter.tsx`** :
+  utilisent encore `font-pixel`, mais confirmés **orphelins** (aucun
+  import réel nulle part dans le dépôt, seulement des mentions en
+  commentaire dans les composants Nav/Footer propres à chaque démo) —
+  aucun impact visible, non modifiés pour rester dans le périmètre
+  strict de la tâche.
+- **`/exemples/*`** (Présence/Autonome/Machine/Boutique) : vérifiées,
+  n'ont jamais utilisé `font-pixel` — chacune a sa propre police dédiée
+  (fleur-\*/metam-\*/braise-\*/nord-\*), déjà lisible.
+- Tout texte déjà en `font-terminal` (VT323) ou `font-mono` (sous-titres,
+  listes de fonctionnalités, badges, taglines) — la plainte portait
+  spécifiquement sur `font-pixel`, ces polices sont déjà la police
+  "corps de texte" prévue par le design system et restent lisibles.
+
+### Vérification effectuée
+
+- `tsc --noEmit` ✅, `npm run build` ✅.
+- Relecture visuelle complète en navigateur (desktop + mobile) : page
+  d'accueil (Nav, Verdict, Hero, La Carte, Fondateur), `/qui-je-suis`
+  intégralement, menu mobile déplié — confirmé qu'aucun paragraphe,
+  liste, formulaire, bouton ou lien de nav n'est plus en pixel.
+- Grep final `font-pixel` sur tout le dépôt : les seules occurrences
+  restantes correspondent exactement à la liste "laissé en pixel"
+  ci-dessus (+ les 2 fichiers orphelins non touchés).
+
+---
+
 ## [Fix] Image de prévisualisation (Open Graph) obsolète
 
 `app/opengraph-image.tsx` reflétait encore l'ancienne identité "geek
