@@ -5,6 +5,23 @@
 
 ---
 
+## [Fix] Favicon rebrandé (NOVA « N » → K1000 « K » pixel arcade)
+
+Le favicon de l'onglet montrait encore le « N » de NOVA, oublié lors du
+rebranding. Seul fichier d'icône du projet : `app/icon.svg` (convention
+App Router de Next — auto-injecté en `<link rel="icon">` sur toutes les
+pages, aucun `favicon.ico`/apple-icon/manifest/PNG à côté).
+
+Remplacé par un **« K » en pixels** (blocs de 6px, or `#FFD23F`) sur badge
+sombre `#17130D` avec fin liseré orange `#FF7A00` — cohérent avec le
+wordmark Press Start 2P et l'identité arcade. SVG unique → toutes les
+tailles couvertes (vectoriel), rendu net (`shape-rendering: crispEdges`).
+
+Vérifié : `/icon.svg` sert bien le nouveau K (0 occurrence du « N »), et
+les pages (`/`, `/qui-je-suis`, `/labo/tron`…) référencent le même
+`/icon.svg?<hash>` — le hash de contenu a changé, donc cache-busting
+automatique côté navigateur.
+
 ## [Feature] 4 univers immersifs sur les démos /exemples/* (hero + module clé)
 
 Design handoff hifi fourni en zip (`design_handoff_pages_demo/`, 4 fichiers
