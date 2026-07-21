@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Nunito_Sans } from "next/font/google";
+import { DM_Serif_Display, Work_Sans } from "next/font/google";
 import PresenceBanner from "@/components/exemples/presence/Banner";
 import PresenceFooter from "@/components/exemples/presence/Footer";
 import PresenceNav from "@/components/exemples/presence/Nav";
@@ -7,17 +7,20 @@ import { presenceDemo } from "@/content/exemples/presence";
 
 // Polices propres à cette démo, chargées uniquement pour les routes sous
 // /exemples/presence (next/font scinde par segment) — n'affectent ni la
-// homepage arcade, ni les 3 autres démos.
-const cormorant = Cormorant_Garamond({
-  weight: ["400", "500", "600"],
+// homepage arcade, ni les 3 autres démos. Univers "Au Petit Marché" (design
+// handoff du 21/07) : DM Serif Display + Work Sans remplacent Cormorant/
+// Nunito — mêmes noms de variable CSS, donc tout le reste de la démo
+// (Nav/Footer/sous-pages) hérite automatiquement de la nouvelle typo.
+const dmSerifDisplay = DM_Serif_Display({
+  weight: "400",
   style: ["normal", "italic"],
   subsets: ["latin"],
   variable: "--font-fleur-display",
   display: "swap",
 });
 
-const nunitoSans = Nunito_Sans({
-  weight: ["300", "400", "600", "700"],
+const workSans = Work_Sans({
+  weight: ["300", "400", "500", "600"],
   subsets: ["latin"],
   variable: "--font-fleur-sans",
   display: "swap",
@@ -42,7 +45,7 @@ export default function PresenceDemoLayout({
 }) {
   return (
     <div
-      className={`${cormorant.variable} ${nunitoSans.variable} min-h-screen bg-fleur-bg font-fleur-sans text-fleur-ink`}
+      className={`${dmSerifDisplay.variable} ${workSans.variable} min-h-screen bg-fleur-bg font-fleur-sans text-fleur-ink`}
     >
       <PresenceBanner planLabel="Plan Présence" />
       <PresenceNav

@@ -37,6 +37,48 @@ export const presenceDemo = {
       { icon: "🪴", text: "Conseils d'entretien personnalisés" },
       { icon: "📍", text: "En plein centre-ville" },
     ],
+    // Hero immersif "Au Petit Marché" (design handoff du 21/07) — recréation
+    // fidèle du hero du zip, adaptée à l'identité déjà établie de Maison
+    // Verdure (boutique de plantes, pas un étal de fleurs coupées).
+    heroBadge: "Sélection du moment · Toute la semaine",
+    heroTitleAccent: "Vivantes",
+    heroTitleRest: "toute l'année",
+    heroImage:
+      "https://images.unsplash.com/photo-1487070183336-b863922373d4?w=1000&q=80&auto=format",
+    heroImageAlt: "Étal de plantes et fleurs de Maison Verdure",
+  },
+
+  // Module clé "La sélection du jour" — recréation fidèle du module "L'étal
+  // du jour" du zip, avec de vraies références du catalogue plantes de
+  // Maison Verdure (pas les fleurs coupées du zip).
+  selectionDuJour: {
+    title: "La sélection du jour",
+    subtitle: "Arrivage mis à jour ce matin",
+    items: [
+      {
+        name: "Monstera deliciosa",
+        price: "32 €",
+        image:
+          "https://images.unsplash.com/photo-1519378058457-4c29a0a2efac?w=500&q=80&auto=format",
+      },
+      {
+        name: "Pothos doré",
+        price: "18 €",
+        image:
+          "https://images.unsplash.com/photo-1444930694458-01babf71870c?w=500&q=80&auto=format",
+      },
+      {
+        name: "Ficus lyrata",
+        price: "45 €",
+        image:
+          "https://images.unsplash.com/photo-1524386416438-98b9b2d4b433?w=500&q=80&auto=format",
+      },
+    ],
+    mystery: {
+      title: "Plante mystère du jour",
+      text: "Le chouchou de la boutique, en quantité limitée.",
+      price: "à partir de 9 €",
+    },
   },
 
   presentation: {
