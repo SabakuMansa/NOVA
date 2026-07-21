@@ -1,20 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-// import { useRouter } from "next/navigation"; // ← activer pour l'intégration réelle
 import {
   createTronEngine,
   PLANET_PAGES,
   type TronEngine,
   type World,
 } from "@/components/tron";
+import { useAirlock } from "@/components/transition/AirlockProvider";
 
 /**
  * PREVIEW JETABLE du module `components/tron` — navigation spatiale néon avec
  * assets. Fond + planètes (assets pré-rendus) + vaisseau (asset pivoté) + vol
  * Asteroids + caméra suiveuse dézoomée + frontière élastique + proximité +
- * atterrissage (fondu → log de la route). Hors périmètre produit (route
- * /labo/tron, noindex).
+ * atterrissage → **vraie navigation** via le sas (AirlockProvider). Hors
+ * périmètre produit (route /labo/tron, noindex).
  */
 
 // Mondes dérivés du mapping page→planète (config PLANET_PAGES) — les 4 pages,
@@ -35,17 +35,20 @@ const worldFromPage = (p: (typeof PLANET_PAGES)[number]): World => ({
 
 const WORLDS: World[] = PLANET_PAGES.map(worldFromPage);
 const SHIP_ASSET = "/tron/ship.png";
-const routeToName = new Map(PLANET_PAGES.map((p) => [p.route, { name: p.name, accent: p.accent }]));
 
 export default function TronPreview() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<TronEngine | null>(null);
-  // const router = useRouter(); // ← activer pour l'intégration réelle
   const [fps, setFps] = useState(0);
   // Planète à portée (nom + couleur d'accent) pour l'indicateur de proximité.
   const [near, setNear] = useState<{ name: string; accent: string } | null>(null);
-  // Atterrissage en cours : route ciblée (déclenche le fondu).
-  const [landing, setLanding] = useState<string | null>(null);
+
+  // Le sas déclenche la VRAIE navigation (portes → router.push → réouverture).
+  // L'engine est impératif : on capture `enter` dans un ref (maj à chaque render)
+  // pour que le callback `onLand` (figé à la création de l'engine) y accède.
+  const airlock = useAirlock();
+  const enterRef = useRef(airlock.enter);
+  enterRef.current = airlock.enter;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -60,13 +63,12 @@ export default function TronPreview() {
       onFps: setFps,
       onProximity: (w) => setNear(w ? { name: w.name, accent: w.color } : null),
       onLand: (route) => {
-        // Fondu au noir, puis — en preview — on logge la route. En intégration
-        // réelle : router.push(route) une fois l'overlay opaque.
-        setLanding(route);
-        console.log("[tron] atterrissage →", route);
-        // router.push(route);
-        // Preview : on rouvre la scène après un instant pour continuer à tester.
-        window.setTimeout(() => setLanding(null), 1600);
+        // Route absente → pas de navigation morte (fallback).
+        if (!route) {
+          console.warn("[tron] atterrissage sans route — navigation ignorée.");
+          return;
+        }
+        enterRef.current(route); // sas : portes → router.push(route) → réouverture
       },
     });
     engineRef.current = engine;
@@ -78,8 +80,6 @@ export default function TronPreview() {
     };
   }, []);
 
-  const landInfo = landing ? routeToName.get(landing) : null;
-
   return (
     <div style={{ position: "fixed", inset: 0, background: "#04060a", overflow: "hidden" }}>
       <canvas
@@ -89,7 +89,7 @@ export default function TronPreview() {
       />
 
       {/* Indicateur de proximité (nom + prompt d'atterrissage), teinté accent. */}
-      {near && !landing && (
+      {near && (
         <div
           style={{
             position: "fixed",
@@ -163,35 +163,8 @@ export default function TronPreview() {
           <b>Z</b> pousser · <b>Q/D</b> tourner · <b>Shift</b> boost · <b>Entrée/clic</b> atterrir
         </div>
       </div>
-
-      {/* Overlay de fondu à l'atterrissage (CSS, opacité 0→1). */}
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          background: "#04060a",
-          opacity: landing ? 1 : 0,
-          transition: "opacity 0.5s ease",
-          pointerEvents: landing ? "auto" : "none",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: "ui-monospace, monospace",
-          color: landInfo?.accent ?? "#8be9ff",
-        }}
-      >
-        {landing && (
-          <>
-            <div style={{ fontSize: 22, letterSpacing: 3, fontWeight: 700 }}>
-              {landInfo?.name?.toUpperCase() ?? "ATTERRISSAGE"}
-            </div>
-            <div style={{ fontSize: 12, opacity: 0.7, marginTop: 8 }}>
-              → {landing}
-            </div>
-          </>
-        )}
-      </div>
+      {/* L'atterrissage est désormais géré par le sas (AirlockProvider) :
+          portes → router.push(route) → réouverture sur la vraie page. */}
     </div>
   );
 }

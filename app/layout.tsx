@@ -9,6 +9,7 @@ import {
 import { Analytics } from "@vercel/analytics/react";
 import { seo } from "@/content/site";
 import JsonLd from "@/components/JsonLd";
+import AirlockProvider from "@/components/transition/AirlockProvider";
 import "./globals.css";
 
 const instrument = Instrument_Serif({
@@ -109,7 +110,9 @@ export default function RootLayout({
       className={`${instrument.variable} ${workSans.variable} ${plexMono.variable} ${pressStart2P.variable} ${vt323.variable}`}
     >
       <body className="font-sans antialiased">
-        {children}
+        {/* Couche de transition « sas » persistante (survit à router.push).
+            Passthrough inerte hors transition — n'affecte aucune page. */}
+        <AirlockProvider>{children}</AirlockProvider>
         <JsonLd />
         <Analytics />
       </body>
