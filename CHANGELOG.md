@@ -5,6 +5,82 @@
 
 ---
 
+## [Feature] 4 univers immersifs sur les démos /exemples/* (hero + module clé)
+
+Design handoff hifi fourni en zip (`design_handoff_pages_demo/`, 4 fichiers
+`.dc.html` + README avec tokens/mapping exacts). Mapping strict appliqué :
+Fleuriste-AuPetitMarche → `/exemples/presence`, Coiffure-MaisonDore →
+`/exemples/autonome`, Restaurant-ChezMargot → `/exemples/machine`,
+Boutique-Unit9 → `/exemples/boutique`.
+
+**Recette appliquée aux 4 démos** (même principe, dérivé du travail
+Présence de la session précédente) :
+- Fonts du handoff chargées dans `layout.tsx` sous les **mêmes variables
+  CSS** que les anciennes (`--font-fleur-*`, `--font-metam-*`,
+  `--font-braise-*`, `--font-nord-*`) — Nav/Footer/sous-pages héritent
+  automatiquement de la nouvelle typo sans modification.
+- Couleurs en **valeurs Tailwind arbitraires** (`bg-[#3d5245]`, etc.),
+  jamais de nouveau token dans `tailwind.config.ts` — pour ne pas
+  répercuter la palette dans les sous-pages (prestations/galerie/à propos/
+  contact/espace-admin/catalogue/panier…), qui restent volontairement sur
+  leur ancienne palette et sont **structurellement inchangées**.
+- Seuls Nav/Footer/Banner + le hero et le "module clé" de la page
+  d'accueil de chaque démo changent visuellement. Homepage, `/labo`,
+  `/_archive` et le reste du site : non touchés.
+- 9 URLs Unsplash du zip vérifiées (`curl -I`, 200 + `image/jpeg`) avant
+  usage ; toute nouvelle image ajoutée (photos de remplacement) vérifiée
+  de la même façon.
+
+**Identités commerçantes fictives — décision explicite de l'utilisateur** :
+garder les commerces déjà établis partout où c'est possible (le zip sert
+de référence de style, jamais de contenu) :
+- **Présence** (Maison Verdure, fleuriste) — module "étal du jour" du zip
+  recréé avec le vrai catalogue plantes (Monstera, Pothos, Ficus + carte
+  "plante mystère"), pas les fleurs coupées du zip.
+- **Autonome** (Salon Marguerite, coiffure) — hero + planning recréés
+  quasi tels quels (thématique déjà compatible).
+- **Boutique** (Le Petit Atelier, savonnerie/bougies) — palette/typo
+  "concept store" du zip reprises, mais produit vedette (Bougie Bois de
+  santal), copie et sélecteur de **quantité** (composant `QuantitySelector`
+  partagé, nouveau variant `unit9`) adaptés au vrai catalogue — le
+  sélecteur de taille S/M/L/XL du zip n'a pas de sens pour du savon.
+- **Machine** — seule exception : l'ancien commerce ("Au Poil", toiletteur
+  canin) ne pouvait pas raisonnablement porter l'"Ardoise du jour" (vrais
+  plats de bistrot) du zip. Renommé **"Chez Fernand"** (jamais "Chez
+  Margot" — le nom littéral de la maquette, conformément à la convention
+  du projet). `content/exemples/machine.ts` réécrit entièrement (nav,
+  accueil, carte, galerie, à propos, contact, espace admin) ; 2 sous-pages
+  avaient des URLs/alt-text/commentaires de toilettage codés en dur
+  (`galerie`, `a-propos`) — mis à jour avec de nouvelles photos vérifiées.
+
+**Distinction fonctionnelle Autonome/Machine préservée dans le nouvel
+habillage** (risque identifié : les deux modules du zip sont purement
+visuels et ne montrent ni édition manuelle ni automatisation) :
+- `/exemples/autonome` : nouveau composant `PlanningSlot.tsx` — un crayon
+  discret sur un créneau du planning révèle, au clic, un champ texte +
+  bouton "Enregistrer" (mockup local sans backend, palette or/noir,
+  aucune animation donc aucun souci `prefers-reduced-motion`).
+- `/exemples/machine` : indicateur "Activité automatique" (pastille
+  pulsante + relance avis) ajouté sous l'ardoise, `motion-safe:animate-ping`
+  pour respecter `prefers-reduced-motion`.
+
+**Exécution** : Présence construit à la main comme référence, puis
+Autonome/Machine/Boutique délégués à 3 agents en parallèle avec brief
+détaillé (recette + palette exacte + limites strictes), chacun revu,
+corrigé si besoin et vérifié séparément avant commit individuel.
+
+**Vérifié** : `tsc --noEmit` clean, `npm run build` clean (46 pages),
+navigateur desktop + mobile sur les 4 pages d'accueil comparées aux
+`.dc.html` correspondants, interaction d'édition manuelle testée
+(clic → champ + Enregistrer), aucune régression `git status` en dehors
+des fichiers des 4 démos, aucune mention "Uber" ajoutée, aucun nom
+littéral de maquette adopté comme identité commerçante (grep vérifié —
+seules des mentions en commentaire expliquant la source du design).
+
+4 commits locaux séparés (un par démo), aucun push.
+
+---
+
 ## [Fix] Police pixel arcade recadrée — trop généralisée, illisible par endroits
 
 Une session précédente avait explicitement étendu `font-pixel` (Press
