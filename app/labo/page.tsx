@@ -101,14 +101,14 @@ export default function LaboPage() {
             </p>
           </Reveal>
 
-          <Reveal delay={0.1} className="mt-12 max-w-2xl">
-            <ul className="space-y-5">
+          <Reveal delay={0.1} className="mt-12 max-w-3xl">
+            <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               {PROJECTS.map((p) => {
                 const Preview = p.key === "mousquetaires" ? MousquetairesPreview : TronPreview;
                 return (
                   <li
                     key={p.key}
-                    className="rounded-xl border border-arcade-border bg-arcade-card p-4 sm:p-5"
+                    className="flex flex-col rounded-xl border border-arcade-border bg-arcade-card p-4 sm:p-5"
                   >
                     <Preview />
                     <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2">
