@@ -21,9 +21,12 @@ export const v3nav = {
   // (question défilante + titre + Les plans + Qui suis-je), plus les 4
   // démos /exemples/*. Le constat, Ce que ça fait et Le process sont
   // retirés de la nav avec leurs sections homepage correspondantes.
+  // "Le Labo" ajouté le 21/07 : page réelle du menu (projets perso), pas
+  // une page cachée — cf. app/labo/page.tsx.
   links: [
     { label: "Les plans", href: "/#plans" },
     { label: "Qui suis-je", href: "/qui-je-suis" },
+    { label: "Le Labo", href: "/labo" },
   ],
   // "#contact" n'existe plus (section retirée) — mailto direct vers le
   // vrai email déjà validé, pas de lien mort.

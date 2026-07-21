@@ -5,6 +5,41 @@
 
 ---
 
+## [Feature] "Le Labo" devient une vraie page du site (nav + indexable)
+
+Suite à un retour direct : "Le Labo" n'est plus une page cachée mais une
+**vraie page du site**, reliée depuis le menu principal.
+
+- **`content/v3.ts`** — `v3nav.links` : ajout de `{ label: "Le Labo",
+  href: "/labo" }` juste après "Qui suis-je" (ordre : Les plans → Qui
+  suis-je → Le Labo). Zéro changement dans `components/v3/Nav.tsx` (il se
+  contente de mapper `v3nav.links`, desktop et mobile).
+- **`app/labo/page.tsx`** — retrait du `noindex/nofollow` : la page hérite
+  désormais du `robots: {index:true, follow:true}` par défaut du layout
+  racine, comme n'importe quelle page publique.
+- **`app/sitemap.ts`** — ajout de `/labo` (priorité 0.5, comme les ancres
+  homepage — c'est une page perso, pas un levier commercial).
+- **`app/robots.ts`** — `disallow` ne bloque plus `/labo` (sinon Google ne
+  pourrait même pas *lire* la page pour découvrir le lien vers `/labo/tron`).
+  Remplacé par un disallow **explicite** sur `/labo/tron` uniquement : les
+  expériences techniques individuelles restent noindex/nofollow (metadata
+  déjà en place sur `app/labo/tron/page.tsx`, inchangée), seule la page hub
+  devient publique.
+
+**Nettoyage demandé en parallèle** : l'ancienne démo "portail qui se
+fissure façon verre" (`ShatterPortal`), relocalisée à `/labo/portail` dans
+le commit précédent le temps de trouver sa place, est **supprimée
+entièrement** (`components/labo/ShatterPortal.tsx` + `app/labo/portail/`)
+— elle n'est plus référencée nulle part.
+
+Vérifié : menu affiche "Le Labo" après "Qui suis-je" (desktop, capture) ;
+`/labo` → `index, follow` + présente dans `sitemap.xml` ; `/labo/tron` →
+toujours `noindex, nofollow`, toujours bloquée dans `robots.txt` ;
+`/labo/portail` → 404 ; aucune référence résiduelle à `ShatterPortal` ;
+`tsc` + build clean.
+
+---
+
 ## [Feature] Page hub "Le Labo" (/labo) avec ses 2 premiers projets
 
 `/labo` devient une page hub listant les projets perso (ton plus brut,

@@ -7,24 +7,17 @@ import Reveal from "@/components/Reveal";
 
 /**
  * LE LABO — page hub des projets perso, HORS périmètre commercial K1000.
- * - Route volontairement absente de la nav principale (v3nav.links n'y
- *   pointe pas) et du sitemap (app/sitemap.ts).
- * - noindex/nofollow (metadata ci-dessous + disallow /labo dans app/robots.ts).
+ * - Page réelle du site : reliée depuis la nav principale (v3nav.links,
+ *   juste après "Qui suis-je") et indexable (dans app/sitemap.ts).
  * - Ton plus brut/décontracté que "Mes réalisations" : pas de grille
  *   élaborée, juste une liste de projets qui s'enrichira avec le temps.
- *
- * Le portail qui se fissure façon verre (ancienne démo /labo) vit
- * maintenant à /labo/portail — pas encore relié depuis cette page.
+ * - Les expériences individuelles listées ici (ex. /labo/tron) restent,
+ *   elles, en noindex — ce sont des démos techniques, pas du contenu.
  */
 
 export const metadata: Metadata = {
   title: "Le Labo",
   description: "Projets perso et expérimentations K1000 Studio. Rien à vendre ici.",
-  robots: {
-    index: false,
-    follow: false,
-    googleBot: { index: false, follow: false },
-  },
 };
 
 const PROJECTS = [

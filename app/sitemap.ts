@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { seo } from "@/content/site";
 
-// Ancres de la page d'accueil v3 + la page dédiée /qui-je-suis.
+// Ancres de la page d'accueil v3 + les pages dédiées /qui-je-suis et /labo.
 const SECTIONS = [
   "verdict",
   "constat",
@@ -25,6 +25,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
+    },
+    {
+      // Page hub des projets perso — reliée depuis la nav, mais pas un
+      // levier commercial : priorité basse, comme les ancres homepage.
+      url: `${seo.siteUrl}/labo`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
     ...SECTIONS.map((id) => ({
       url: `${seo.siteUrl}/#${id}`,
