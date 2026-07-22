@@ -5,6 +5,51 @@
 
 ---
 
+## [Fix] Joystick tactile : cap absolu au lieu de rotation relative
+
+Correction demandée : le joystick réutilisait le modèle clavier (`turn` +
+`thrust` selon le cap courant), ce qui est le bon modèle pour ZQSD (rotation
+relative) mais pas pour un joystick, où l'utilisateur attend une direction
+absolue — pousser le pouce en haut-droite doit orienter le vaisseau
+haut-droite, pas juste avancer dans le cap déjà pris.
+
+- `ShipInput` (`types.ts`) gagne `targetAngle: number | null` — `null` =
+  mode relatif (clavier, inchangé), un nombre = cap absolu visé (radians).
+- `flightModel.stepFlight` : si `targetAngle` est fourni, le vaisseau pivote
+  PROGRESSIVEMENT vers ce cap par le plus court chemin angulaire
+  (`atan2(sin Δ, cos Δ)`, gère le passage par ±π), borné par la nouvelle
+  constante `FLIGHT.JOYSTICK_TURN_SPEED` — jamais de snap instantané, feel
+  Asteroids préservé. Sinon (clavier), `turn` pivote directement comme avant.
+  La poussée n'a pas eu besoin de changer : elle s'applique déjà le long du
+  cap courant du vaisseau, qui suit maintenant le joystick.
+- `input/touchInput.ts` : le vecteur du joystick devient directement
+  `targetAngle = atan2(jy, jx)` (même repère écran/monde, Y vers le bas —
+  haut du joystick = haut à l'écran) + une poussée proportionnelle à
+  l'intensité, avec zone morte (`FLIGHT.JOYSTICK_DEAD_ZONE`, remappée en
+  [0,1] pour un démarrage franc juste après le seuil). `turn` n'est plus
+  utilisé côté tactile.
+- `input/combinedInput.ts` : fusionne `targetAngle` (dernière valeur non
+  nulle rencontrée — en pratique seul le tactile le fournit).
+- Bouton boost existant conservé tel quel : il correspond à Shift au
+  clavier (multiplicateur ×1,8), pas un doublon de la poussée proportionnelle.
+
+Vérifié en viewport tactile simulé (joystick piloté directement via
+`engine.touch` pour un test déterministe) : pousser à droite oriente et
+déplace le vaisseau à droite, pousser en haut l'oriente vers le haut,
+rotation progressive et non un snap (trajectoire courbe visible sur
+plusieurs captures), relâchement = vaisseau glisse par inertie sans
+rotation forcée. Clavier (touche D) revérifié fonctionnel après relâchement
+du joystick — comportement relatif inchangé. `tsc --noEmit` + build de
+production clean.
+
+À vérifier sur un vrai téléphone : que le pouce garde le contrôle précis
+près du centre du joystick (la zone morte à 0,12 ne doit pas sembler trop
+large ni trop permissive), et que l'intensité de poussée est bien
+progressive au toucher (pas un tout-ou-rien qui donnerait l'impression
+d'un bug).
+
+---
+
 ## [Feature] Tron : retour à l'espace + commandes tactiles
 
 Deux manques comblés sur l'expérience `/labo/tron` : un visiteur qui

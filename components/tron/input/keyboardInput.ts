@@ -57,6 +57,7 @@ export function createKeyboardInput(): InputSource {
         boost,
         interact,
         recenter,
+        targetAngle: null, // mode relatif : turn pivote directement (cf. flightModel)
       };
     },
     dispose() {

@@ -12,7 +12,12 @@ export const FLIGHT = {
   BOOST_MULT: 1.8, // multiplicateur accel + vitesse max sous boost
   DRAG: 2.4, // amortissement/s — assez marqué : le vaisseau se pose vite (~1 s)
   REVERSE_MULT: 0.5, // poussée arrière (S/↓) plus faible que l'avant
-  TURN_SPEED: 3.4, // vitesse de rotation (rad/s)
+  TURN_SPEED: 3.4, // vitesse de rotation (rad/s) — mode relatif, clavier (turn)
+  // Mode cap absolu (joystick tactile, cf. flightModel.stepFlight) : le
+  // vaisseau pivote PROGRESSIVEMENT vers le cap visé (targetAngle), jamais un
+  // snap instantané — c'est ce qui garde le feel Asteroids au pouce.
+  JOYSTICK_TURN_SPEED: 3.4, // vitesse de rotation vers le cap visé (rad/s) — réglable indépendamment du clavier
+  JOYSTICK_DEAD_ZONE: 0.12, // intensité (0..1) sous laquelle le joystick est ignoré (micro-mouvements du pouce au repos)
 } as const;
 
 // ── Monde + frontière élastique ─────────────────────────────────────────────

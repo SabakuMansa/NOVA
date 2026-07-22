@@ -17,6 +17,13 @@ export interface ShipInput {
   interact: boolean;
   /** Demande de recentrage ponctuelle (touche R / bouton). */
   recenter: boolean;
+  /**
+   * Cap absolu visé, en radians (mode joystick) — `null` = mode relatif
+   * (clavier) : `turn` fait alors pivoter le vaisseau comme aujourd'hui.
+   * Quand renseigné, `flightModel.stepFlight` fait pivoter le vaisseau
+   * PROGRESSIVEMENT vers ce cap (pas de snap) et ignore `turn`.
+   */
+  targetAngle: number | null;
 }
 
 export const NEUTRAL_INPUT: ShipInput = {
@@ -25,6 +32,7 @@ export const NEUTRAL_INPUT: ShipInput = {
   boost: false,
   interact: false,
   recenter: false,
+  targetAngle: null,
 };
 
 /** Source d'entrées : `read()` renvoie l'état courant, `dispose()` nettoie. */

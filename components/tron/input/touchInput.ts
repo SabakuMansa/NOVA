@@ -1,3 +1,4 @@
+import { FLIGHT } from "../config";
 import { type InputSource, type ShipInput } from "../types";
 
 /**
@@ -5,9 +6,13 @@ import { type InputSource, type ShipInput } from "../types";
  *
  * Ne lit AUCUN événement lui-même : le HUD React (joystick + boutons) pousse
  * l'état via les setters exposés, et l'adaptateur le restitue sous la même
- * interface neutre. Le joystick fournit un vecteur (x,y) ∈ [-1,1]² :
- *  - `x` → rotation (turn)
- *  - `-y` → poussée (thrust) — vers le haut = avant.
+ * interface neutre. Le joystick fournit un vecteur (x,y) ∈ [-1,1]² (même
+ * repère écran que le monde, Y vers le bas) — contrairement au clavier
+ * (rotation relative via `turn`), un joystick donne une direction ABSOLUE :
+ * le doigt pointe où le vaisseau doit aller. On restitue donc un cap visé
+ * (`targetAngle` = angle du vecteur) plutôt qu'un `turn` — `flightModel`
+ * pivote alors progressivement vers ce cap (jamais un snap). L'intensité
+ * (distance au centre, zone morte appliquée) pilote la poussée, proportionnelle.
  */
 export interface TouchInput extends InputSource {
   setJoystick: (x: number, y: number) => void;
@@ -42,12 +47,26 @@ export function createTouchInput(): TouchInput {
       const recenter = edge.recenter;
       edge.interact = false;
       edge.recenter = false;
+
+      const magnitude = Math.min(1, Math.hypot(jx, jy));
+      let targetAngle: number | null = null;
+      let thrust = 0;
+      if (magnitude >= FLIGHT.JOYSTICK_DEAD_ZONE) {
+        // atan2(y,x) dans le même repère écran/monde (Y vers le bas) que le
+        // reste du moteur : haut du joystick (jy<0) → angle -π/2 = "haut".
+        targetAngle = Math.atan2(jy, jx);
+        // Remappe [DEAD_ZONE, 1] → [0, 1] : la poussée démarre à 0 pile après
+        // la zone morte plutôt que de sauter à DEAD_ZONE.
+        thrust = (magnitude - FLIGHT.JOYSTICK_DEAD_ZONE) / (1 - FLIGHT.JOYSTICK_DEAD_ZONE);
+      }
+
       return {
-        thrust: -jy, // haut du joystick = avant
-        turn: jx,
+        thrust,
+        turn: 0, // non utilisé en tactile — la direction passe par targetAngle
         boost,
         interact,
         recenter,
+        targetAngle,
       };
     },
     dispose() {

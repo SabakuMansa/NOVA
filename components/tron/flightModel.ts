@@ -65,7 +65,20 @@ export function stepFlight(state: FlightState, input: ShipInput, dt: number): vo
   const boost = input.boost ? FLIGHT.BOOST_MULT : 1;
 
   // — ROTATION —
-  state.angle += input.turn * FLIGHT.TURN_SPEED * step;
+  if (input.targetAngle !== null) {
+    // Mode cap absolu (joystick) : pivote PROGRESSIVEMENT vers le cap visé,
+    // par le plus court chemin angulaire (gère le passage par ±π) — jamais un
+    // snap instantané, pour garder le feel Asteroids. `turn` est ignoré ici.
+    const delta = Math.atan2(
+      Math.sin(input.targetAngle - state.angle),
+      Math.cos(input.targetAngle - state.angle),
+    );
+    const maxStep = FLIGHT.JOYSTICK_TURN_SPEED * step;
+    state.angle += Math.max(-maxStep, Math.min(maxStep, delta));
+  } else {
+    // Mode relatif (clavier, inchangé) : turn pivote directement.
+    state.angle += input.turn * FLIGHT.TURN_SPEED * step;
+  }
 
   // — POUSSÉE selon le cap (avant plus fort que l'arrière). —
   if (input.thrust !== 0) {
