@@ -5,6 +5,34 @@
 
 ---
 
+## [Ajout] Le Labo : 3ᵉ entrée « Ma Ludothèque »
+
+Ajout d'un troisième projet dans la liste de `/labo` (`app/labo/page.tsx`),
+au **même format** que les deux existants (Mousquetaires, Tron) :
+
+- **Titre** : « Ma Ludothèque » · **statut** : « App réelle · en ligne ».
+- **Lien** : `https://ma-ludotheque.vercel.app` (URL de prod stable, vérifiée :
+  HTTP 200 et sert bien l'app Flutter). Ouvre dans un **nouvel onglet**
+  (`external: true` → `target="_blank" rel="noopener noreferrer"`).
+- **Description** (police `font-terminal`, **pas** de police pixel, contrainte
+  de lisibilité respectée) : gestion de collection de jeux de société —
+  catalogue, fiches avec vidéos de règles FR, assistant de recommandation de
+  soirée.
+- Petit aperçu déco `🎲` (`LudothequePreview`), dans le même esprit emoji que
+  le 🏈 de Mousquetaires. Le sélecteur d'aperçu (ternaire binaire) est passé à
+  3 cas.
+
+Vérifié en local (`localhost:3002/labo`) : les 3 cartes sont visuellement
+cohérentes, le lien pointe vers la bonne URL et s'ouvre dans un nouvel onglet.
+Aucune erreur serveur. **Tout reste local** (pas de déploiement demandé).
+
+> Note : le prompt mentionnait « la page reste non liée dans la nav et en
+> noindex » — or `/labo` est en réalité **liée dans la nav principale et
+> indexable** (cf. commentaire d'en-tête du fichier + `sitemap.ts`) ; seules
+> les expériences internes (ex. `/labo/tron`) sont en noindex. Je n'ai **rien
+> changé** au référencement/à la nav (hors périmètre de cet ajout) ; à
+> arbitrer si tu veux réellement passer `/labo` en noindex.
+
 ## [Fix] Joystick tactile : cap absolu au lieu de rotation relative
 
 Correction demandée : le joystick réutilisait le modèle clavier (`turn` +

@@ -39,6 +39,15 @@ const PROJECTS = [
     href: "/labo/tron",
     external: false,
   },
+  {
+    key: "ludotheque",
+    name: "Ma Ludothèque",
+    kind: "App réelle · en ligne",
+    description:
+      "Gérer sa collection de jeux de société : catalogue, fiches avec vidéos de règles en français, et un assistant qui recommande un jeu selon le contexte de la soirée.",
+    href: "https://ma-ludotheque.vercel.app",
+    external: true,
+  },
 ] as const;
 
 /** Petit aperçu déco du projet Mousquetaires — pas le vrai visuel du site,
@@ -48,6 +57,18 @@ function MousquetairesPreview() {
     <div className="flex h-32 items-center justify-center rounded-lg border border-arcade-border bg-arcade-bg-alt">
       <span className="text-5xl" aria-hidden>
         🏈
+      </span>
+    </div>
+  );
+}
+
+/** Petit aperçu déco du projet Ma Ludothèque — repère thématique (dé de jeu
+ * de société) sur fond sobre, dans le même esprit que Mousquetaires. */
+function LudothequePreview() {
+  return (
+    <div className="flex h-32 items-center justify-center rounded-lg border border-arcade-border bg-arcade-bg-alt">
+      <span className="text-5xl" aria-hidden>
+        🎲
       </span>
     </div>
   );
@@ -104,7 +125,12 @@ export default function LaboPage() {
           <Reveal delay={0.1} className="mt-12 max-w-3xl">
             <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               {PROJECTS.map((p) => {
-                const Preview = p.key === "mousquetaires" ? MousquetairesPreview : TronPreview;
+                const Preview =
+                  p.key === "mousquetaires"
+                    ? MousquetairesPreview
+                    : p.key === "ludotheque"
+                      ? LudothequePreview
+                      : TronPreview;
                 return (
                   <li
                     key={p.key}
